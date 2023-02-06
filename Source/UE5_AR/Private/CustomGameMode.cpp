@@ -47,24 +47,6 @@ void ACustomGameMode::Tick(float DeltaSeconds)
 
 }
 
-bool ACustomGameMode::WorldHitTest(FVector2D screenTouchPos, FHitResult& HitResult)
-{
-	// Get player controller
-	APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
-	// Perform deprojection taking 2d clicked area and generating reference in 3d world-space.
-	FVector worldPosition;
-	FVector worldDirection; // Unit Vector
-	bool deprojectionSuccess = UGameplayStatics::DeprojectScreenToWorld(playerController, screenTouchPos, /*out*/
-		worldPosition, /*out*/ worldDirection);
-	// construct trace vector (from point clicked to 1000.0 units beyond in same direction)
-	FVector traceEndVector = worldDirection * 1000.0;
-	traceEndVector = worldPosition + traceEndVector;
-	// perform line trace (Raycast)
-	bool traceSuccess = GetWorld()->LineTraceSingleByChannel(HitResult, worldPosition, traceEndVector,ECollisionChannel::ECC_WorldDynamic);
-	// return if the operation was successful
-	return traceSuccess;
-}
-
 
 void ACustomGameMode::SpawnInitialActors()
 {
@@ -75,11 +57,3 @@ void ACustomGameMode::SpawnInitialActors()
 
 	UARBlueprintLibrary::StartARSession(Config);
 }
-//Calculate the distance from touch input to actor, could be useful depending on the game.
-						//FVector DistTouchToActor = TraceResult[0].GetLocalToWorldTransform().GetLocation() - SpawnedActor->GetActorLocation();
-						//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Dist Touch to actor: %f"), DistTouchToActor.Size()));
-						//if(DistTouchToActor.Size()>50)
-						//{
-						//	SpawnedActor->SetActorTransform(PinTF);
-						//	SpawnedActor->PinComponent = ActorPin;
-						//}

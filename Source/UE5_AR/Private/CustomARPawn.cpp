@@ -56,14 +56,6 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("yasssss"));
 		// Add call to the line-trace here from the Custom Game Mode
-		if (!GameManager->Player)
-		{
-			GameManager->LineTraceSpawnActor(ScreenPos);
-		}
-		else
-		{
-			GameManager->LineTraceMovement(ScreenPos);
-		}
 	}
 }
 

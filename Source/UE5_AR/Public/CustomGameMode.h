@@ -50,5 +50,5 @@ public:
 	AGameManager* GameManager;
 	
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<AGameManager> SpawnedGameManager;
+	TSubclassOf<AGameManager> SpawnedGameManager;
 };

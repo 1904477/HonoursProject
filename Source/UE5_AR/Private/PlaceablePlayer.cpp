@@ -4,25 +4,9 @@
 #include "PlaceablePlayer.h"
 #include "GameManager.h"
 #include "CustomGameMode.h"
-#include "GameFramework/CharacterMovementComponent.h"
-
 APlaceablePlayer::APlaceablePlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
-
-	// auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
-	// //StaticMeshComponent->SetupAttachment(SceneComponent);
-	//
-	// static ConstructorHelpers::FObjectFinder<UMaterial> FoundMaterial(TEXT("Material'/Engine/EngineMaterials/PPM_DefaultCalibrationColor.PPM_DefaultCalibrationColor'"));
-	// //static ConstructorHelpers::FObjectFinder<UMaterial> FoundMaterial(TEXT("Material'/Engine/EngineMaterials/PPM_DefaultCalibrationColor.PPM_DefaultCalibrationColor'"));
-	// if (FoundMaterial.Succeeded())
-	// {
-	// 	StoredMaterial = FoundMaterial.Object;
-	// 	//GEngine->AddOnScreenDebugMessage(-1, 6.0f, FColor::Red, TEXT("Player material correctly found"));
-	//
-	// }
-	//DynamicMaterialInst = UMaterialInstanceDynamic::Create(StoredMaterial, StaticMeshComponent);
 
 	
 }
@@ -34,9 +18,6 @@ void APlaceablePlayer::BeginPlay()
 	GameManager = GM->GameManager;
 	GetMesh()->BodyInstance.bLockYRotation = true;
 	GetMesh()->BodyInstance.bLockXRotation = true;
-	//SetState(Idle);
-	//SetActorRotation(FRotator(0,0,0));
-	//StaticMeshComponent->SetMaterial(0, DynamicMaterialInst);
 	AIController = Cast<AAIController>(GetController());
 	if(!AIController)
 	{
@@ -72,73 +53,10 @@ void APlaceablePlayer::MovePlayer()
 		//FVector MoveDirection =  - ActualPosition;
 		//FRotator NewRot = (GameManager->MoveLocation - ActualPosition).Rotation();
 		//SetActorRotation(NewRot);
-		if (DoesPlayerWalk == true)		//If player walks 
-		{
+
 			//AIController->MoveTo(GameManager->MoveLocation );
-			AIController->MoveToLocation(GameManager->MoveLocation,-1,false, true );
-		}
-		else if (DoesPlayerJump == true)
-		{
-			//AIController->MoveTo(GameManager->MoveLocation );
-			//AIController->MoveToLocation(GameManager->MoveLocation,-1,false,true );
-			FVector move = FMath::VInterpTo(ActualPosition, FVector(GameManager->MoveLocation.X, GameManager->MoveLocation.Y, GameManager->MoveLocation.Z+50.f), GetWorld()->GetDeltaSeconds(), 2);
-			FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(GameManager->ActualPosition, GameManager->MoveLocation);
-			SetActorRotation(PlayerRot);
-			SetActorLocation(move);
-		}
-		DistanceToTarget(GameManager->MoveLocation - GetActorLocation());
+		AIController->MoveToLocation(GameManager->MoveLocation,-1,false, true );
+
+
 	}
 }
-
-void APlaceablePlayer::DistanceToTarget(FVector DestinationRange)
-{
-	if(DoesPlayerJump)
-	{
-		if(abs(DestinationRange.X)<30.f&&abs(DestinationRange.Y)<30.f&& abs(DestinationRange.Z)<20.f)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, TEXT("Player Stopped"));
-			Controller->StopMovement();
-			IsPlayerIdle = true;
-			DoesPlayerWalk = false;
-			DoesPlayerJump = false;
-			CanPlayerJump = false;
-			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		}
-	}
-	else if(DoesPlayerWalk)
-	{
-		if(abs(DestinationRange.X)<20.f&&abs(DestinationRange.Y)<20.f)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, TEXT("Player Stopped"));
-			Controller->StopMovement();
-			IsPlayerIdle = true;
-			DoesPlayerWalk = false;
-			DoesPlayerJump = false;
-			CanPlayerJump = false;
-			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		}
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//void APlaceablePlayer::SetState(State NewState)
-//{
-//	CurrentState = &NewState;  // change state
-//}
-//FVector move = FMath::VInterpTo(ActualPosition, GameManager->MoveLocation, GetWorld()->GetDeltaSeconds(), 4);
-//FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(GameManager->ActualPosition, GameManager->MoveLocation);
-//SetActorRotation(PlayerRot);
-//SetActorLocation(move);

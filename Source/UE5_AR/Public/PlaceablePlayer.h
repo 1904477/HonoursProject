@@ -9,13 +9,6 @@
 class ACustomGameMode;
 class AGameManager;
 
-//UENUM()
-//enum State
-//{
-//	Idle,
-//	Running,
-//	Jumping
-//};
 UCLASS()
 class UE5_AR_API APlaceablePlayer : public APlaceableCharacter
 {
@@ -35,22 +28,9 @@ public:
 
 	void MovePlayer();
 
-	void DistanceToTarget(FVector DestinationRange);
-
 	AGameManager* GameManager;
 
 
-
-	//inline State* GetCurrentState() const { return CurrentState;  }
-
-	//void SetState(State NewState);
-
 protected:
-	//State* CurrentState;
-
-
 	AAIController* AIController;
-	//UMaterial* StoredMaterial;
-	//UMaterialInstanceDynamic* DynamicMaterialInst;
-
 };

@@ -6,8 +6,6 @@
 #include "GameFramework/Character.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "CustomGameMode.h"
-#include "Components/CapsuleComponent.h"
-#include "ARPlaneActor.h"
 #include "PlaceableCharacter.generated.h"
 class UARPin;
 
@@ -40,18 +38,12 @@ public:
 	//	UPROPERTY(Category = "PlaceableActorMaterial", EditAnywhere, BlueprintReadWrite)
 
 	ACustomGameMode* GM;
-	
+
+
 	UPROPERTY(Category = "CharacterMovement", EditAnywhere, BlueprintReadWrite)
 	bool DoesPlayerWalk = false;
 	UPROPERTY(Category = "CharacterMovement", EditAnywhere, BlueprintReadWrite)
-	bool DoesPlayerJump = false;
-	UPROPERTY(Category = "CharacterMovement", EditAnywhere, BlueprintReadWrite)
-	bool CanPlayerJump = true;
-	UPROPERTY(Category = "CharacterMovement", EditAnywhere, BlueprintReadWrite)
 	bool IsPlayerIdle = true;
-	
-	AARPlaneActor* LastClickedPlane;
-
 
 	UPROPERTY(Category = "CharacterMovement", EditAnywhere, BlueprintReadWrite)
 	bool AnimationPlay = false;
