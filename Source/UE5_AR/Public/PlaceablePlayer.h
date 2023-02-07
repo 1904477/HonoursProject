@@ -9,6 +9,13 @@
 class ACustomGameMode;
 class AGameManager;
 
+UENUM()
+enum Status
+{
+	Idle     UMETA(DisplayName = "Idle"),
+	Wandering      UMETA(DisplayName = "Wandering"),
+	Suspicious   UMETA(DisplayName = "Suspicious"),
+};
 UCLASS()
 class UE5_AR_API APlaceablePlayer : public APlaceableCharacter
 {
@@ -30,6 +37,12 @@ public:
 
 	AGameManager* GameManager;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyStatus")
+	TEnumAsByte<Status> enemyStatus;
+
+	float enemyStatusTimer = 0;
+	FVector moveTo;
+	float wanderRadius;
 
 protected:
 	AAIController* AIController;

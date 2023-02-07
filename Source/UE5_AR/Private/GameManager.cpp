@@ -20,6 +20,7 @@ AGameManager::AGameManager() :
 void AGameManager::BeginPlay()
 {
 	Super::BeginPlay();
+	SpawnEnemy();
 }
 
 // Called every frame
@@ -34,19 +35,22 @@ void AGameManager::SpawnCube()
 	const FRotator MyRot(0, 0, 0);
 	const FVector MyLoc(-300, 0, 0);
 	ACustomActor* CustomActor = GetWorld()->SpawnActor<ACustomActor>(MyLoc, MyRot, SpawnInfo);
+	CustomActor->SetActorScale3D(FVector(30.f, 30, 30));
 }
 
 void AGameManager::SpawnEnemy()
 {
-	float posX;
-	float posY;
-	posX = FMath::RandRange(-posX, posX);
-	posY = FMath::RandRange(-posY, posY);
-	const FActorSpawnParameters SpawnInfo;
-	const FRotator MyRot(0, 0, 0);
-	const FVector MyLoc(posX, posY, 0);
-	Player = GetWorld()->SpawnActor<APlaceablePlayer>(PlacableToSpawn, MyLoc, MyRot, SpawnInfo);
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("ACTOR SPAWNED"));
+	for (int i = 0; i < EnemiesToSpawn; i++)
+	{
+		float posX = 2200;
+		float posY = 2200;
+		posX = FMath::RandRange(-posX, posX);
+		posY = FMath::RandRange(-posY, posY);
+		const FActorSpawnParameters SpawnInfo;
+		const FRotator MyRot(0, 0, 0);
+		const FVector MyLoc(posX, posY, 0);
+		Player = GetWorld()->SpawnActor<APlaceablePlayer>(PlacableToSpawn, MyLoc, MyRot, SpawnInfo);
+	}
 }
 
 FTransform AGameManager::LineTraceResult(FVector ScreenPos)		//Function to return touch position in real world

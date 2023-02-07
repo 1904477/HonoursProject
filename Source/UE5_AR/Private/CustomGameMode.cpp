@@ -36,7 +36,6 @@ void ACustomGameMode::StartPlay()
 void ACustomGameMode::StartPlayEvent_Implementation() 
 {
 	// Start a timer which will call the SpawnCube Function every 4 seconds
-	//GetWorldTimerManager().SetTimer(Ticker, this, &ACustomGameMode::SpawnCube, 4.0f, true, 0.0f);
 }
 
 
@@ -50,10 +49,12 @@ void ACustomGameMode::Tick(float DeltaSeconds)
 
 void ACustomGameMode::SpawnInitialActors()
 {
+
 	// Spawn an instance of the HelloARManager class
 	UARSessionConfig* Config = NewObject<UARSessionConfig>();
 	AHelloARManager* Manager = GetWorld()->SpawnActor<AHelloARManager>();
 	GameManager = GetWorld()->SpawnActor<AGameManager>(SpawnedGameManager);
+	GameManager->EnemiesToSpawn = EnemiesToSpawnGM;
 
 	UARBlueprintLibrary::StartARSession(Config);
 }

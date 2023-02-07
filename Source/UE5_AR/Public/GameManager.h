@@ -51,7 +51,11 @@ public:
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<APlaceableCharacter> PlacableToSpawn;
 
-	FVector MoveLocation;
-	FVector ActualPosition;
+	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
+		TArray<APlaceablePlayer*> Enemies;
+
 	FTransform TraceResultTransform;
+
+	
+	int EnemiesToSpawn =0;
 };

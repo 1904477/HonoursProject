@@ -8,7 +8,6 @@
 #include "CustomGameMode.generated.h"
 
 //Forward Declarations
-class APlaceableCharacter;
 class AGameManager;
 /**
  * 
@@ -34,12 +33,10 @@ public:
 	 *  You can have different implementations of this event which will be called when you call this as a delegate.
 	 *	See the CPP For more information on the implementation
 	 */
-	UFUNCTION(BlueprintNativeEvent, Category = "GameModeBase", DisplayName = "Start Play")
-		void StartPlayEvent();
+	UFUNCTION(BlueprintNativeEvent, Category = "GameModeBase", DisplayName = "Start Play")	void StartPlayEvent();
+
 	virtual void Tick(float DeltaSeconds) override;
 
-	UFUNCTION(BlueprintCallable, Category = "Trace")
-		bool WorldHitTest(FVector2D screenTouchPos, FHitResult& HitResult);
 	/**
 	 * @brief This function is virtual - you can inherit this class to override this function
 	 * Each level can have their own unique spawned actors but with similar base qualities using inheritance
@@ -51,4 +48,8 @@ public:
 	
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AGameManager> SpawnedGameManager;
+
+	UPROPERTY(Category = "NumberOfEnemiesSpawned", EditAnywhere, BlueprintReadWrite)
+		int EnemiesToSpawnGM;
+
 };
