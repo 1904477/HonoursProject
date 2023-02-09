@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "PlaceableCharacter.h"
 #include "AIController.h"
+#include "NavigationSystem.h"
 #include "PlaceablePlayer.generated.h"
 class ACustomGameMode;
 class AGameManager;
@@ -33,17 +34,24 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void MovePlayer();
+	void EnemySuspicious();
 
+	void EnemyStatusManager();
+
+	void EnemyWander();
 	AGameManager* GameManager;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyStatus")
 	TEnumAsByte<Status> enemyStatus;
+
 
 	float enemyStatusTimer = 0;
 	FVector moveTo;
 	float wanderRadius;
 
+
 protected:
 	AAIController* AIController;
+	UNavigationSystemV1* NavigationArea;
 };

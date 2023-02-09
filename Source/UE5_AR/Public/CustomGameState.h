@@ -16,23 +16,16 @@ class UE5_AR_API ACustomGameState : public AGameStateBase
 public:
 	ACustomGameState();
 	~ACustomGameState() = default;
-	
-
-	UFUNCTION(BlueprintCallable, Category = "Score")
-		void SetScore(const int32 NewScore);
 
 	void SetPlaceableSelected(bool value);
 	void SetAreARPlanesDisplayed(bool value);
-
-	bool GetPlaceableSelected();
 	bool GetAreARPlanesDisplayed();
 
-	UFUNCTION(BlueprintCallable, Category = "Score")
-		int32 GetScore();
+	bool GetHasGameStarted();
+	void SetHasGameStarted(bool b);
 
-	bool IsPlaceableSelected;
-	bool IsPlaceableSpawned;
-	int Score;
+	UPROPERTY(Category = "GameStart", EditAnywhere, BlueprintReadWrite)
+		bool HasGameStarted;
 
 	UPROPERTY(Category = "ARPlanesRender", EditAnywhere, BlueprintReadWrite)
 	bool AreARPlanesDisplayed;

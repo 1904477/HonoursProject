@@ -5,6 +5,7 @@
 #include "GameManager.h"
 #include "CustomARPawn.h"
 #include "CustomGameState.h"
+#include "GameObjectsSpawner.h"
 #include "HelloARManager.h"
 #include "ARBlueprintLibrary.h"
 #include "ARPlaneActor.h"
@@ -18,14 +19,12 @@ ACustomGameMode::ACustomGameMode()
 	// Set the default pawn and gamestate to be our custom pawn and gamestate programatically
 	DefaultPawnClass = ACustomARPawn::StaticClass();
 	GameStateClass = ACustomGameState::StaticClass();
-	
 }
 
 
 void ACustomGameMode::StartPlay() 
 {
 	SpawnInitialActors();
-
 	// This is called before BeginPlay
 	StartPlayEvent();
 	// This function will transcend to call BeginPlay on all the actors 
@@ -43,18 +42,15 @@ void ACustomGameMode::StartPlayEvent_Implementation()
 void ACustomGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
 }
 
 
 void ACustomGameMode::SpawnInitialActors()
 {
-
 	// Spawn an instance of the HelloARManager class
 	UARSessionConfig* Config = NewObject<UARSessionConfig>();
 	AHelloARManager* Manager = GetWorld()->SpawnActor<AHelloARManager>();
 	GameManager = GetWorld()->SpawnActor<AGameManager>(SpawnedGameManager);
-	GameManager->EnemiesToSpawn = EnemiesToSpawnGM;
 
 	UARBlueprintLibrary::StartARSession(Config);
 }

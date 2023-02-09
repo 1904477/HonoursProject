@@ -4,37 +4,26 @@
 #include "CustomGameState.h"
 
 
-ACustomGameState::ACustomGameState() :
-	Score(50)
+ACustomGameState::ACustomGameState()
 {
-	IsPlaceableSelected = false;
-	IsPlaceableSpawned = false;
+	HasGameStarted = false;
 	AreARPlanesDisplayed = true;
 }
 
-int32 ACustomGameState::GetScore()
-{
-	return Score;
-}
-
-void ACustomGameState::SetScore(const int32 NewScore)
-{
-	Score = NewScore;
-}
-
-void ACustomGameState::SetPlaceableSelected(bool value)
-{
-	IsPlaceableSelected = value;
-}
 
 void ACustomGameState::SetAreARPlanesDisplayed(bool value)
 {
 	AreARPlanesDisplayed = value;
 }
 
-bool ACustomGameState::GetPlaceableSelected()
+bool ACustomGameState::GetHasGameStarted()
 {
-	return IsPlaceableSelected;
+	return HasGameStarted;
+}
+
+void ACustomGameState::SetHasGameStarted(bool b)
+{
+	HasGameStarted = b;
 }
 
 bool ACustomGameState::GetAreARPlanesDisplayed()

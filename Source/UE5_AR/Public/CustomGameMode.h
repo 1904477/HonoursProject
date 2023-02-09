@@ -49,7 +49,5 @@ public:
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AGameManager> SpawnedGameManager;
 
-	UPROPERTY(Category = "NumberOfEnemiesSpawned", EditAnywhere, BlueprintReadWrite)
-		int EnemiesToSpawnGM;
 
 };

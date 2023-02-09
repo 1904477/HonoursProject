@@ -2,15 +2,14 @@
 
 
 #include "GameManager.h"
-#include "CustomActor.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
-#include "HelloARManager.h"
+#include "CustomGameState.h"
 #include "ARPin.h"
+#include "GameObjectsSpawner.h"
 #include "ARBlueprintLibrary.h"
 #include "HelloARManager.h"
 // Sets default values
-AGameManager::AGameManager() :
-	Player(nullptr)
+AGameManager::AGameManager() 
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -20,7 +19,8 @@ AGameManager::AGameManager() :
 void AGameManager::BeginPlay()
 {
 	Super::BeginPlay();
-	SpawnEnemy();
+
+	SpawnGameObjectsSpawner();
 }
 
 // Called every frame
@@ -29,28 +29,13 @@ void AGameManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AGameManager::SpawnCube()
+void AGameManager::SpawnGameObjectsSpawner()
 {
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
-	const FVector MyLoc(-300, 0, 0);
-	ACustomActor* CustomActor = GetWorld()->SpawnActor<ACustomActor>(MyLoc, MyRot, SpawnInfo);
-	CustomActor->SetActorScale3D(FVector(30.f, 30, 30));
-}
+	const FVector MyLoc(0, 0, 0);
+	ObjectsSpawner = GetWorld()->SpawnActor<AGameObjectsSpawner>(GameObjectsSpawnerToSpawn,MyLoc, MyRot, SpawnInfo);
 
-void AGameManager::SpawnEnemy()
-{
-	for (int i = 0; i < EnemiesToSpawn; i++)
-	{
-		float posX = 2200;
-		float posY = 2200;
-		posX = FMath::RandRange(-posX, posX);
-		posY = FMath::RandRange(-posY, posY);
-		const FActorSpawnParameters SpawnInfo;
-		const FRotator MyRot(0, 0, 0);
-		const FVector MyLoc(posX, posY, 0);
-		Player = GetWorld()->SpawnActor<APlaceablePlayer>(PlacableToSpawn, MyLoc, MyRot, SpawnInfo);
-	}
 }
 
 FTransform AGameManager::LineTraceResult(FVector ScreenPos)		//Function to return touch position in real world

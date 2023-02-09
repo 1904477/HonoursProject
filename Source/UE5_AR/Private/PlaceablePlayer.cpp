@@ -8,8 +8,6 @@
 APlaceablePlayer::APlaceablePlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	
 }
 void APlaceablePlayer::BeginPlay()
 {
@@ -20,19 +18,17 @@ void APlaceablePlayer::BeginPlay()
 	GetMesh()->BodyInstance.bLockYRotation = true;
 	GetMesh()->BodyInstance.bLockXRotation = true;
 	AIController = Cast<AAIController>(GetController());
+	SetActorScale3D(FVector(1.3, 1.3, 1.3));
 	enemyStatus = Idle;
 	wanderRadius = 1500.0f;
-	if(!AIController)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, TEXT("AIController not found"));
-	}
 
+	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
 }
 
 void APlaceablePlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	MovePlayer();
+	EnemyStatusManager();
 	enemyStatusTimer += GetWorld()->GetDeltaSeconds();
 }
 
@@ -40,48 +36,45 @@ void APlaceablePlayer::Tick(float DeltaTime)
 void APlaceablePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	//Bind various player inputs to functions
-	// There are a few types - BindTouch, BindAxis, and BindEvent.  
 }
 
-void APlaceablePlayer::MovePlayer()
+void APlaceablePlayer::EnemySuspicious()
 {
-	UNavigationSystemV1* NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
+			//case 3: enemyStatus = Suspicious;
+			//	moveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+			//	moveTo = moveTo - GetActorLocation();
+			//	AIController->MoveToLocation(moveTo, -1, false, true);
+			//	break;
+}
 
+void APlaceablePlayer::EnemyWander()
+{
+	FNavLocation endPosi = FNavLocation(GetActorLocation());
 
 	if (!NavigationArea)
-	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("bad pointer"));
-
-		return;
+	if (NavigationArea->GetRandomPointInNavigableRadius(GetActorLocation(), wanderRadius, endPosi)) //Get random position in navmesh
+	{		
+		// if we were successfull in finding a new location...
+		FVector dest = endPosi.Location;		//Save random position in navmesh in FVector
+		AIController->MoveToLocation(dest, -1, false, true);		//Move to destination
 	}
-
-
+}
+void APlaceablePlayer::EnemyStatusManager()
+{
 	if (AIController)
 	{
-		if (enemyStatusTimer > 4.0f)		//Enemies change state every x seconds (unless suspicious, then timer is longer)
+		int randomChoice = FMath::RandRange(1, 2);		//Random choice
+		if (enemyStatusTimer > 1.3f && enemyStatus != Suspicious)		//Enemies change state every x seconds (unless suspicious, then timer is longer)
 		{
-			int randomChoice = FMath::RandRange(1, 2);		//Random choice
-			FNavLocation endPosi = FNavLocation(GetActorLocation());
 			switch (randomChoice)
 			{
 			case 1: enemyStatus = Idle;
 				break;
 			case 2:
 				enemyStatus = Wandering;
-				
-				if (NavigationArea->GetRandomPointInNavigableRadius(GetActorLocation(), wanderRadius, endPosi)) {		//Get random position in navmesh
-					// if we were successfull in finding a new location...
-					FVector dest = endPosi.Location;		//Save random position in navmesh in FVector
-					AIController->MoveToLocation(dest, -1, false, true);		//Move to destination
-				}
+				EnemyWander();
 				break;
-			//case 3: enemyStatus = Suspicious;
-			//	moveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-			//	moveTo = moveTo - GetActorLocation();
-			//	AIController->MoveToLocation(moveTo, -1, false, true);
-			//	break;
 			}
 			enemyStatusTimer = 0;
 		}
