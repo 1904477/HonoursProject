@@ -8,6 +8,8 @@
 #include "GameObjectsSpawner.generated.h"
 
 class ACustomGameState;
+class ACustomGameMode;
+
 UCLASS()
 class UE5_AR_API AGameObjectsSpawner : public AActor
 {
@@ -40,4 +42,5 @@ public:
 	float EnemySpawnTimer = 0;
 
 	ACustomGameState* GameState;
+	ACustomGameMode* GameMode;
 };

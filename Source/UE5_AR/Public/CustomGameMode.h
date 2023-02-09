@@ -43,7 +43,6 @@ public:
 	 */
 	virtual void SpawnInitialActors();
 	
-	UPROPERTY(Category = "ARPlanesRender", EditAnywhere, BlueprintReadWrite)
 	AGameManager* GameManager;
 	
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)

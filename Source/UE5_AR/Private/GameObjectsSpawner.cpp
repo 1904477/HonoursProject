@@ -2,6 +2,7 @@
 
 
 #include "GameObjectsSpawner.h"
+#include "CustomGameMode.h"
 #include "CustomGameState.h"
 // Sets default values
 AGameObjectsSpawner::AGameObjectsSpawner() 
@@ -14,10 +15,11 @@ AGameObjectsSpawner::AGameObjectsSpawner()
 void AGameObjectsSpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Blue, TEXT("Spawned game object spawner"));
 
 	auto GS = GetWorld()->GetGameState();
 	GameState = Cast<ACustomGameState>(GS);
+	auto GM = GetWorld()->GetAuthGameMode();
+	GameMode = Cast<ACustomGameMode>(GM);
 }
 
 // Called every frame
@@ -36,7 +38,7 @@ void AGameObjectsSpawner::EnemiesSpawner()
 	posY = FMath::RandRange(-posY, posY);
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
-	const FVector MyLoc(posX, posY, 0);
+	const FVector MyLoc(posX, posY, 10);
 
 	APlaceablePlayer* Player = GetWorld()->SpawnActor<APlaceablePlayer>(PlacableToSpawn, MyLoc, MyRot, SpawnInfo);
 
@@ -45,10 +47,11 @@ void AGameObjectsSpawner::EnemiesSpawner()
 
 void AGameObjectsSpawner::EnemiesSpawnerManager()
 {
-	if (EnemySpawnTimer > 3 && Enemies.Num() <= 10&& GameState->GetHasGameStarted()==true)
+	if (EnemySpawnTimer > GameMode->GameManager->EnemiesSpawnTimer &&Enemies.Num() <= 1&& GameState->GetHasGameStarted()==true)
 	{
 		EnemiesSpawner();
 		EnemySpawnTimer = 0;
+
 	}
 	else if(EnemySpawnTimer <=3 && GameState->GetHasGameStarted() == true)
 	EnemySpawnTimer += GetWorld()->GetDeltaSeconds();

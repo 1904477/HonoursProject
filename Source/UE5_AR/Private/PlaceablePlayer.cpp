@@ -5,9 +5,20 @@
 #include "GameManager.h"
 #include "CustomGameMode.h"
 #include "NavigationSystem.h"
+#include "GameFramework/CharacterMovementComponent.h"
 APlaceablePlayer::APlaceablePlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+
+	myCols.Add(FColor::Green);
+	myCols.Add(FColor::Yellow);
+	myCols.Add(FColor::Purple);
+	myCols.Add(FColor::Red);
+	myCols.Add(FColor::Cyan);
+	myCols.Add(FColor::Blue);
+
+
 }
 void APlaceablePlayer::BeginPlay()
 {
@@ -27,9 +38,20 @@ void APlaceablePlayer::BeginPlay()
 
 void APlaceablePlayer::Tick(float DeltaTime)
 {
+
+	colChangetmr += DeltaTime;
+
 	Super::Tick(DeltaTime);
 	EnemyStatusManager();
-	enemyStatusTimer += GetWorld()->GetDeltaSeconds();
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::FromInt(enemyStatus));
+
+	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(50, 50, 150), myCols[idxCol% myCols.Num()], false, 0.0f, 0, 3.17);
+
+	if (colChangetmr > 1.17) {
+		idxCol++;
+		colChangetmr = 0;
+	}
+
 }
 
 // Called to bind functionality to input
@@ -40,11 +62,15 @@ void APlaceablePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlaceablePlayer::EnemySuspicious()
 {
-			//case 3: enemyStatus = Suspicious;
-			//	moveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-			//	moveTo = moveTo - GetActorLocation();
-			//	AIController->MoveToLocation(moveTo, -1, false, true);
-			//	break;
+	suspiciousTimer += GetWorld()->GetDeltaSeconds();
+	if (suspiciousTimer > 3.0f) {
+		suspiciousTimer = 0;
+		enemyStatus = Idle;
+	}
+
+	moveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+	AIController->MoveToActor(GetWorld()->GetFirstPlayerController()->GetPawn(), -1,true,true);
+
 }
 
 void APlaceablePlayer::EnemyWander()
@@ -64,19 +90,35 @@ void APlaceablePlayer::EnemyStatusManager()
 {
 	if (AIController)
 	{
-		int randomChoice = FMath::RandRange(1, 2);		//Random choice
-		if (enemyStatusTimer > 1.3f && enemyStatus != Suspicious)		//Enemies change state every x seconds (unless suspicious, then timer is longer)
+		if(enemyStatus !=Suspicious)
 		{
-			switch (randomChoice)
+			enemyStatusTimer += GetWorld()->GetDeltaSeconds();
+			int randomChoice = FMath::RandRange(1, 2);		//Random choice
+			if (enemyStatusTimer > 1.3f)		//Enemies change state every x seconds (unless suspicious, then timer is longer)
 			{
-			case 1: enemyStatus = Idle;
-				break;
-			case 2:
-				enemyStatus = Wandering;
-				EnemyWander();
-				break;
+				switch (randomChoice)
+				{
+				case 1: enemyStatus = Idle;
+					GetCharacterMovement()->MaxWalkSpeed = 0.0f; // replace 300 with your desired speed()
+					break;
+				case 2:
+					enemyStatus = Wandering;
+					GetCharacterMovement()->MaxWalkSpeed = 180.f; // replace 300 with your desired speed()
+					EnemyWander();
+					break;
+				}
+				enemyStatusTimer = 0;
 			}
-			enemyStatusTimer = 0;
+			if (abs((GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() - GetActorLocation()).Length()) < 800)		//If player is close, enemy becomes suspicious
+			{
+				enemyStatus = Suspicious;
+				enemyStatusTimer = 0.0f;
+				GetCharacterMovement()->MaxWalkSpeed = 250.0f; // replace 300 with your desired speed()
+			}
+		}
+		else if(enemyStatus == Suspicious)
+		{
+			EnemySuspicious();
 		}
 	}
 }

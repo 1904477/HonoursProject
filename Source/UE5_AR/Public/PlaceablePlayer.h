@@ -49,7 +49,11 @@ public:
 	float enemyStatusTimer = 0;
 	FVector moveTo;
 	float wanderRadius;
+	float suspiciousTimer = 0;
 
+	TArray<FColor> myCols;
+	int idxCol = 0;
+	float colChangetmr = 0.0f;
 
 protected:
 	AAIController* AIController;
