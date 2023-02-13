@@ -9,6 +9,7 @@
 #include "ARSessionConfig.h"
 #include "ARBlueprintLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include <limits>
 
 // Sets default values
 AHelloARManager::AHelloARManager()
@@ -37,6 +38,7 @@ AHelloARManager::AHelloARManager()
 	PlaneColors.Add(FColor::Turquoise);
 	PlaneColors.Add(FColor::White);
 	PlaneColors.Add(FColor::Yellow);
+
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +61,7 @@ void AHelloARManager::Tick(float DeltaTime)
 	{
 	case EARSessionStatus::Running:
 			UpdatePlaneActors();
+			PlaneTagUpdate();
 		break;
 	case EARSessionStatus::FatalError:
 		ResetARCoreSession();
@@ -91,19 +94,7 @@ void AHelloARManager::UpdatePlaneActors()
 				}
 				else
 				{
-					//Get tracking state switch
-					switch (It->GetTrackingState())
-					{
-						//If tracking update
-						case EARTrackingState::Tracking:
-							CurrentPActor->UpdatePlanePolygonMesh();
-						break;
-						//If not tracking destroy the actor and remove from map of actors
-						case EARTrackingState::StoppedTracking:
-							CurrentPActor->Destroy();
-						PlaneActors.Remove(It);
-						break;
-					}
+					CurrentPActor->UpdatePlanePolygonMesh();
 				}
 			}
 			else
@@ -121,6 +112,18 @@ void AHelloARManager::UpdatePlaneActors()
 						PlaneActors.Add(It, PlaneActor);
 						PlaneActor->UpdatePlanePolygonMesh();
 						PlaneIndex++;
+
+						if (!LowestPlaneActor)
+						{
+							LowestPlaneActor = PlaneActor;
+						}
+						else
+						{
+							if (LowestPlaneActor->GetActorLocation().Z > PlaneActor->GetActorLocation().Z)
+							{
+								LowestPlaneActor = PlaneActor;
+							}
+						}
 					}
 					break;
 				}
@@ -158,3 +161,82 @@ void AHelloARManager::ResetARCoreSession()
 	PlaneActors.Empty();
 
 }
+
+void AHelloARManager::PlaneTagUpdate()
+{
+	//Get all world geometries and store in an array
+	auto Geometries = UARBlueprintLibrary::GetAllGeometriesByClass<UARPlaneGeometry>();
+	//Loop through all geometries
+	for (auto& It : Geometries)
+	{
+		//Check if current plane exists 
+		if (PlaneActors.Contains(It))
+		{
+			AARPlaneActor* CurrentPActor = *PlaneActors.Find(It);
+			FVector origin;
+			FVector boxExtent;
+			CurrentPActor->GetActorBounds(false,origin,boxExtent);
+
+			if (CurrentPActor->ActorHasTag("step") || CurrentPActor->ActorHasTag("table") || CurrentPActor->ActorHasTag("floor"))
+			{
+				DrawDebugString(GetWorld(), origin, "Plane" + CurrentPActor->Tags[0].ToString(), CurrentPActor, FColor::Cyan, 1.0f, false, 1);
+				//GEngine->AddOnScreenDebugMessage(-1, 0.02f, FColor::Green, CurrentPActor->Tags[0].ToString());
+				GEngine->AddOnScreenDebugMessage(-1, 0.02f, FColor::Green, CurrentPActor->GetActorLocation().ToString());
+			}
+			if (abs(CurrentPActor->GetActorLocation().Z) - abs(LowestPlaneActor->GetActorLocation().Z) >= 20)
+			{
+				if (CurrentPActor->ActorHasTag("floor"))
+				{
+					CurrentPActor->Tags.Remove("floor");
+				}
+				if (CurrentPActor->ActorHasTag("step"))
+				{
+					CurrentPActor->Tags.Remove("step");
+				}
+				CurrentPActor->Tags.Add("table");
+			}
+			else if (abs(CurrentPActor->GetActorLocation().Z) - abs(LowestPlaneActor->GetActorLocation().Z) <20 && abs(CurrentPActor->GetActorLocation().Z) - abs(LowestPlaneActor->GetActorLocation().Z)> 3)
+			{
+				if (CurrentPActor->ActorHasTag("floor"))
+				{
+					CurrentPActor->Tags.Remove("floor");
+				}
+				if (CurrentPActor->ActorHasTag("table"))
+				{
+					CurrentPActor->Tags.Remove("table");
+				}
+				CurrentPActor->Tags.Add("step");
+
+			}
+
+			LowestPlaneActor->Tags.Add("floor");
+		}
+	}
+}
+
+
+
+//if (boxExtent.X<=50.0f&&boxExtent.Y<=15.0f&& (CurrentPActor->GetActorLocation().Z > -70.0f&& CurrentPActor->GetActorLocation().Z <))
+			//{
+			//	CurrentPActor->Tags.Add("step");
+			//}
+			//if ((boxExtent.X>70 && boxExtent.Y>30)&&	(CurrentPActor->GetActorLocation().Z<-35.f && CurrentPActor->GetActorLocation().Z > -50.f))
+			//{
+			//	if (CurrentPActor->ActorHasTag("step"))
+			//	{
+			//		CurrentPActor->Tags.Remove("step");
+			//	}
+			//	CurrentPActor->Tags.Add("table");
+			//}
+			//if (boxExtent.X > 300 && boxExtent.Y > 300&& CurrentPActor->GetActorLocation().Z <= -70.0f)
+			//{
+			//	if (CurrentPActor->ActorHasTag("table"))
+			//	{
+			//		CurrentPActor->Tags.Remove("table");
+			//	}
+			//	if (CurrentPActor->ActorHasTag("step"))
+			//	{
+			//		CurrentPActor->Tags.Remove("step");
+			//	}
+			//	CurrentPActor->Tags.Add("floor");
+			//}

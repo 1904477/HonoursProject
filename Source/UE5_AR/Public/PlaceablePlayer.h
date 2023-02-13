@@ -8,7 +8,7 @@
 #include "NavigationSystem.h"
 #include "PlaceablePlayer.generated.h"
 class ACustomGameMode;
-class AGameManager;
+//class AGameManager;
 
 UENUM()
 enum Status

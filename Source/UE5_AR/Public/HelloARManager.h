@@ -7,7 +7,6 @@
 #include "GameFramework/Actor.h"
 #include "HelloARManager.generated.h"
 
-
 class UARSessionConfig;
 class AARPlaneActor;
 class UARPlaneGeometry;
@@ -44,9 +43,11 @@ protected:
 	FColor GetPlaneColor(int Index);
 	void ResetARCoreSession();
 
+	void PlaneTagUpdate();
 
 	//Base plane actor for geometry detection
 	AARPlaneActor* PlaneActor;
+	AARPlaneActor* LowestPlaneActor;
 
 	ACustomGameMode* GM;
 	//Map of geometry planes

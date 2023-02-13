@@ -35,6 +35,11 @@ void ACustomARPawn::BeginPlay()
 void ACustomARPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	APlayerCameraManager* camManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
+	FVector camLocation = camManager->GetCameraLocation();
+	FVector camForward = camManager->GetCameraRotation().Vector();
+	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, camLocation.ToString());
+
 }
 
 // Called to bind functionality to input
@@ -51,10 +56,8 @@ void ACustomARPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVector ScreenPos)
 {
-	
 	if (GameManager)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("yasssss"));
 		// Add call to the line-trace here from the Custom Game Mode
 	}
 }

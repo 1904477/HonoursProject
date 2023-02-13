@@ -4,6 +4,7 @@
 #include "GameObjectsSpawner.h"
 #include "CustomGameMode.h"
 #include "CustomGameState.h"
+#include "GameManager.h"
 // Sets default values
 AGameObjectsSpawner::AGameObjectsSpawner() 
 {
@@ -19,7 +20,7 @@ void AGameObjectsSpawner::BeginPlay()
 	auto GS = GetWorld()->GetGameState();
 	GameState = Cast<ACustomGameState>(GS);
 	auto GM = GetWorld()->GetAuthGameMode();
-	GameMode = Cast<ACustomGameMode>(GM);
+	CustomGameMode = Cast<ACustomGameMode>(GM);
 }
 
 // Called every frame
@@ -47,11 +48,11 @@ void AGameObjectsSpawner::EnemiesSpawner()
 
 void AGameObjectsSpawner::EnemiesSpawnerManager()
 {
-	if (EnemySpawnTimer > GameMode->GameManager->EnemiesSpawnTimer &&Enemies.Num() <= 1&& GameState->GetHasGameStarted()==true)
+	if (EnemySpawnTimer > CustomGameMode->GameManager->EnemiesSpawnTimer && Enemies.Num() <= 1&& GameState->GetHasGameStarted()==true)
 	{
 		EnemiesSpawner();
 		EnemySpawnTimer = 0;
-
+	
 	}
 	else if(EnemySpawnTimer <=3 && GameState->GetHasGameStarted() == true)
 	EnemySpawnTimer += GetWorld()->GetDeltaSeconds();

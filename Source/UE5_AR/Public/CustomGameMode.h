@@ -43,6 +43,7 @@ public:
 	 */
 	virtual void SpawnInitialActors();
 	
+	UPROPERTY(Category = "Game Manager", EditAnywhere, BlueprintReadWrite)
 	AGameManager* GameManager;
 	
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
