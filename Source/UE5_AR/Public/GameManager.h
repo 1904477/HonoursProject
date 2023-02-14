@@ -33,7 +33,7 @@ public:
 		TSubclassOf<AGameObjectsSpawner> GameObjectsSpawnerToSpawn;
 
 	UPROPERTY(Category = "NumberOfEnemiesSpawned", EditAnywhere, BlueprintReadWrite)
-		int EnemiesToSpawnGM;
+		int EnemiesToSpawn;
 
 	UPROPERTY(Category = "EnemiesSpawnTimer", EditAnywhere, BlueprintReadWrite)
 		float EnemiesSpawnTimer;

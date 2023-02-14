@@ -44,4 +44,7 @@ public:
 
 	ACustomGameState* GameState;
 	ACustomGameMode* CustomGameMode;
+
+
+
 };

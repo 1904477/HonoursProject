@@ -19,7 +19,7 @@ AGameManager::AGameManager()
 void AGameManager::BeginPlay()
 {
 	Super::BeginPlay();
-
+	EnemiesToSpawn = 5;
 	SpawnGameObjectsSpawner();
 }
 

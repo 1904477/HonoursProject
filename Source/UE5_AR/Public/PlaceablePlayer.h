@@ -43,17 +43,16 @@ public:
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyStatus")
-	TEnumAsByte<Status> enemyStatus;
+	TEnumAsByte<Status> EnemyStatus;
 
 
-	float enemyStatusTimer = 0;
-	FVector moveTo;
-	float wanderRadius;
-	float suspiciousTimer = 0;
+	float EnemyStatusTimer = 0;
+	FVector MoveTo;
+	float WanderRadius;
+	float SpawnRadius = 500;
+	float SuspiciousTimer = 0;
 
-	TArray<FColor> myCols;
-	int idxCol = 0;
-	float colChangetmr = 0.0f;
+	FColor BoxColor;
 
 protected:
 	AAIController* AIController;

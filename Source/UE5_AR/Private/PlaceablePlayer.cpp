@@ -10,15 +10,6 @@ APlaceablePlayer::APlaceablePlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-
-	myCols.Add(FColor::Green);
-	myCols.Add(FColor::Yellow);
-	myCols.Add(FColor::Purple);
-	myCols.Add(FColor::Red);
-	myCols.Add(FColor::Cyan);
-	myCols.Add(FColor::Blue);
-
-
 }
 void APlaceablePlayer::BeginPlay()
 {
@@ -29,29 +20,30 @@ void APlaceablePlayer::BeginPlay()
 	GetMesh()->BodyInstance.bLockYRotation = true;
 	GetMesh()->BodyInstance.bLockXRotation = true;
 	AIController = Cast<AAIController>(GetController());
-	SetActorScale3D(FVector(1.3, 1.3, 1.3));
-	enemyStatus = Idle;
-	wanderRadius = 1500.0f;
-
+	//SetActorScale3D(FVector(1.2, 1.2, 1.2));
+	EnemyStatus = Idle;
+	WanderRadius = 500.0f;
+	BoxColor = FColor::White;
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
+
+	FNavLocation RandomSpawnPos = FNavLocation(GetActorLocation());
+
+
+	if (NavigationArea->GetRandomPointInNavigableRadius(GetActorLocation(), 3000, RandomSpawnPos)) //Get random position in navmesh
+	{
+		// if we were successfull in finding a new location...
+		FVector SpawnPos = RandomSpawnPos.Location;		//Save random position in navmesh in FVector
+		SetActorLocation(FVector(SpawnPos.X, SpawnPos.Y, SpawnPos.Z+70));
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("good pointer"));
+	}
 }
 
 void APlaceablePlayer::Tick(float DeltaTime)
 {
-
-	colChangetmr += DeltaTime;
-
 	Super::Tick(DeltaTime);
 	EnemyStatusManager();
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::FromInt(enemyStatus));
-
-	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(50, 50, 150), myCols[idxCol% myCols.Num()], false, 0.0f, 0, 3.17);
-
-	if (colChangetmr > 1.17) {
-		idxCol++;
-		colChangetmr = 0;
-	}
-
+	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::FromInt(EnemyStatus));
+	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(10, 10, 30), BoxColor, false, 0.0f, 0, 1.17);
 }
 
 // Called to bind functionality to input
@@ -62,13 +54,13 @@ void APlaceablePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlaceablePlayer::EnemySuspicious()
 {
-	suspiciousTimer += GetWorld()->GetDeltaSeconds();
-	if (suspiciousTimer > 3.0f) {
-		suspiciousTimer = 0;
-		enemyStatus = Idle;
+	SuspiciousTimer += GetWorld()->GetDeltaSeconds();
+	if (SuspiciousTimer > 3.0f) {
+		SuspiciousTimer = 0;
+		EnemyStatus = Idle;
 	}
 
-	moveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+	MoveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
 	AIController->MoveToActor(GetWorld()->GetFirstPlayerController()->GetPawn(), -1,true,true);
 
 }
@@ -79,7 +71,7 @@ void APlaceablePlayer::EnemyWander()
 
 	if (!NavigationArea)
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("bad pointer"));
-	if (NavigationArea->GetRandomPointInNavigableRadius(GetActorLocation(), wanderRadius, endPosi)) //Get random position in navmesh
+	if (NavigationArea->GetRandomPointInNavigableRadius(GetActorLocation(), WanderRadius, endPosi)) //Get random position in navmesh
 	{		
 		// if we were successfull in finding a new location...
 		FVector dest = endPosi.Location;		//Save random position in navmesh in FVector
@@ -90,33 +82,37 @@ void APlaceablePlayer::EnemyStatusManager()
 {
 	if (AIController)
 	{
-		if(enemyStatus !=Suspicious)
+		if(EnemyStatus !=Suspicious)
 		{
-			enemyStatusTimer += GetWorld()->GetDeltaSeconds();
+			EnemyStatusTimer += GetWorld()->GetDeltaSeconds();
 			int randomChoice = FMath::RandRange(1, 2);		//Random choice
-			if (enemyStatusTimer > 1.3f)		//Enemies change state every x seconds (unless suspicious, then timer is longer)
+			if (EnemyStatusTimer > 1.3f)		//Enemies change state every x seconds (unless suspicious, then timer is longer)
 			{
 				switch (randomChoice)
 				{
-				case 1: enemyStatus = Idle;
+				case 1: EnemyStatus = Idle;
 					GetCharacterMovement()->MaxWalkSpeed = 0.0f; // replace 300 with your desired speed()
+					BoxColor = FColor::White;
+
 					break;
 				case 2:
-					enemyStatus = Wandering;
+					EnemyStatus = Wandering;
 					GetCharacterMovement()->MaxWalkSpeed = 180.f; // replace 300 with your desired speed()
+					BoxColor = FColor::Blue;
 					EnemyWander();
 					break;
 				}
-				enemyStatusTimer = 0;
+				EnemyStatusTimer = 0;
 			}
-			if (abs((GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() - GetActorLocation()).Length()) < 800)		//If player is close, enemy becomes suspicious
+			if (abs((GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() - GetActorLocation()).Length()) < 200)		//If player is close, enemy becomes suspicious
 			{
-				enemyStatus = Suspicious;
-				enemyStatusTimer = 0.0f;
+				EnemyStatus = Suspicious;
+				BoxColor = FColor::Orange;
+				EnemyStatusTimer = 0.0f;
 				GetCharacterMovement()->MaxWalkSpeed = 250.0f; // replace 300 with your desired speed()
 			}
 		}
-		else if(enemyStatus == Suspicious)
+		else if(EnemyStatus == Suspicious)
 		{
 			EnemySuspicious();
 		}

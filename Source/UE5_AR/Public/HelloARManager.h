@@ -57,6 +57,8 @@ protected:
 	int PlaneIndex = 0;
 	TArray<FColor> PlaneColors;
 
+	float TableHeight;	//Height at which planes are identified as table
+
 public:
 	// Configuration file for AR Session
 	UARSessionConfig* Config;

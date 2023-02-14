@@ -38,7 +38,7 @@ AHelloARManager::AHelloARManager()
 	PlaneColors.Add(FColor::Turquoise);
 	PlaneColors.Add(FColor::White);
 	PlaneColors.Add(FColor::Yellow);
-
+	TableHeight = 50;
 }
 
 // Called when the game starts or when spawned
@@ -70,7 +70,6 @@ void AHelloARManager::Tick(float DeltaTime)
 		break;
 	}
 }
-
 
 
 //Updates the geometry actors in the world
@@ -122,6 +121,7 @@ void AHelloARManager::UpdatePlaneActors()
 							if (LowestPlaneActor->GetActorLocation().Z > PlaneActor->GetActorLocation().Z)
 							{
 								LowestPlaneActor = PlaneActor;
+								LowestPlaneActor->Tags.Add("floor");
 							}
 						}
 					}
@@ -149,7 +149,6 @@ FColor AHelloARManager::GetPlaneColor(int Index)
 
 void AHelloARManager::ResetARCoreSession()
 {
-
 	//Get all actors in the level and destroy them as well as emptying the respective arrays
 	TArray<AActor*> Planes;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AARPlaneActor::StaticClass(), Planes);
@@ -181,9 +180,10 @@ void AHelloARManager::PlaneTagUpdate()
 			{
 				DrawDebugString(GetWorld(), origin, "Plane" + CurrentPActor->Tags[0].ToString(), CurrentPActor, FColor::Cyan, 1.0f, false, 1);
 				//GEngine->AddOnScreenDebugMessage(-1, 0.02f, FColor::Green, CurrentPActor->Tags[0].ToString());
-				GEngine->AddOnScreenDebugMessage(-1, 0.02f, FColor::Green, CurrentPActor->GetActorLocation().ToString());
+				//GEngine->AddOnScreenDebugMessage(-1, 0.02f, FColor::Green, CurrentPActor->GetActorLocation().ToString());
 			}
-			if (abs(CurrentPActor->GetActorLocation().Z) - abs(LowestPlaneActor->GetActorLocation().Z) >= 20)
+
+			if ((CurrentPActor->GetActorLocation().Z>LowestPlaneActor->GetActorLocation().Z+TableHeight)&&CurrentPActor!=LowestPlaneActor)
 			{
 				if (CurrentPActor->ActorHasTag("floor"))
 				{
@@ -195,7 +195,7 @@ void AHelloARManager::PlaneTagUpdate()
 				}
 				CurrentPActor->Tags.Add("table");
 			}
-			else if (abs(CurrentPActor->GetActorLocation().Z) - abs(LowestPlaneActor->GetActorLocation().Z) <20 && abs(CurrentPActor->GetActorLocation().Z) - abs(LowestPlaneActor->GetActorLocation().Z)> 3)
+			else if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor)
 			{
 				if (CurrentPActor->ActorHasTag("floor"))
 				{
@@ -206,37 +206,9 @@ void AHelloARManager::PlaneTagUpdate()
 					CurrentPActor->Tags.Remove("table");
 				}
 				CurrentPActor->Tags.Add("step");
-
 			}
-
 			LowestPlaneActor->Tags.Add("floor");
 		}
 	}
 }
 
-
-
-//if (boxExtent.X<=50.0f&&boxExtent.Y<=15.0f&& (CurrentPActor->GetActorLocation().Z > -70.0f&& CurrentPActor->GetActorLocation().Z <))
-			//{
-			//	CurrentPActor->Tags.Add("step");
-			//}
-			//if ((boxExtent.X>70 && boxExtent.Y>30)&&	(CurrentPActor->GetActorLocation().Z<-35.f && CurrentPActor->GetActorLocation().Z > -50.f))
-			//{
-			//	if (CurrentPActor->ActorHasTag("step"))
-			//	{
-			//		CurrentPActor->Tags.Remove("step");
-			//	}
-			//	CurrentPActor->Tags.Add("table");
-			//}
-			//if (boxExtent.X > 300 && boxExtent.Y > 300&& CurrentPActor->GetActorLocation().Z <= -70.0f)
-			//{
-			//	if (CurrentPActor->ActorHasTag("table"))
-			//	{
-			//		CurrentPActor->Tags.Remove("table");
-			//	}
-			//	if (CurrentPActor->ActorHasTag("step"))
-			//	{
-			//		CurrentPActor->Tags.Remove("step");
-			//	}
-			//	CurrentPActor->Tags.Add("floor");
-			//}
