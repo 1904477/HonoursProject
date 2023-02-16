@@ -32,8 +32,6 @@ public:
 	UPROPERTY(Category = "SceneComp", VisibleAnywhere, BlueprintReadWrite)
 		USceneComponent* SceneComponent;
 
-
-
 protected:
 	
 	// Updates the plane actors on every frame as long as the AR Session is running
@@ -44,10 +42,11 @@ protected:
 	void ResetARCoreSession();
 
 	void PlaneTagUpdate();
+	void AssignTag(AARPlaneActor* CurrentPlane);
 
 	//Base plane actor for geometry detection
 	AARPlaneActor* PlaneActor;
-	AARPlaneActor* LowestPlaneActor;
+	AARPlaneActor * LowestPlaneActor;
 
 	ACustomGameMode* GM;
 	//Map of geometry planes

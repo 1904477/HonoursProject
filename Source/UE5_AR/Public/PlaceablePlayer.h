@@ -39,18 +39,21 @@ public:
 	void EnemyStatusManager();
 
 	void EnemyWander();
-	AGameManager* GameManager;
 
+	void ClosestObstacleChecker();
+
+	AGameManager* GameManager;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyStatus")
 	TEnumAsByte<Status> EnemyStatus;
-
 
 	float EnemyStatusTimer = 0;
 	FVector MoveTo;
 	float WanderRadius;
 	float SpawnRadius = 500;
 	float SuspiciousTimer = 0;
+	float StateSwitchTimer = 0;
+	float SuspiciousDistance = 0;
 
 	FColor BoxColor;
 

@@ -49,7 +49,7 @@ void ACustomGameMode::SpawnInitialActors()
 {
 	// Spawn an instance of the HelloARManager class
 	UARSessionConfig* Config = NewObject<UARSessionConfig>();
-	AHelloARManager* Manager = GetWorld()->SpawnActor<AHelloARManager>();
+	ARManager = GetWorld()->SpawnActor<AHelloARManager>();
 	GameManager = GetWorld()->SpawnActor<AGameManager>(SpawnedGameManager);
 
 	UARBlueprintLibrary::StartARSession(Config);

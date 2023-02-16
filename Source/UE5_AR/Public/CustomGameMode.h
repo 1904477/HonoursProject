@@ -9,6 +9,7 @@
 
 //Forward Declarations
 class AGameManager;
+class AHelloARManager;
 /**
  * 
  */
@@ -49,5 +50,5 @@ public:
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AGameManager> SpawnedGameManager;
 
-
+	AHelloARManager* ARManager;
 };
