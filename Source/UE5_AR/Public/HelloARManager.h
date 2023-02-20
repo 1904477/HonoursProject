@@ -57,7 +57,7 @@ protected:
 	TArray<FColor> PlaneColors;
 
 	float TableHeight;	//Height at which planes are identified as table
-
+	float WallSize;
 public:
 	// Configuration file for AR Session
 	UARSessionConfig* Config;

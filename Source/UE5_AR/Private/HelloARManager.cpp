@@ -39,6 +39,7 @@ AHelloARManager::AHelloARManager()
 	PlaneColors.Add(FColor::White);
 	PlaneColors.Add(FColor::Yellow);
 	TableHeight = 50;
+	WallSize = 10;
 }
 
 // Called when the game starts or when spawned
@@ -174,17 +175,18 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 	FVector boxExtent;
 	CurrentPActor->GetActorBounds(false, origin, boxExtent);
 
-	if (CurrentPActor->ActorHasTag("step") || CurrentPActor->ActorHasTag("table") || CurrentPActor->ActorHasTag("floor"))
+	if (CurrentPActor->ActorHasTag("step") || CurrentPActor->ActorHasTag("table") || CurrentPActor->ActorHasTag("floor")|| CurrentPActor->ActorHasTag("wall"))
 	{
 		DrawDebugString(GetWorld(), origin, "Plane" + CurrentPActor->Tags[0].ToString(), CurrentPActor, FColor::Cyan, 1.0f, false, 2);
 	}
-	if ((CurrentPActor->GetActorLocation().Z > LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor)
+	if ((CurrentPActor->GetActorLocation().Z > LowestPlaneActor->GetActorLocation().Z + TableHeight) && boxExtent.Z<WallSize && CurrentPActor != LowestPlaneActor)
 	{
 		if (CurrentPActor->ActorHasTag("floor"))
 			CurrentPActor->Tags.Remove("floor");
 		if (CurrentPActor->ActorHasTag("step"))
 			CurrentPActor->Tags.Remove("step");
-
+		if (CurrentPActor->ActorHasTag("wall"))
+			CurrentPActor->Tags.Remove("wall");
 		CurrentPActor->Tags.Add("table");
 	}
 	else if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor)
@@ -193,10 +195,21 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			CurrentPActor->Tags.Remove("floor");
 		if (CurrentPActor->ActorHasTag("table"))
 			CurrentPActor->Tags.Remove("table");
-
+		if (CurrentPActor->ActorHasTag("wall"))
+			CurrentPActor->Tags.Remove("wall");
 		CurrentPActor->Tags.Add("step");
 	}
+	else if (boxExtent.Z> WallSize && CurrentPActor != LowestPlaneActor)
+	{
+		if (CurrentPActor->ActorHasTag("floor"))
+			CurrentPActor->Tags.Remove("floor");
+		if (CurrentPActor->ActorHasTag("table"))
+			CurrentPActor->Tags.Remove("table");
+		if (CurrentPActor->ActorHasTag("step"))
+			CurrentPActor->Tags.Remove("step");
 
+		CurrentPActor->Tags.Add("wall");
+	}
 	LowestPlaneActor->Tags.Add("floor");
 
 }

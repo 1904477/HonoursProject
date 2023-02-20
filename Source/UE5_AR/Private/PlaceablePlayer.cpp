@@ -42,13 +42,13 @@ void APlaceablePlayer::BeginPlay()
 		FVector SpawnPos = RandomSpawnPos.Location;		//Save random position in navmesh in FVector
 		SetActorLocation(FVector(SpawnPos.X, SpawnPos.Y, SpawnPos.Z+70));
 	}
+
 }
 
 void APlaceablePlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	EnemyStatusManager();
-	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::FromInt(EnemyStatus));
 	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(10, 10, 30), BoxColor, false, 0.0f, 0, 1.17);
 }
 
@@ -86,6 +86,7 @@ void APlaceablePlayer::EnemyWander()
 
 void APlaceablePlayer::ClosestObstacleChecker()
 {
+
 }
 
 void APlaceablePlayer::EnemyStatusManager()
