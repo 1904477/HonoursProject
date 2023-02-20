@@ -181,36 +181,43 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 	}
 	if ((CurrentPActor->GetActorLocation().Z > LowestPlaneActor->GetActorLocation().Z + TableHeight) && boxExtent.Z<WallSize && CurrentPActor != LowestPlaneActor)
 	{
-		if (CurrentPActor->ActorHasTag("floor"))
-			CurrentPActor->Tags.Remove("floor");
-		if (CurrentPActor->ActorHasTag("step"))
-			CurrentPActor->Tags.Remove("step");
-		if (CurrentPActor->ActorHasTag("wall"))
-			CurrentPActor->Tags.Remove("wall");
+		if (!CurrentPActor->Tags.IsEmpty())
+			if (CurrentPActor->Tags[0] != "table")
+				CurrentPActor->Tags.Empty();
+
 		CurrentPActor->Tags.Add("table");
 	}
-	else if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor)
+	 if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor)
 	{
-		if (CurrentPActor->ActorHasTag("floor"))
-			CurrentPActor->Tags.Remove("floor");
-		if (CurrentPActor->ActorHasTag("table"))
-			CurrentPActor->Tags.Remove("table");
-		if (CurrentPActor->ActorHasTag("wall"))
-			CurrentPActor->Tags.Remove("wall");
+		if (!CurrentPActor->Tags.IsEmpty())
+			if (CurrentPActor->Tags[0] != "step")
+				CurrentPActor->Tags.Empty();
+
 		CurrentPActor->Tags.Add("step");
 	}
-	else if (boxExtent.Z> WallSize && CurrentPActor != LowestPlaneActor)
+	 if (boxExtent.Z> WallSize && CurrentPActor != LowestPlaneActor)
 	{
-		if (CurrentPActor->ActorHasTag("floor"))
-			CurrentPActor->Tags.Remove("floor");
-		if (CurrentPActor->ActorHasTag("table"))
-			CurrentPActor->Tags.Remove("table");
-		if (CurrentPActor->ActorHasTag("step"))
-			CurrentPActor->Tags.Remove("step");
-
+		if (!CurrentPActor->Tags.IsEmpty())
+			if(CurrentPActor->Tags[0] != "wall")
+			CurrentPActor->Tags.Empty();
 		CurrentPActor->Tags.Add("wall");
 	}
-	LowestPlaneActor->Tags.Add("floor");
+	 if (LowestPlaneActor->GetActorLocation().Z > CurrentPActor->GetActorLocation().Z)
+	{
+		if (!CurrentPActor->Tags.IsEmpty())
+		{
+			if (CurrentPActor->Tags[0] != "floor")
+			{
+				CurrentPActor->Tags.Empty();
+				LowestPlaneActor = CurrentPActor;
+				CurrentPActor->Tags.Add("Floor");
+			}
+
+		}
+
+		//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Lower surface detected"));
+
+	}
 
 }
 

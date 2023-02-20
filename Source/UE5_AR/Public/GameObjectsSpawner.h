@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "PlaceablePlayer.h"
+#include "PoissonSampler.h"
 #include "GameObjectsSpawner.generated.h"
 
 class ACustomGameState;
@@ -44,7 +45,7 @@ public:
 
 	ACustomGameState* GameState;
 	ACustomGameMode* CustomGameMode;
-
+	UPoissonSampler* PoissonSampler;
 
 
 };

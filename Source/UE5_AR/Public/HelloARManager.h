@@ -34,30 +34,32 @@ public:
 
 protected:
 	
-	// Updates the plane actors on every frame as long as the AR Session is running
-	void UpdatePlaneActors();
 
-	AARPlaneActor* SpawnPlaneActor();
-	FColor GetPlaneColor(int Index);
-	void ResetARCoreSession();
 
-	void PlaneTagUpdate();
-	void AssignTag(AARPlaneActor* CurrentPlane);
+	AARPlaneActor* SpawnPlaneActor();	//Function to spawn Plane Actor.	
+	FColor GetPlaneColor(int Index);		
+
+	void UpdatePlaneActors();		// Updates the plane actors on every frame as long as the AR Session is running
+	void ResetARCoreSession();		//Reset AR session.
+	void PlaneTagUpdate();		//Function to update planes tags.
+	void AssignTag(AARPlaneActor* CurrentPlane);		//Function to decide what tag is assigned to iterated plane.
 
 	//Base plane actor for geometry detection
-	AARPlaneActor* PlaneActor;
-	AARPlaneActor * LowestPlaneActor;
+	AARPlaneActor* PlaneActor;		//SinglePlaneActor
 
-	ACustomGameMode* GM;
-	//Map of geometry planes
-	TMap<UARPlaneGeometry*, AARPlaneActor*> PlaneActors;
+	AARPlaneActor * LowestPlaneActor;		//Reference to the lowest PlaneActor
+
+	ACustomGameMode* GM;		//Reference to CustomGameMode
+
+	TMap<UARPlaneGeometry*, AARPlaneActor*> PlaneActors;			//Map of geometry planes
 
 	//Index for plane colours adn array of colours
 	int PlaneIndex = 0;
 	TArray<FColor> PlaneColors;
 
 	float TableHeight;	//Height at which planes are identified as table
-	float WallSize;
+	float WallSize;		//Size at which planes are identified as wall
+
 public:
 	// Configuration file for AR Session
 	UARSessionConfig* Config;

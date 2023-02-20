@@ -22,6 +22,11 @@ void AGameObjectsSpawner::BeginPlay()
 	auto GM = GetWorld()->GetAuthGameMode();
 	CustomGameMode = Cast<ACustomGameMode>(GM);
 
+	FTransform tr;
+	tr.SetIdentity();
+
+	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));
+	PoissonSampler->RegisterComponent();
 }
 
 // Called every frame
@@ -34,13 +39,6 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 
 void AGameObjectsSpawner::EnemiesSpawner()
 {
-	float posX = 2200;
-	float posY = 2200;
-	posX = FMath::RandRange(-posX, posX);
-	posY = FMath::RandRange(-posY, posY);
-	const FActorSpawnParameters SpawnInfo;
-	const FRotator MyRot(0, 0, 0);
-	const FVector MyLoc(posX, posY, 10);
 
 	APlaceablePlayer* Player = GetWorld()->SpawnActor<APlaceablePlayer>(PlacableToSpawn, MyLoc, MyRot, SpawnInfo);
 

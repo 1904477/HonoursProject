@@ -34,14 +34,14 @@ void APlaceablePlayer::BeginPlay()
 	BoxColor = FColor::White;
 
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
-	FNavLocation RandomSpawnPos = FNavLocation(GetActorLocation());
+	//FNavLocation RandomSpawnPos = FNavLocation(GetActorLocation());
 	
-	if (NavigationArea->GetRandomPointInNavigableRadius(GetActorLocation(), 3000, RandomSpawnPos)) //Get random position in navmesh
-	{
-		// if we were successfull in finding a new location...
-		FVector SpawnPos = RandomSpawnPos.Location;		//Save random position in navmesh in FVector
-		SetActorLocation(FVector(SpawnPos.X, SpawnPos.Y, SpawnPos.Z+70));
-	}
+	//if (NavigationArea->GetRandomPointInNavigableRadius(GetActorLocation(), 3000, RandomSpawnPos)) //Get random position in navmesh
+	//{
+	//	// if we were successfull in finding a new location...
+	//	FVector SpawnPos = RandomSpawnPos.Location;		//Save random position in navmesh in FVector
+	//	SetActorLocation(FVector(SpawnPos.X, SpawnPos.Y, SpawnPos.Z+70));
+	//}
 
 }
 
