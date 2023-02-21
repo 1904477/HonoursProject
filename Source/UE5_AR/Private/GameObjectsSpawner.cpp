@@ -39,8 +39,10 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 
 void AGameObjectsSpawner::EnemiesSpawner()
 {
-
-	APlaceablePlayer* Player = GetWorld()->SpawnActor<APlaceablePlayer>(PlacableToSpawn, MyLoc, MyRot, SpawnInfo);
+	FVector spawnPos = FVector(PoissonSampler->SecondaryPoints[0].X, PoissonSampler->SecondaryPoints[0].Y, 5);
+	const FActorSpawnParameters SpawnInfo;
+	const FRotator MyRot(0, 0, 0);
+	APlaceablePlayer* Player = GetWorld()->SpawnActor<APlaceablePlayer>(PlacableToSpawn, spawnPos, MyRot, SpawnInfo);
 
 	Enemies.Add(Player);
 }

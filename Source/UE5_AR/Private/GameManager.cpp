@@ -3,7 +3,6 @@
 
 #include "GameManager.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
-#include "CustomGameState.h"
 #include "ARPin.h"
 #include "GameObjectsSpawner.h"
 #include "ARBlueprintLibrary.h"
@@ -20,13 +19,19 @@ void AGameManager::BeginPlay()
 {
 	Super::BeginPlay();
 	EnemiesToSpawn = 5;
-	SpawnGameObjectsSpawner();
+	auto GS = GetWorld()->GetGameState();
+	GameState = Cast<ACustomGameState>(GS);
 }
 
 // Called every frame
 void AGameManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (GameState->GetIsEnvironmentScanned() == true)
+	{
+		SpawnGameObjectsSpawner();
+		GameState->SetIsEnvironmentScanned(false);
+	}
 }
 
 void AGameManager::SpawnGameObjectsSpawner()
@@ -63,6 +68,5 @@ FTransform AGameManager::LineTraceResult(FVector ScreenPos)		//Function to retur
 void AGameManager::flipPlaneVisibility()	//Function to flip the plane visibility, called in the widget blueprints.
 {
 	auto Temp = GetWorld()->GetGameState();
-	ACustomGameState * GameState = Cast<ACustomGameState>(Temp);
 	GameState->SetAreARPlanesDisplayed(!GameState->GetAreARPlanesDisplayed());
 }

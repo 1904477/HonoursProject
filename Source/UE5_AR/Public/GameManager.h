@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/EngineTypes.h"
 #include "GameFramework/Actor.h"
+#include "CustomGameState.h"
 #include "GameManager.generated.h"
 
 class AGameObjectsSpawner;
@@ -38,7 +39,6 @@ public:
 	UPROPERTY(Category = "EnemiesSpawnTimer", EditAnywhere, BlueprintReadWrite)
 		float EnemiesSpawnTimer;
 	
-
 	UPROPERTY(Category = "EnemiesSuspiciousDistance", EditAnywhere, BlueprintReadWrite)
 		float EnemiesSuspiciousDistance;
 
@@ -51,9 +51,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Spawn")
 	void flipPlaneVisibility();
 
-	FTransform TraceResultTransform;
 
+
+	FTransform TraceResultTransform;
 	AGameObjectsSpawner* ObjectsSpawner;
+	ACustomGameState* GameState;
 
 
 };

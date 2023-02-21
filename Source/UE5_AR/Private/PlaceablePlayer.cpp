@@ -19,7 +19,7 @@ void APlaceablePlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AIController = Cast<AAIController>(GetController());
+	
 	auto Temp = GetWorld()->GetAuthGameMode();
 	GM = Cast<ACustomGameMode>(Temp);
 	GameManager = GM->GameManager;
@@ -33,6 +33,7 @@ void APlaceablePlayer::BeginPlay()
 	StateSwitchTimer = 2.5f;
 	BoxColor = FColor::White;
 
+	AIController = Cast<AAIController>(GetController());
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
 	//FNavLocation RandomSpawnPos = FNavLocation(GetActorLocation());
 	

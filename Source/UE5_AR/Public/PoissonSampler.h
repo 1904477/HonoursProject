@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "AIController.h"
+#include "NavigationSystem.h"
 #include "PoissonSampler.generated.h"
 
 
@@ -24,11 +26,14 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	FVector GeneratePoisson(float width, float height, float min_dist, int new_points_count);
+	TArray<FVector2f> GeneratePoisson(float minDistMainPoints,float minDistSecPoints, int new_points_count, int secondary_points);
 
-	FVector2f generateRandomPointAround(FVector2f point, float mindist);
+	bool inNeighbourhood(FVector2f point, float mindist);
 
+	
+	TArray<FVector2f>MainPoints;
+	TArray<FVector2f>SecondaryPoints;
 
-	TArray<FVector2f>Points;
-	TArray<FVector2f>ProcessList;
+protected:
+	UNavigationSystemV1* NavigationArea;
 };

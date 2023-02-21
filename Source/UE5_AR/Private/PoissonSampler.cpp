@@ -6,9 +6,10 @@
 // Sets default values for this component's properties
 UPoissonSampler::UPoissonSampler()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+    // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+    // off to improve performance if you don't need them.
+    PrimaryComponentTick.bCanEverTick = true;
+
 
 
 }
@@ -17,9 +18,16 @@ UPoissonSampler::UPoissonSampler()
 // Called when the game starts
 void UPoissonSampler::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
+    //GeneratePoisson(1500,200, 4,5);
+    GeneratePoisson(1500,200,0,1);
 
+    for (int i = 0; i < MainPoints.Num(); i++)
+        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 15), 200, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
+
+    for (int i = 0; i < SecondaryPoints.Num(); i++)
+        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, 15), 200, 1, FColor::Cyan, false, 10.0f, 0, 2);
 
 }
 
@@ -27,63 +35,91 @@ void UPoissonSampler::BeginPlay()
 // Called every frame
 void UPoissonSampler::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-FVector UPoissonSampler::GeneratePoisson(float width, float height, float min_dist, int new_points_count)
+TArray<FVector2f> UPoissonSampler::GeneratePoisson(float minDistMainPoints,float minDistSecPoints, int new_points_count,int secondary_points)
 {
     //Create the grid
-    int cellSize = min_dist / sqrt(2);
 
-    float randX = FMath::FRand()* width;
-    float randY = FMath::FRand() * height;
-    FVector2f firstPoint(width, height);
-    //RandomQueue works like a queue, except that it
-    //pops a random element from the queue instead of
-    //the element at the head of the queue
-    Points.Push(firstPoint);
-    ProcessList.Push(firstPoint);
-    //generate the first point randomly
-    //and updates 
-
-    //generate other points from points in queue.
-    while (!ProcessList.IsEmpty())
+    NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+    FNavLocation FirstRandomSpawnPosNavLoc = FNavLocation();
+    FVector FirstSpawnPos;
+    if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, FirstRandomSpawnPosNavLoc)) //Get random position in navmesh
     {
-        FVector2f point = ProcessList.Pop();
+        // if we were successfull in finding a new location...
+        FirstSpawnPos = FirstRandomSpawnPosNavLoc.Location;		//Save random position in navmesh in FVector
+    }
 
-        for (int i = 0; i < new_points_count; i++)
+    FVector2f firstPoint(FirstSpawnPos.X, FirstSpawnPos.Y);
+
+    MainPoints.Push(firstPoint);
+
+
+    for (int i = 0; i < new_points_count; i++)
+    {
+        bool isTooClose = true;
+        FNavLocation RandomSpawnPosNavLoc = FNavLocation();
+        FVector SpawnPos;
+        FVector2f tempPos;
+        while (isTooClose == true)
         {
-            FVector2f newPoint = generateRandomPointAround(point, min_dist);
-            //check that the point is in the image region
-            //and no points exists in the point's neighbourhood
-            if (inRectangle(newPoint) and
-                not inNeighbourhood(grid, newPoint, min_dist,
-                    cellSize))
+            if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLoc)) //Get random position in navmesh
             {
-                //update containers
-                processList.push(newPoint);
-                samplePoints.push(newPoint);
-                grid[imageToGrid(newPoint, cellSize)] = newPoint;
+                // if we were successfull in finding a new location...
+                SpawnPos = RandomSpawnPosNavLoc.Location;		//Save random position in navmesh in FVector
+            }
+            tempPos=FVector2f(RandomSpawnPosNavLoc.Location.X, RandomSpawnPosNavLoc.Location.Y);
+
+            if (!inNeighbourhood(tempPos, minDistMainPoints))
+            {
+                isTooClose = false;
             }
         }
+        MainPoints.Push(tempPos);
     }
-    return samplePoints;
+
+    for (int i = 0; i < MainPoints.Num(); i++)
+    {
+        int pointCount = FMath::RandRange(3, secondary_points);
+        for (int j = 0; j < secondary_points; j++)
+        {
+            bool isClose = false;
+            FNavLocation RandomSpawnPosNavLoc = FNavLocation();
+            FVector SpawnPos;
+            FVector2f tempPos;
+            while (isClose == false)
+            {
+                if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLoc)) //Get random position in navmesh
+                {
+                    // if we were successfull in finding a new location...
+                    SpawnPos = RandomSpawnPosNavLoc.Location;		//Save random position in navmesh in FVector
+                }
+                tempPos = FVector2f(RandomSpawnPosNavLoc.Location.X, RandomSpawnPosNavLoc.Location.Y);
+
+                if (FVector2f::Distance((tempPos),MainPoints[i])< minDistSecPoints)
+                {
+                    isClose = true;
+                }
+            }
+            SecondaryPoints.Push(tempPos);
+        }
+    }
+
+
+    return MainPoints;
 }
 
-FVector2f UPoissonSampler::generateRandomPointAround(FVector2f point, float mindist)
-{ //non-uniform, favours points closer to the inner ring, leads to denser packings
-    float r1 = FMath::FRand(); //random point between 0 and 1
-    float r2 = FMath::FRand();
-    //random radius between mindist and 2 * mindist
-    float radius = mindist * (r1 + 1);
-    //random angle
-    float angle = 2 * PI * r2;
-    //the new point is generated around the point (x, y)
-    float newX = point.X + radius * cos(angle);
-    float newY = point.Y + radius * sin(angle);
-
-
-    return FVector2f(newX, newY);
+bool UPoissonSampler::inNeighbourhood(FVector2f point, float mindist)
+{
+   //get the neighbourhood if the point in the grid
+    for (auto& It : MainPoints)
+    {
+        //Check if current plane exists 
+        if (FVector2f::Distance(point, It)<mindist)
+        {
+            return true;
+        }
+    }
+    return false;
 }

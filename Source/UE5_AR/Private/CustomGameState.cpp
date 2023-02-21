@@ -7,6 +7,7 @@
 ACustomGameState::ACustomGameState()
 {
 	HasGameStarted = false;
+	IsEnvironmentScanned = false;
 	AreARPlanesDisplayed = true;
 }
 
@@ -24,6 +25,16 @@ bool ACustomGameState::GetHasGameStarted()
 void ACustomGameState::SetHasGameStarted(bool b)
 {
 	HasGameStarted = b;
+}
+
+bool ACustomGameState::GetIsEnvironmentScanned()
+{
+	return IsEnvironmentScanned;
+}
+
+void ACustomGameState::SetIsEnvironmentScanned(bool b)
+{
+	IsEnvironmentScanned = b;
 }
 
 bool ACustomGameState::GetAreARPlanesDisplayed()
