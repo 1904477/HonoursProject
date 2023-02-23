@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "PoissonSampler.h"
+
+#include "CustomGameMode.h"
+#include "GameManager.h"
 
 // Sets default values for this component's properties
 UPoissonSampler::UPoissonSampler()
@@ -20,14 +21,20 @@ void UPoissonSampler::BeginPlay()
 {
     Super::BeginPlay();
 
+    auto GM = GetWorld()->GetAuthGameMode();
+    ACustomGameMode* CustomGameMode = Cast<ACustomGameMode>(GM);
+
     //GeneratePoisson(1500,200, 4,5);
-    GeneratePoisson(1500,200,0,1);
+    GeneratePoisson(CustomGameMode->GameManager->MainPointsMinDist, 
+                    CustomGameMode->GameManager->SecPointsMaxDist, 
+                    CustomGameMode->GameManager->MainPointsSpawnNum, 
+                    CustomGameMode->GameManager->SecPointsSpawnNum);
 
     for (int i = 0; i < MainPoints.Num(); i++)
-        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 15), 200, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
+        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 15), 50, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
 
     for (int i = 0; i < SecondaryPoints.Num(); i++)
-        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, 15), 200, 1, FColor::Cyan, false, 10.0f, 0, 2);
+        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, 15), 50, 1, FColor::Cyan, false, 10.0f, 0, 2);
 
 }
 
@@ -107,7 +114,7 @@ TArray<FVector2f> UPoissonSampler::GeneratePoisson(float minDistMainPoints,float
     }
 
 
-    return MainPoints;
+    return SecondaryPoints;
 }
 
 bool UPoissonSampler::inNeighbourhood(FVector2f point, float mindist)

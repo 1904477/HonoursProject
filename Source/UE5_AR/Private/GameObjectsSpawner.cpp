@@ -17,15 +17,15 @@ void AGameObjectsSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto GS = GetWorld()->GetGameState();
+	auto GS = GetWorld()->GetGameState();		//Get gamestate and gamemode
 	GameState = Cast<ACustomGameState>(GS);
 	auto GM = GetWorld()->GetAuthGameMode();
 	CustomGameMode = Cast<ACustomGameMode>(GM);
 
-	FTransform tr;
+	FTransform tr;		//identity for Poisson component position
 	tr.SetIdentity();
 
-	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));
+	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));		//Add poisson sampler as component.
 	PoissonSampler->RegisterComponent();
 }
 
@@ -33,13 +33,17 @@ void AGameObjectsSpawner::BeginPlay()
 void AGameObjectsSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	EnemiesSpawnerManager();
+	if (GameState->GetHasGameStarted() == true)
+	{
+		EnemiesSpawnerManager();
+	}
 }
-
 
 void AGameObjectsSpawner::EnemiesSpawner()
 {
-	FVector spawnPos = FVector(PoissonSampler->SecondaryPoints[0].X, PoissonSampler->SecondaryPoints[0].Y, 5);
+	int randSpawnPoint= FMath::RandRange(0, PoissonSampler->SecondaryPoints.Num());;
+
+	FVector spawnPos = FVector(PoissonSampler->SecondaryPoints[randSpawnPoint].X, PoissonSampler->SecondaryPoints[randSpawnPoint].Y, 5);
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
 	APlaceablePlayer* Player = GetWorld()->SpawnActor<APlaceablePlayer>(PlacableToSpawn, spawnPos, MyRot, SpawnInfo);
@@ -54,6 +58,6 @@ void AGameObjectsSpawner::EnemiesSpawnerManager()
 		EnemiesSpawner();
 		EnemySpawnTimer = 0;
 	}
-	else if(EnemySpawnTimer <=3 && GameState->GetHasGameStarted() == true)
-	EnemySpawnTimer += GetWorld()->GetDeltaSeconds();
+	else if(EnemySpawnTimer <=3 && GameState->GetHasGameStarted() == true)		//If spawntimer is less than three and the game has started
+	EnemySpawnTimer += GetWorld()->GetDeltaSeconds();		//Update enemy spawn timer.
 }

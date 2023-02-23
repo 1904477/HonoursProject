@@ -16,6 +16,7 @@ enum Status
 	Idle     UMETA(DisplayName = "Idle"),
 	Wandering      UMETA(DisplayName = "Wandering"),
 	Suspicious   UMETA(DisplayName = "Suspicious"),
+	Attacking   UMETA(DisplayName = "Attacking"),
 };
 UCLASS()
 class UE5_AR_API APlaceablePlayer : public APlaceableCharacter
@@ -40,6 +41,8 @@ public:
 
 	void EnemyWander();
 
+	void EnemyAttacking();
+
 	void ClosestObstacleChecker();
 
 	AGameManager* GameManager;
@@ -54,6 +57,7 @@ public:
 	float SuspiciousTimer = 0;
 	float StateSwitchTimer = 0;
 	float SuspiciousDistance = 0;
+	float AttackDistance = 0;
 
 	FColor BoxColor;
 

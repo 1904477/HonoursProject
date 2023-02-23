@@ -19,31 +19,21 @@ void APlaceablePlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
-	auto Temp = GetWorld()->GetAuthGameMode();
+	auto Temp = GetWorld()->GetAuthGameMode();		//Get gamemode and game manager
 	GM = Cast<ACustomGameMode>(Temp);
 	GameManager = GM->GameManager;
 
-	GetMesh()->BodyInstance.bLockYRotation = true;
+	GetMesh()->BodyInstance.bLockYRotation = true;		//Lock rotation so that characters do not rotate in other directions
 	GetMesh()->BodyInstance.bLockXRotation = true;
-	SetActorScale3D(FVector(0.3f, 0.3f, 0.3f));
+	SetActorScale3D(FVector(1.0f, 1.0f, 1.0f));			//Scale Enemy
 
-	EnemyStatus = Idle;
+	EnemyStatus = Idle;		//Starting status is idle.
 	WanderRadius = 500.0f;
 	StateSwitchTimer = 2.5f;
 	BoxColor = FColor::White;
 
 	AIController = Cast<AAIController>(GetController());
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
-	//FNavLocation RandomSpawnPos = FNavLocation(GetActorLocation());
-	
-	//if (NavigationArea->GetRandomPointInNavigableRadius(GetActorLocation(), 3000, RandomSpawnPos)) //Get random position in navmesh
-	//{
-	//	// if we were successfull in finding a new location...
-	//	FVector SpawnPos = RandomSpawnPos.Location;		//Save random position in navmesh in FVector
-	//	SetActorLocation(FVector(SpawnPos.X, SpawnPos.Y, SpawnPos.Z+70));
-	//}
-
 }
 
 void APlaceablePlayer::Tick(float DeltaTime)
@@ -66,7 +56,12 @@ void APlaceablePlayer::EnemySuspicious()
 		SuspiciousTimer = 0;
 		EnemyStatus = Idle;		//After the enemy is suspicious, it becomes idle
 	}
-
+	if ((GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() - GetActorLocation()).Length() < AttackDistance)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+		EnemyStatus = Attacking;
+		BoxColor = FColor::Red;
+	}
 	MoveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
 	AIController->MoveToActor(GetWorld()->GetFirstPlayerController()->GetPawn(), -1,true,true);
 }
@@ -83,6 +78,14 @@ void APlaceablePlayer::EnemyWander()
 		FVector dest = endPosi.Location;		//Save random position in navmesh in FVector
 		AIController->MoveToLocation(dest, -1, false, true);		//Move to destination
 	}
+
+}
+
+void APlaceablePlayer::EnemyAttacking()
+{
+	MoveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+	AIController->MoveToActor(GetWorld()->GetFirstPlayerController()->GetPawn(), -1, true, true);
+
 }
 
 void APlaceablePlayer::ClosestObstacleChecker()
@@ -126,6 +129,10 @@ void APlaceablePlayer::EnemyStatusManager()
 		else if(EnemyStatus == Suspicious)
 		{
 			EnemySuspicious();
+		}
+		else if (EnemyStatus == Attacking)
+		{
+			EnemyAttacking();
 		}
 	}
 }

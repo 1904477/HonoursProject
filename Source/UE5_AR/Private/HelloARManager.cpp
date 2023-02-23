@@ -39,7 +39,7 @@ AHelloARManager::AHelloARManager()
 	PlaneColors.Add(FColor::White);
 	PlaneColors.Add(FColor::Yellow);
 	TableHeight = 50;
-	WallSize = 10;
+	WallSize = 50;
 }
 
 // Called when the game starts or when spawned
@@ -114,7 +114,10 @@ void AHelloARManager::UpdatePlaneActors()
 						else
 						{
 							if (LowestPlaneActor->GetActorLocation().Z > PlaneActor->GetActorLocation().Z)
+							{
 								LowestPlaneActor = PlaneActor;
+								PlaneActor->Tags;
+							}
 						}
 					}
 					break;
@@ -187,7 +190,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 
 		CurrentPActor->Tags.Add("table");
 	}
-	 if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor)
+	 if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor&& boxExtent.Z<50)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if (CurrentPActor->Tags[0] != "step")
@@ -212,12 +215,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 				LowestPlaneActor = CurrentPActor;
 				CurrentPActor->Tags.Add("Floor");
 			}
-
 		}
-
-		//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Lower surface detected"));
-
 	}
-
 }
 

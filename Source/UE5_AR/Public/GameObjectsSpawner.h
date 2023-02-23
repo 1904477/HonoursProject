@@ -47,5 +47,5 @@ public:
 	ACustomGameMode* CustomGameMode;
 	UPoissonSampler* PoissonSampler;
 
-
+	bool isComponentAdded = false;
 };

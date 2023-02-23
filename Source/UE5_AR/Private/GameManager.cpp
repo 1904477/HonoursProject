@@ -27,10 +27,10 @@ void AGameManager::BeginPlay()
 void AGameManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (GameState->GetIsEnvironmentScanned() == true)
+	if (GameState->GetIsEnvironmentScanned() == true&& hasFinishedScanning == false && GameState->GetHasGameStarted()==false)
 	{
-		SpawnGameObjectsSpawner();
-		GameState->SetIsEnvironmentScanned(false);
+		SpawnGameObjectsSpawner(); 
+		hasFinishedScanning = true;
 	}
 }
 

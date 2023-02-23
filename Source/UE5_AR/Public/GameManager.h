@@ -42,6 +42,14 @@ public:
 	UPROPERTY(Category = "EnemiesSuspiciousDistance", EditAnywhere, BlueprintReadWrite)
 		float EnemiesSuspiciousDistance;
 
+	UPROPERTY(Category = "MainPointsSpawnNumber", EditAnywhere, BlueprintReadWrite)
+		int MainPointsSpawnNum;
+	UPROPERTY(Category = "SecondaryPointsSpawnNumber", EditAnywhere, BlueprintReadWrite)
+		int SecPointsSpawnNum;
+	UPROPERTY(Category = "MainPointsMinDistance", EditAnywhere, BlueprintReadWrite)
+		float MainPointsMinDist;
+	UPROPERTY(Category = "SecondaryPointsMaximumDistance", EditAnywhere, BlueprintReadWrite)
+		float SecPointsMaxDist;
  //* @brief Perform a line trace at the screen position provided and place a default Placeable actor on it.
  //* Create another actor class that inherits from APlaceableActor and is spawned here instead of the default one. Make sure this new object is placed on the Plane rather than halfway through a plane
  //* @param ScreenPos Pass the Screen Position as an FVector
@@ -57,5 +65,5 @@ public:
 	AGameObjectsSpawner* ObjectsSpawner;
 	ACustomGameState* GameState;
 
-
+	bool hasFinishedScanning = false;
 };
