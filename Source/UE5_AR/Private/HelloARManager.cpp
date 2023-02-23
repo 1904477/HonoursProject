@@ -39,7 +39,7 @@ AHelloARManager::AHelloARManager()
 	PlaneColors.Add(FColor::White);
 	PlaneColors.Add(FColor::Yellow);
 	TableHeight = 50;
-	WallSize = 50;
+	WallSize = 2;
 }
 
 // Called when the game starts or when spawned
@@ -116,7 +116,7 @@ void AHelloARManager::UpdatePlaneActors()
 							if (LowestPlaneActor->GetActorLocation().Z > PlaneActor->GetActorLocation().Z)
 							{
 								LowestPlaneActor = PlaneActor;
-								PlaneActor->Tags;
+								PlaneActor->Tags.Add("floor");
 							}
 						}
 					}
@@ -198,7 +198,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 
 		CurrentPActor->Tags.Add("step");
 	}
-	 if (boxExtent.Z> WallSize && CurrentPActor != LowestPlaneActor)
+	 if (boxExtent.Z>= WallSize && CurrentPActor != LowestPlaneActor)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if(CurrentPActor->Tags[0] != "wall")
