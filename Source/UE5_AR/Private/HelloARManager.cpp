@@ -182,7 +182,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 	{
 		DrawDebugString(GetWorld(), origin, "Plane" + CurrentPActor->Tags[0].ToString(), CurrentPActor, FColor::Cyan, 1.0f, false, 2);
 	}
-	if ((CurrentPActor->GetActorLocation().Z > LowestPlaneActor->GetActorLocation().Z + TableHeight) && boxExtent.Z<WallSize && CurrentPActor != LowestPlaneActor)
+	if ((CurrentPActor->GetActorLocation().Z > LowestPlaneActor->GetActorLocation().Z + TableHeight) && boxExtent.Z<WallSize && CurrentPActor != LowestPlaneActor&& boxExtent.Z < 2)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if (CurrentPActor->Tags[0] != "table")
@@ -190,7 +190,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 
 		CurrentPActor->Tags.Add("table");
 	}
-	 if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor&& boxExtent.Z<50)
+	 if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor&& boxExtent.Z<2)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if (CurrentPActor->Tags[0] != "step")

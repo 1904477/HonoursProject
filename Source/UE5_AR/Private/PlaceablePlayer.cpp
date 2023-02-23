@@ -25,7 +25,7 @@ void APlaceablePlayer::BeginPlay()
 
 	GetMesh()->BodyInstance.bLockYRotation = true;		//Lock rotation so that characters do not rotate in other directions
 	GetMesh()->BodyInstance.bLockXRotation = true;
-	SetActorScale3D(FVector(1.0f, 1.0f, 1.0f));			//Scale Enemy
+	SetActorScale3D(FVector(0.7, 0.7, 0.7));			//Scale Enemy
 
 	EnemyStatus = Idle;		//Starting status is idle.
 	WanderRadius = 500.0f;
