@@ -216,6 +216,10 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 				CurrentPActor->Tags.Add("Floor");
 			}
 		}
+		else
+		{
+			CurrentPActor->Tags.Add("Floor");
+		}
 	}
 }
 

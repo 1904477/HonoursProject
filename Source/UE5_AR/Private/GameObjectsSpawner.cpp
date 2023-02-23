@@ -41,7 +41,7 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 
 void AGameObjectsSpawner::EnemiesSpawner()
 {
-	int randSpawnPoint= FMath::RandRange(0, PoissonSampler->SecondaryPoints.Num());;
+	int randSpawnPoint= FMath::RandRange(0, PoissonSampler->SecondaryPoints.Num()-1);;
 
 	FVector spawnPos = FVector(PoissonSampler->SecondaryPoints[randSpawnPoint].X, PoissonSampler->SecondaryPoints[randSpawnPoint].Y, 5);
 	const FActorSpawnParameters SpawnInfo;

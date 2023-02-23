@@ -88,7 +88,7 @@ TArray<FVector2f> UPoissonSampler::GeneratePoisson(float minDistMainPoints,float
 
     for (int i = 0; i < MainPoints.Num(); i++)
     {
-        int pointCount = FMath::RandRange(3, secondary_points);
+        int pointCount = FMath::RandRange(0, secondary_points);
         for (int j = 0; j < secondary_points; j++)
         {
             bool isClose = false;
