@@ -38,7 +38,7 @@ AHelloARManager::AHelloARManager()
 	PlaneColors.Add(FColor::Turquoise);
 	PlaneColors.Add(FColor::White);
 	PlaneColors.Add(FColor::Yellow);
-	TableHeight = 50;
+	TableHeight = 60;
 	WallSize = 2;
 }
 
@@ -110,7 +110,10 @@ void AHelloARManager::UpdatePlaneActors()
 						PlaneIndex++;
 
 						if (!LowestPlaneActor)
+						{
 							LowestPlaneActor = PlaneActor;
+							PlaneActor->Tags.Add("floor");
+						}
 						else
 						{
 							if (LowestPlaneActor->GetActorLocation().Z > PlaneActor->GetActorLocation().Z)
@@ -212,7 +215,6 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			if (CurrentPActor->Tags[0] != "floor")
 			{
 				CurrentPActor->Tags.Empty();
-				LowestPlaneActor = CurrentPActor;
 				CurrentPActor->Tags.Add("Floor");
 			}
 		}
@@ -220,6 +222,8 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 		{
 			CurrentPActor->Tags.Add("Floor");
 		}
+		LowestPlaneActor = CurrentPActor;
+
 	}
 }
 
