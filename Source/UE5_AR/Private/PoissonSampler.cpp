@@ -31,10 +31,10 @@ void UPoissonSampler::BeginPlay()
                     CustomGameMode->GameManager->SecPointsSpawnNum);
 
     for (int i = 0; i < MainPoints.Num(); i++)
-        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 15),3, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
+        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 15),80, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
 
     for (int i = 0; i < SecondaryPoints.Num(); i++)
-        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, 15), 3, 1, FColor::Cyan, false, 10.0f, 0, 2);
+        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, 15), 80, 1, FColor::Cyan, false, 10.0f, 0, 2);
 
 }
 
