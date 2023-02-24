@@ -8,6 +8,7 @@
 #include "NavigationSystem.h"
 #include "PlaceablePlayer.generated.h"
 class ACustomGameMode;
+class ACustomARPawn;
 //class AGameManager;
 
 UENUM()
@@ -51,7 +52,6 @@ public:
 	TEnumAsByte<Status> EnemyStatus;
 
 	float EnemyStatusTimer = 0;
-	FVector MoveTo;
 	float WanderRadius;
 	float SpawnRadius = 500;
 	float SuspiciousTimer = 0;
@@ -64,4 +64,5 @@ public:
 protected:
 	AAIController* AIController;
 	UNavigationSystemV1* NavigationArea;
+	ACustomARPawn* Player;
 };

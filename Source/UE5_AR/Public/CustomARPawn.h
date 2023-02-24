@@ -42,4 +42,5 @@ public:
 	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
 	AGameManager* GameManager;
 	
+	FVector camLocation;
 };

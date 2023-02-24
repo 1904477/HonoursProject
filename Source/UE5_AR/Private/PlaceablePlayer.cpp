@@ -7,6 +7,7 @@
 #include "HelloARManager.h"
 #include "NavigationSystem.h"
 #include "ARPlaneActor.h"
+#include "CustomARPawn.h"
 #include "ARBlueprintLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -19,8 +20,11 @@ void APlaceablePlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto Temp = GetWorld()->GetAuthGameMode();		//Get gamemode and game manager
+	auto Temp = GetWorld()->GetAuthGameMode();		//Get gamemode and pawn
 	GM = Cast<ACustomGameMode>(Temp);
+	auto PTemp = GetWorld()->GetFirstPlayerController()->GetPawn();		
+	Player = Cast<ACustomARPawn>(PTemp);
+
 	GameManager = GM->GameManager;
 
 	GetMesh()->BodyInstance.bLockYRotation = true;		//Lock rotation so that characters do not rotate in other directions
@@ -28,9 +32,9 @@ void APlaceablePlayer::BeginPlay()
 	SetActorScale3D(FVector(0.7, 0.7, 0.7));			//Scale Enemy
 
 	EnemyStatus = Idle;		//Starting status is idle.
-	WanderRadius = 500.0f;
-	StateSwitchTimer = 2.5f;
-	BoxColor = FColor::White;
+	WanderRadius = 500.0f;		//Radius for wander area.
+	StateSwitchTimer = 2.5f;	//How long before the enemy switches state.
+	BoxColor = FColor::White;	
 
 	AIController = Cast<AAIController>(GetController());
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
@@ -51,19 +55,18 @@ void APlaceablePlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlaceablePlayer::EnemySuspicious()
 {
-	SuspiciousTimer += GetWorld()->GetDeltaSeconds();
-	if (SuspiciousTimer > 4.0f) {		//Enemy is suspicious for 3 seconds
-		SuspiciousTimer = 0;
+	SuspiciousTimer += GetWorld()->GetDeltaSeconds();	//Keep track of how long enemy has been suspicious.
+	if (SuspiciousTimer > 4.0f) {		//Enemy is suspicious for 4 seconds
+		SuspiciousTimer = 0;			//Reset timer.
 		EnemyStatus = Idle;		//After the enemy is suspicious, it becomes idle
 	}
-	if ((GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() - GetActorLocation()).Length() < AttackDistance)
+	if ((Player->camLocation - GetActorLocation()).Length() < AttackDistance)		//If enemy is suspicious and player is close, enemy attacks.
 	{
-		GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 300.0f;		//In attack state, enemy is faster
 		EnemyStatus = Attacking;
 		BoxColor = FColor::Red;
 	}
-	MoveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-	AIController->MoveToActor(GetWorld()->GetFirstPlayerController()->GetPawn(), -1,true,true);
+	AIController->MoveToActor(Player, -1,true,true);
 }
 
 void APlaceablePlayer::EnemyWander()
@@ -83,9 +86,7 @@ void APlaceablePlayer::EnemyWander()
 
 void APlaceablePlayer::EnemyAttacking()
 {
-	MoveTo = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-	AIController->MoveToActor(GetWorld()->GetFirstPlayerController()->GetPawn(), -1, true, true);
-
+	AIController->MoveToActor(Player, -1, true, true);
 }
 
 void APlaceablePlayer::ClosestObstacleChecker()
@@ -118,7 +119,7 @@ void APlaceablePlayer::EnemyStatusManager()
 				}
 				EnemyStatusTimer = 0;
 			}
-			if (abs((GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation() - GetActorLocation()).Length()) < GameManager->EnemiesSuspiciousDistance)		//If player is close, enemy becomes suspicious
+			if ((Player->camLocation - GetActorLocation()).Length() < GameManager->EnemiesSuspiciousDistance)		//If player is close, enemy becomes suspicious
 			{
 				EnemyStatus = Suspicious;
 				BoxColor = FColor::Orange;
