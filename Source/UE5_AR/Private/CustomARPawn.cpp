@@ -38,9 +38,11 @@ void ACustomARPawn::Tick(float DeltaTime)
 
 	if(UGameplayStatics::GetPlatformName() == "IOS")
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("IOS"));
+		//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("IOS"));
 		APlayerCameraManager* camManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 		camLocation = camManager->GetCameraLocation();
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, camLocation.ToString());
+
 	}
 	if(UGameplayStatics::GetPlatformName() == "Windows")
 	{
