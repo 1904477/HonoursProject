@@ -106,7 +106,7 @@ bool UPoissonSampler::inNeighbourhood(FVector2f point, float mindist, float dist
     for (auto& It : MainPoints)
     {
         //Check if current plane exists 
-        if (FVector2f::Distance(point, It)<mindist&& ( Player->camLocation- FVector(point.X,point.Y,5)).Length() < distToPlayer)
+        if (FVector2f::Distance(point, It)<mindist&& ( Player->camLocation- FVector(It.X,It.Y,5)).Length() < distToPlayer)
         {
             return true;
         }
