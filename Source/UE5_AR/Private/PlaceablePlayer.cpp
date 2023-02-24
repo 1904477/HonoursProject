@@ -29,11 +29,12 @@ void APlaceablePlayer::BeginPlay()
 
 	GetMesh()->BodyInstance.bLockYRotation = true;		//Lock rotation so that characters do not rotate in other directions
 	GetMesh()->BodyInstance.bLockXRotation = true;
-	SetActorScale3D(FVector(0.7, 0.7, 0.7));			//Scale Enemy
+	SetActorScale3D(FVector(0.6, 0.6, 0.6));			//Scale Enemy
 
 	EnemyStatus = Idle;		//Starting status is idle.
 	WanderRadius = 500.0f;		//Radius for wander area.
 	StateSwitchTimer = 2.5f;	//How long before the enemy switches state.
+	AttackDistance = 30;
 	BoxColor = FColor::White;	
 
 	AIController = Cast<AAIController>(GetController());
@@ -60,12 +61,7 @@ void APlaceablePlayer::EnemySuspicious()
 		SuspiciousTimer = 0;			//Reset timer.
 		EnemyStatus = Idle;		//After the enemy is suspicious, it becomes idle
 	}
-	if ((Player->camLocation - GetActorLocation()).Length() < AttackDistance)		//If enemy is suspicious and player is close, enemy attacks.
-	{
-		GetCharacterMovement()->MaxWalkSpeed = 300.0f;		//In attack state, enemy is faster
-		EnemyStatus = Attacking;
-		BoxColor = FColor::Red;
-	}
+	
 	AIController->MoveToActor(Player, -1,true,true);
 }
 
@@ -112,7 +108,7 @@ void APlaceablePlayer::EnemyStatusManager()
 					break;
 				case 2:
 					EnemyStatus = Wandering;
-					GetCharacterMovement()->MaxWalkSpeed = 150.f; 
+					GetCharacterMovement()->MaxWalkSpeed = 50.f; 
 					BoxColor = FColor::Blue;
 					EnemyWander();
 					break;
@@ -124,12 +120,18 @@ void APlaceablePlayer::EnemyStatusManager()
 				EnemyStatus = Suspicious;
 				BoxColor = FColor::Orange;
 				EnemyStatusTimer = 0.0f;
-				GetCharacterMovement()->MaxWalkSpeed = 250.0f; // replace 300 with your desired speed()
+				GetCharacterMovement()->MaxWalkSpeed = 70.0f; // replace 300 with your desired speed()
 			}
 		}
 		else if(EnemyStatus == Suspicious)
 		{
 			EnemySuspicious();
+			if ((Player->camLocation - GetActorLocation()).Length() < AttackDistance)		//If enemy is suspicious and player is close, enemy attacks.
+			{
+				GetCharacterMovement()->MaxWalkSpeed = 100.0f;		//In attack state, enemy is faster
+				EnemyStatus = Attacking;
+				BoxColor = FColor::Red;
+			}
 		}
 		else if (EnemyStatus == Attacking)
 		{
