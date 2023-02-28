@@ -37,6 +37,16 @@ void ACustomGameState::SetIsEnvironmentScanned(bool b)
 	IsEnvironmentScanned = b;
 }
 
+bool ACustomGameState::GetIsIsGunCollected()
+{
+	return IsGunCollected;
+}
+
+void ACustomGameState::SetIsIsGunCollected(bool b)
+{
+	IsGunCollected = b;
+}
+
 bool ACustomGameState::GetAreARPlanesDisplayed()
 {
 	return AreARPlanesDisplayed;

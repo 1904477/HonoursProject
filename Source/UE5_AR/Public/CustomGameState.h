@@ -25,13 +25,15 @@ public:
 	void SetHasGameStarted(bool b);
 	bool GetIsEnvironmentScanned();
 	void SetIsEnvironmentScanned(bool b);
+	bool GetIsIsGunCollected();
+	void SetIsIsGunCollected(bool b);
 
 	UPROPERTY(Category = "GameStart", EditAnywhere, BlueprintReadWrite)
 		bool HasGameStarted;
-
 	UPROPERTY(Category = "EnvironmentScanned", EditAnywhere, BlueprintReadWrite)
 		bool IsEnvironmentScanned;
-
 	UPROPERTY(Category = "ARPlanesRender", EditAnywhere, BlueprintReadWrite)
-	bool AreARPlanesDisplayed;
+		bool AreARPlanesDisplayed;
+	UPROPERTY(Category = "GunCollected", EditAnywhere, BlueprintReadWrite)
+		bool IsGunCollected;
 };

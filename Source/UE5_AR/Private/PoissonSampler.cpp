@@ -20,6 +20,8 @@ void UPoissonSampler::BeginPlay()
 
     auto GM = GetWorld()->GetAuthGameMode();        //Get gamemode
     ACustomGameMode* CustomGameMode = Cast<ACustomGameMode>(GM);
+    auto PTemp = GetWorld()->GetFirstPlayerController()->GetPawn();
+    Player = Cast<ACustomARPawn>(PTemp);
 
     GeneratePoisson(CustomGameMode->GameManager->MainPointsMinDist,     //Generate poisson points as soon as component is created. Necessary variables are passed in, obtained from
                     CustomGameMode->GameManager->SecPointsMaxDist,      //Game manager.
@@ -28,6 +30,7 @@ void UPoissonSampler::BeginPlay()
                     CustomGameMode->GameManager->MinDistToPlayer
                     );
 
+ 
     for (int i = 0; i < MainPoints.Num(); i++)      //Draw debug spheres to know where main points are.
         DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 15),80, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
 
@@ -45,15 +48,24 @@ void UPoissonSampler::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 TArray<FVector2f> UPoissonSampler::GeneratePoisson(float minDistMainPoints,float minDistSecPoints, int new_points_count,int secondary_points, float distToPlayer)
 {
     NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());        //Get navmesh from the world.
-    FNavLocation FirstRandomSpawnPosNavLoc;        //Variable to store random location in navmesh.
-    FVector FirstSpawnPos;      //First spawn position.
-    if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, FirstRandomSpawnPosNavLoc))     //Get random position in navmesh
+    bool isFirstTooClose = true;     //Track if the point generated is too close, true by default.
+
+    while (isFirstTooClose == true)
     {
-        // if we were successfull in finding a new location...
-        FirstSpawnPos = FirstRandomSpawnPosNavLoc.Location;		//Save first random position in navmesh in FVector.
+        FNavLocation FirstRandomSpawnPosNavLoc;        //Variable to store random location in navmesh.
+        FVector FirstSpawnPos;      //First spawn position.
+        if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, FirstRandomSpawnPosNavLoc))     //Get random position in navmesh
+        {
+            // if we were successfull in finding a new location...
+            FirstSpawnPos = FirstRandomSpawnPosNavLoc.Location;		//Save first random position in navmesh in FVector.
+        }
+        if ((FirstSpawnPos-Player->camLocation).Length()> distToPlayer)
+        {
+            isFirstTooClose = false;
+            MainPoints.Push(FVector2f(FirstSpawnPos.X, FirstSpawnPos.Y));        //Push first point into array of main points, Vector2f as we do not care of height.
+        }
     }
 
-    MainPoints.Push(FVector2f(FirstSpawnPos.X, FirstSpawnPos.Y));        //Push first point into array of main points, Vector2f as we do not care of height.
     for (int i = 0; i < new_points_count; i++)      //From first point, generate other N points.
     {
         bool isTooClose = true;     //Track if the point generated is too close, true by default.
@@ -67,9 +79,7 @@ TArray<FVector2f> UPoissonSampler::GeneratePoisson(float minDistMainPoints,float
                 SpawnPos = RandomSpawnPosNavLoc.Location;		//Save random position in navmesh in FVector.
             }
             if (!inNeighbourhood(FVector2f(RandomSpawnPosNavLoc.Location.X, RandomSpawnPosNavLoc.Location.Y), minDistMainPoints, distToPlayer))       //If the generated point is not too close to other points.
-            {
                 isTooClose = false;     
-            }
         }
         MainPoints.Push(FVector2f(RandomSpawnPosNavLoc.Location.X, RandomSpawnPosNavLoc.Location.Y));       //Push randomly generated point into array of main points.
     }
@@ -101,15 +111,14 @@ TArray<FVector2f> UPoissonSampler::GeneratePoisson(float minDistMainPoints,float
 bool UPoissonSampler::inNeighbourhood(FVector2f point, float mindist, float distToPlayer)       //Calculates if point passed is close to main points.
 {
     auto PTemp = GetWorld()->GetFirstPlayerController()->GetPawn();
-    ACustomARPawn* Player = Cast<ACustomARPawn>(PTemp);
+    Player = Cast<ACustomARPawn>(PTemp);
+
    //get the neighbourhood if the point in the grid
     for (auto& It : MainPoints)
     {
-        //Check if current plane exists 
-        if (FVector2f::Distance(point, It)<mindist&& (FVector(It.X, It.Y, 5)-Player->camLocation).Length() < distToPlayer)
-        {
+        //Check if point is too close to other main points or if point is too close to player location.
+        if (FVector2f::Distance(point, It) <mindist&& FVector2f::Distance(It,FVector2f(Player->camLocation.X,Player->camLocation.Y)) <  distToPlayer)
             return true;
-        }
     }
     return false;
 }

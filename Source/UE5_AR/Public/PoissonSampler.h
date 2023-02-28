@@ -8,6 +8,7 @@
 #include "NavigationSystem.h"
 #include "PoissonSampler.generated.h"
 
+class ACustomARPawn;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )		//Component class that uses the Poisson Disc Sampling algorithm to generate random points equally distributed in the game.
 class UE5_AR_API UPoissonSampler : public UActorComponent
@@ -36,4 +37,5 @@ public:
 
 protected:
 	UNavigationSystemV1* NavigationArea;	//Navigation area, necessary for distributing the points in the navmesh.
+	ACustomARPawn* Player;			//Player reference to generate main points.
 };

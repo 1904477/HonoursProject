@@ -50,5 +50,6 @@ public:
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AGameManager> SpawnedGameManager;
 
+	UPROPERTY(Category = "AR Manager", EditAnywhere, BlueprintReadWrite)
 	AHelloARManager* ARManager;
 };

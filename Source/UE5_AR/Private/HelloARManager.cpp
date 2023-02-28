@@ -49,7 +49,8 @@ void AHelloARManager::BeginPlay()
 
 	auto Temp = GetWorld()->GetAuthGameMode();		//Get Game Mode
 	GM = Cast<ACustomGameMode>(Temp);
-	
+	auto Temp2 = GetWorld()->GetGameState();		//Get Game Mode
+	GS = Cast<ACustomGameState>(Temp2);
 }
 
 // Called every frame
@@ -60,7 +61,8 @@ void AHelloARManager::Tick(float DeltaTime)
 	{
 	case EARSessionStatus::Running:
 			UpdatePlaneActors();		//Update all plane actors
-			PlaneTagUpdate();
+			if(GS->GetIsEnvironmentScanned()==false)
+				PlaneTagUpdate();
 		break;
 	case EARSessionStatus::FatalError:		//In case of fatal error in the AR sessions
 		ResetARCoreSession();		//Reset the session
@@ -223,7 +225,6 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			CurrentPActor->Tags.Add("Floor");
 		}
 		LowestPlaneActor = CurrentPActor;
-
 	}
 }
 

@@ -36,23 +36,10 @@ void ACustomARPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(UGameplayStatics::GetPlatformName() == "IOS")
-	{
 		//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("IOS"));
 		APlayerCameraManager* camManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 		camLocation = camManager->GetCameraLocation();
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, camLocation.ToString());
-
-	}
-	if(UGameplayStatics::GetPlatformName() == "Windows")
-	{
-		camLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Windows"));
-
-	}
-	
-	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, camLocation.ToString());
-
+		//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, camLocation.ToString());
 }
 
 // Called to bind functionality to input

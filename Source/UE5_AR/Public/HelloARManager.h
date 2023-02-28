@@ -10,6 +10,7 @@
 class UARSessionConfig;
 class AARPlaneActor;
 class UARPlaneGeometry;
+class ACustomGameState;
 
 UCLASS()
 class UE5_AR_API AHelloARManager : public AActor
@@ -32,6 +33,9 @@ public:
 	UPROPERTY(Category = "SceneComp", VisibleAnywhere, BlueprintReadWrite)
 		USceneComponent* SceneComponent;
 
+	UPROPERTY(Category = "LowestPlane", EditAnywhere, BlueprintReadWrite)
+	AARPlaneActor* LowestPlaneActor;		//Reference to the lowest PlaneActor
+
 protected:
 	
 
@@ -47,9 +51,9 @@ protected:
 	//Base plane actor for geometry detection
 	AARPlaneActor* PlaneActor;		//SinglePlaneActor
 
-	AARPlaneActor * LowestPlaneActor;		//Reference to the lowest PlaneActor
 
 	ACustomGameMode* GM;		//Reference to CustomGameMode
+	ACustomGameState* GS;		//Reference to CustomGameMode
 
 	TMap<UARPlaneGeometry*, AARPlaneActor*> PlaneActors;			//Map of geometry planes
 

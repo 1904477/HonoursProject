@@ -34,7 +34,6 @@ void APlaceablePlayer::BeginPlay()
 	EnemyStatus = Idle;		//Starting status is idle.
 	WanderRadius = 500.0f;		//Radius for wander area.
 	StateSwitchTimer = 2.5f;	//How long before the enemy switches state.
-	AttackDistance = 30;
 	BoxColor = FColor::White;	
 
 	AIController = Cast<AAIController>(GetController());
@@ -46,6 +45,8 @@ void APlaceablePlayer::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	EnemyStatusManager();
 	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(10, 10, 30), BoxColor, false, 0.0f, 0, 1.17);
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, Player->camLocation.ToString());
+
 }
 
 // Called to bind functionality to input
@@ -62,7 +63,7 @@ void APlaceablePlayer::EnemySuspicious()
 		EnemyStatus = Idle;		//After the enemy is suspicious, it becomes idle
 	}
 	
-	AIController->MoveToActor(Player, -1,true,true);
+	AIController->MoveToLocation(Player->camLocation, -1,true,true);
 }
 
 void APlaceablePlayer::EnemyWander()
@@ -82,7 +83,7 @@ void APlaceablePlayer::EnemyWander()
 
 void APlaceablePlayer::EnemyAttacking()
 {
-	AIController->MoveToActor(Player, -1, true, true);
+	AIController->MoveToLocation(Player->camLocation, -1, true, true);
 }
 
 void APlaceablePlayer::ClosestObstacleChecker()
@@ -94,7 +95,7 @@ void APlaceablePlayer::EnemyStatusManager()
 {
 	if (AIController)
 	{
-		if(EnemyStatus !=Suspicious)
+		if(EnemyStatus !=Suspicious&&EnemyStatus!=Attacking)
 		{
 			EnemyStatusTimer += GetWorld()->GetDeltaSeconds();
 			int randomChoice = FMath::RandRange(1, 2);		//Random choice in Enemy Finite State Machine
@@ -108,27 +109,27 @@ void APlaceablePlayer::EnemyStatusManager()
 					break;
 				case 2:
 					EnemyStatus = Wandering;
-					GetCharacterMovement()->MaxWalkSpeed = 50.f; 
+					GetCharacterMovement()->MaxWalkSpeed = 40.f; 
 					BoxColor = FColor::Blue;
 					EnemyWander();
 					break;
 				}
 				EnemyStatusTimer = 0;
 			}
-			if ((Player->camLocation - GetActorLocation()).Length() < GameManager->EnemiesSuspiciousDistance)		//If player is close, enemy becomes suspicious
+			if ((Player->camLocation - GetActorLocation()).Length() < GameManager->EnemySuspiciousDistance)		//If player is close, enemy becomes suspicious
 			{
 				EnemyStatus = Suspicious;
 				BoxColor = FColor::Orange;
 				EnemyStatusTimer = 0.0f;
-				GetCharacterMovement()->MaxWalkSpeed = 70.0f; // replace 300 with your desired speed()
+				GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
 			}
 		}
-		else if(EnemyStatus == Suspicious)
+		else if(EnemyStatus == Suspicious&&EnemyStatus!=Attacking)
 		{
 			EnemySuspicious();
-			if ((Player->camLocation - GetActorLocation()).Length() < AttackDistance)		//If enemy is suspicious and player is close, enemy attacks.
+			if ((Player->camLocation - GetActorLocation()).Length() < GameManager->EnemyAttackDistance)		//If enemy is suspicious and player is close, enemy attacks.
 			{
-				GetCharacterMovement()->MaxWalkSpeed = 100.0f;		//In attack state, enemy is faster
+				GetCharacterMovement()->MaxWalkSpeed = 60.0f;		//In attack state, enemy is faster
 				EnemyStatus = Attacking;
 				BoxColor = FColor::Red;
 			}
