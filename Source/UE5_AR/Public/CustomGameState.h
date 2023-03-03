@@ -9,6 +9,13 @@
 /**
  * 
  */
+
+UENUM()
+enum SessionMode
+{
+	VirtualObstacles     UMETA(DisplayName = "VirtualObstacles"),
+	RealObstacles      UMETA(DisplayName = "RealObstacles"),
+};
 UCLASS()
 class UE5_AR_API ACustomGameState : public AGameStateBase
 {
@@ -36,4 +43,6 @@ public:
 		bool AreARPlanesDisplayed;
 	UPROPERTY(Category = "GunCollected", EditAnywhere, BlueprintReadWrite)
 		bool IsGunCollected;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SessionMode")
+		TEnumAsByte<SessionMode> SessionModeSelected;
 };
