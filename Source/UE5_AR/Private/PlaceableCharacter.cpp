@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SpawnedCharacter.h"
+#include "PlaceableCharacter.h"
 #include "CustomGameState.h"
 #include "ARPin.h"
 #include "CustomGameMode.h"
 #include "ARBlueprintLibrary.h"
 
 // Sets default values
-ASpawnedCharacter::ASpawnedCharacter()
+APlaceableCharacter::APlaceableCharacter()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -21,7 +21,7 @@ ASpawnedCharacter::ASpawnedCharacter()
 
 
 // Called when the game starts or when spawned
-void ASpawnedCharacter::BeginPlay()
+void APlaceableCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	auto Temp = GetWorld()->GetAuthGameMode();
@@ -30,7 +30,7 @@ void ASpawnedCharacter::BeginPlay()
 }
 
 // Called to bind functionality to input
-void ASpawnedCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void APlaceableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -40,7 +40,7 @@ void ASpawnedCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 
 // Called every frame
-void ASpawnedCharacter::Tick(float DeltaTime)
+void APlaceableCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 

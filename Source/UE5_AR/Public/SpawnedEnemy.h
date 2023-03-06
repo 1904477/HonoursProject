@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SpawnedCharacter.h"
+#include "PlaceableCharacter.h"
 #include "AIController.h"
 #include "NavigationSystem.h"
 #include "SpawnedEnemy.generated.h"
@@ -20,7 +20,7 @@ enum Status
 	Attacking   UMETA(DisplayName = "Attacking"),
 };
 UCLASS()
-class UE5_AR_API ASpawnedEnemy : public ASpawnedCharacter
+class UE5_AR_API ASpawnedEnemy : public APlaceableCharacter
 {
 	GENERATED_BODY()
 public:

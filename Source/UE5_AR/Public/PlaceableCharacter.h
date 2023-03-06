@@ -6,17 +6,17 @@
 #include "GameFramework/Character.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "CustomGameMode.h"
-#include "SpawnedCharacter.generated.h"
+#include "PlaceableCharacter.generated.h"
 class UARPin;
 
 UCLASS()
-class UE5_AR_API ASpawnedCharacter : public ACharacter
+class UE5_AR_API APlaceableCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ASpawnedCharacter();
+	APlaceableCharacter();
 
 protected:
 	// Called when the game starts or when spawned

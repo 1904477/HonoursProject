@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "SpawnedEnemy.h"
+#include "PlaceablePlayer.h"
 #include "PoissonSampler.h"
 #include "GameObjectsSpawner.generated.h"
 
@@ -35,10 +35,10 @@ public:
 	float EnemiesSpawnTimer = 0;
 
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<ASpawnedCharacter> EnemyToSpawn;
+		TSubclassOf<APlaceableCharacter> PlacableToSpawn;
 
 	UPROPERTY(Category = "Enemies", EditAnywhere, BlueprintReadWrite)
-		TArray<ASpawnedEnemy*> Enemies;
+		TArray<APlaceablePlayer*> Enemies;
 
 	int EnemiesToSpawn = 0;
 	float EnemySpawnTimer = 0;
