@@ -9,7 +9,7 @@
 #include "PoissonSampler.generated.h"
 
 class ACustomARPawn;
-
+class ACustomGameMode;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )		//Component class that uses the Poisson Disc Sampling algorithm to generate random points equally distributed in the game.
 class UE5_AR_API UPoissonSampler : public UActorComponent
 {
@@ -27,15 +27,20 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	TArray<FVector2f> GeneratePoisson(float minDistMainPoints,float minDistSecPoints, int new_points_count, int secondary_points, float distToPlayer);		//Function that generates the points using the P. algorithm.
+	FVector MainPointsGeneration(float minDistMainPoints, int new_points_count, float distToPlayer, std::string pointType);
 
-	bool inNeighbourhood(FVector2f point, float mindist, float distToPlayer);		//Function that checks if the point passed is close to other points.
+	void SecondaryPointsGeneration(float minDistSecPoints, int secondary_points);
+
+	TArray<FVector> GeneratePoisson(float minDistMainPoints,float minDistSecPoints, int new_points_count, int secondary_points, float distToPlayer);		//Function that generates the points using the P. algorithm.
+
+	bool inNeighbourhood(FVector point, float mindist, float distToPlayer);		//Function that checks if the point passed is close to other points.
 
 	
-	TArray<FVector2f>MainPoints;		//Vector of main points.
-	TArray<FVector2f>SecondaryPoints;	//Vector of secondary points.
+	TArray<FVector>MainPoints;		//Vector of main points.
+	TArray<FVector>SecondaryPoints;	//Vector of secondary points.
 
 protected:
 	UNavigationSystemV1* NavigationArea;	//Navigation area, necessary for distributing the points in the navmesh.
-	ACustomARPawn* Player;			//Player reference to generate main points.
+	ACustomARPawn* Player;					//Player reference to generate main points.
+	ACustomGameMode* CustomGameMode;			//Gamemode to obtain AR manager and lowest plane position.
 };
