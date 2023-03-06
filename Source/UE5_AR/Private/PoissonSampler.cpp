@@ -33,9 +33,13 @@ void UPoissonSampler::BeginPlay()
 
 
     for (int i = 0; i < MainPoints.Num(); i++)      //Draw debug spheres to know where main points are.
-        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 15),80, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
+        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 3),80, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
     for (int i = 0; i < SecondaryPoints.Num(); i++)     //Draw debug spheres to know where secondary points are.
-        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, 15), 80, 1, FColor::Cyan, false, 10.0f, 0, 2);
+    {
+        DrawDebugSphere(GetWorld(),SecondaryPoints[i], 80, 1, FColor::Cyan, false, 10.0f, 0, 2);
+        GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("generated"));
+
+    }
 }
 
 // Called every frame
@@ -51,8 +55,11 @@ FVector UPoissonSampler::MainPointsGeneration(float minDistMainPoints, int new_p
     bool isTooClose = true;     //Track if the point generated is too close, true by default.
     bool isTooHigh = true;     //Track if the point generated is higher than the lowest plane actor, true by default.
 
-    while (isTooClose == true && isTooHigh == true)
+    while (isTooClose == true || isTooHigh == true)
     {
+        isTooClose = true;
+        isTooHigh = true;
+
         if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLoc))     //Get random position in navmesh
             SpawnPos = RandomSpawnPosNavLoc.Location;		//Save first random position in navmesh in FVector.
 
@@ -63,7 +70,7 @@ FVector UPoissonSampler::MainPointsGeneration(float minDistMainPoints, int new_p
         }
         else if (pointType == "main")       //If the other main points are being generated.
         {
-            if (!inNeighbourhood(RandomSpawnPosNavLoc.Location, minDistMainPoints, distToPlayer))       //If the generated point is not too close to other main points and is not too close to the player.
+            if (!inNeighbourhood(SpawnPos, minDistMainPoints, distToPlayer))       //If the generated point is not too close to other main points and is not too close to the player.
                 isTooClose = false;
         }
         if (SpawnPos.Z < CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z+15)     //Check if the point is being generated on a higher surface and not on the floor.
@@ -78,27 +85,28 @@ void UPoissonSampler::SecondaryPointsGeneration(float minDistSecPoints, int seco
 {
     FNavLocation RandomSpawnPosNavLoc;
     FVector SpawnPos;
-    for (int i = 0; i < MainPoints.Num(); i++)      //For each main point.
+    bool isClose = false;                                           //Track if the point generated is close enough to other points, false by default.
+    bool isTooHigh = true;                                          //Track if the point generated is generated on a higher surface.
+    for (int i = 0; i < MainPoints.Num(); i++)         //For each main point.
     {
         int pointCount = FMath::RandRange(1, secondary_points);     //Generate a random range of secondary spawning points.
-        for (int j = 0; j < secondary_points; j++)      //For each secondary point.
+        for (int j = 0; j < secondary_points; j++)                  //For each secondary point.
         {
-
-            bool isClose = false;       //Track if the point generated is close enough to other points, false by default.
-            bool isTooHigh = true;      //Track if the point generated is generated on a higher surface.
-            while (isClose == false && !isTooHigh)        //Generate the secondary point until the generated point is close enough to the main point.
+            while (!isClose || isTooHigh)                  //Generate the secondary point until the generated point is close enough to the main point.
             {
-                if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLoc)) //Get random position in navmesh
+                isClose = false;
+                isTooHigh = true;
+
+                if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLoc))      //Get random position in navmesh
                     SpawnPos = RandomSpawnPosNavLoc.Location;		//Save random position in navmesh in FVector
 
-                if ((SpawnPos - MainPoints[i]).Length() < minDistSecPoints)  //If the secondary point is close enough to the main point.
+                if ((SpawnPos - MainPoints[i]).Length() < minDistSecPoints)     //If the secondary point is close enough to the main point.
                     isClose = true;
 
                 if (SpawnPos.Z < CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z+ 15)     //Check if the point is being generated on a higher surface and not on the floor.
                     isTooHigh = false;
             }
-            SecondaryPoints.Push(SpawnPos);      //Push secondary point into secondary points array.
-            GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red,TEXT("generated"));
+            SecondaryPoints.Push(SpawnPos);     //Push secondary point into secondary points array.
         }
     }
 }
