@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
 #include "CustomObstacle.generated.h"
 
 UCLASS()
@@ -29,6 +30,9 @@ public:
 
 	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* StaticMeshComponent;
+
+	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
+		UBoxComponent* BoxComponent;
 
 	FVector StartLocation;
 

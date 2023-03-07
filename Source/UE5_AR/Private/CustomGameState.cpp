@@ -9,6 +9,7 @@ ACustomGameState::ACustomGameState()
 	HasGameStarted = false;
 	IsEnvironmentScanned = false;
 	AreARPlanesDisplayed = true;
+	SessionModeSelected = VirtualObstacles;
 }
 
 

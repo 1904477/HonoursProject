@@ -15,6 +15,8 @@ ACustomObstacle::ACustomObstacle()
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComponent->SetupAttachment(SceneComponent);
 	
+	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
+	BoxComponent->SetupAttachment(StaticMeshComponent);
 }
 
 // Called when the game starts or when spawned

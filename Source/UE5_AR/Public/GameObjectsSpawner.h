@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "SpawnedEnemy.h"
 #include "PoissonSampler.h"
+#include "TableObstacle.h"
 #include "GameObjectsSpawner.generated.h"
 
 class ACustomGameState;
@@ -23,6 +24,7 @@ public:
 
 	void EnemiesSpawner();
 	void EnemiesSpawnerManager();
+	void SpawnVirtualObstacles();
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,6 +41,10 @@ public:
 
 	UPROPERTY(Category = "Enemies", EditAnywhere, BlueprintReadWrite)
 		TArray<ASpawnedEnemy*> Enemies;
+
+	TArray<ATableObstacle*> Tables;
+
+
 
 	int EnemiesToSpawn = 0;
 	float EnemySpawnTimer = 0;

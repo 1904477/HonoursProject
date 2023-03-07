@@ -27,6 +27,13 @@ void AGameObjectsSpawner::BeginPlay()
 
 	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));		//Add poisson sampler as component.
 	PoissonSampler->RegisterComponent();
+
+	if (GameState->SessionModeSelected == VirtualObstacles)
+	{
+		SpawnVirtualObstacles();
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("virtual obstacles spawned"));
+
+	}
 }
 
 // Called every frame
@@ -62,4 +69,38 @@ void AGameObjectsSpawner::EnemiesSpawnerManager()
 	}
 	else if(EnemySpawnTimer <=3 && GameState->GetHasGameStarted() == true)		//If spawntimer is less than three and the game has started
 	EnemySpawnTimer += GetWorld()->GetDeltaSeconds();		//Update enemy spawn timer.
+}
+
+void AGameObjectsSpawner::SpawnVirtualObstacles()
+{
+	int tableDistanceX = 220;
+	int tableDistanceY = 220;
+	int tableAngle = 90;
+	FVector spawnPos;
+	for (int i = 0; i < 4; i++)	//4 Tables
+	{
+		if (i == 0)
+			spawnPos = FVector(0, tableDistanceY, 0);
+		else if (i == 1)
+			spawnPos = FVector(0, -tableDistanceY, 0);
+		else if (i == 2)
+		{
+			spawnPos = FVector(tableDistanceX, 0, 0);
+			tableAngle = 0;
+		}
+		else if (i == 3)
+		{
+			spawnPos = FVector(-tableDistanceX, 0, 0);
+			tableAngle = 0;
+		}
+		const FActorSpawnParameters SpawnInfo;
+		const FRotator MyRot(0, tableAngle, 0);
+		ATableObstacle* Table = GetWorld()->SpawnActor<ATableObstacle>(spawnPos, MyRot, SpawnInfo);
+
+		Tables.Add(Table);
+	}
+
+
+
+
 }

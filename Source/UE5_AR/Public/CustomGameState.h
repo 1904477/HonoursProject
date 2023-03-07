@@ -24,25 +24,31 @@ public:
 	ACustomGameState();
 	~ACustomGameState() = default;
 
-	void SetPlaceableSelected(bool value);
+	UFUNCTION(Category = "ARPlanesRender", BlueprintCallable)
 	void SetAreARPlanesDisplayed(bool value);
+	UFUNCTION(Category = "ARPlanesRender", BlueprintCallable)
 	bool GetAreARPlanesDisplayed();
-
+	UFUNCTION(Category = "GameStart", BlueprintCallable)
 	bool GetHasGameStarted();
+	UFUNCTION(Category = "GameStart", BlueprintCallable)
 	void SetHasGameStarted(bool b);
+	UFUNCTION(Category = "EnvironmentScanned", BlueprintCallable)
 	bool GetIsEnvironmentScanned();
+	UFUNCTION(Category = "EnvironmentScanned", BlueprintCallable)
 	void SetIsEnvironmentScanned(bool b);
+	UFUNCTION(Category = "GunCollected", BlueprintCallable)
 	bool GetIsIsGunCollected();
+	UFUNCTION(Category = "GunCollected", BlueprintCallable)
 	void SetIsIsGunCollected(bool b);
 
-	UPROPERTY(Category = "GameStart", EditAnywhere, BlueprintReadWrite)
-		bool HasGameStarted;
-	UPROPERTY(Category = "EnvironmentScanned", EditAnywhere, BlueprintReadWrite)
-		bool IsEnvironmentScanned;
-	UPROPERTY(Category = "ARPlanesRender", EditAnywhere, BlueprintReadWrite)
-		bool AreARPlanesDisplayed;
-	UPROPERTY(Category = "GunCollected", EditAnywhere, BlueprintReadWrite)
-		bool IsGunCollected;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SessionMode")
 		TEnumAsByte<SessionMode> SessionModeSelected;
+
+private:
+		bool HasGameStarted;
+		bool IsEnvironmentScanned;
+		bool AreARPlanesDisplayed;
+		bool IsGunCollected;
+
+
 };
