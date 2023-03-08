@@ -73,6 +73,12 @@ void AGameObjectsSpawner::EnemiesSpawnerManager()
 
 void AGameObjectsSpawner::SpawnVirtualObstacles()
 {
+	SpawnTables();
+	SpawnSteps();
+}
+
+void AGameObjectsSpawner::SpawnTables()
+{
 	int tableDistanceX = 220;
 	int tableDistanceY = 220;
 	int tableAngle = 90;
@@ -99,8 +105,51 @@ void AGameObjectsSpawner::SpawnVirtualObstacles()
 
 		Tables.Add(Table);
 	}
+}
 
+void AGameObjectsSpawner::SpawnSteps()
+{
+	int StepAngle = 90;
+	FVector spawnPos;
+	for (int i = 0; i < 6; i++)	//4 Tables
+	{
+		switch (i)
+		{
+		case 0:
+			spawnPos = FVector(-205, -440, 0);
+			StepAngle = -45;
+			break;
+		case 1:
+			spawnPos = FVector(130, -450, 0);
+			StepAngle = 60;
+			break;
 
+		case 2:
+			spawnPos = FVector(-490, 110, 0);
+			StepAngle = 0;
+			break;
 
+		case 3:
+			spawnPos = FVector(460, -70, 0);
+			StepAngle = -45;
+			break;
 
+		case 4:
+			spawnPos = FVector(290, 380, 0);
+			StepAngle = 45;
+			break;
+
+		case 5:
+			spawnPos = FVector(-200, 500, 0);
+			StepAngle = 80;
+			break;
+		default:
+			break;
+		}
+		const FActorSpawnParameters SpawnInfo;
+		const FRotator MyRot(0, StepAngle, 0);
+		AStepObstacle* Step = GetWorld()->SpawnActor<AStepObstacle>(spawnPos, MyRot, SpawnInfo);
+
+		Steps.Add(Step);
+	}
 }

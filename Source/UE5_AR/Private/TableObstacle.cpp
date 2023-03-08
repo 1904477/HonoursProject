@@ -3,7 +3,9 @@
 
 #include "TableObstacle.h"
 #include "HelloARManager.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "ARPlaneActor.h"
+
 ATableObstacle::ATableObstacle()
 {
 	Tags.Add("Table");
@@ -23,12 +25,20 @@ void ATableObstacle::BeginPlay()
 	auto GM = GetWorld()->GetAuthGameMode();
 	CustomGameMode = Cast<ACustomGameMode>(GM);
 
-
-	FVector origin;
-	FVector boxExtent;
-	GetActorBounds(false, origin, boxExtent);
-	//SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, BoxComponent->GetScaledBoxExtent().Z));
-	SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, BoxComponent->GetScaledBoxExtent().Z*2));
+	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
+	{
+		FVector origin;
+		FVector boxExtent;
+		GetActorBounds(false, origin, boxExtent);
+		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + BoxComponent->GetScaledBoxExtent().Z));
+	
+	}
+	else
+	{
+		FVector origin;
+		FVector boxExtent;
+		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, BoxComponent->GetScaledBoxExtent().Z * 2));
+	}
 	Super::BeginPlay();
 }
 

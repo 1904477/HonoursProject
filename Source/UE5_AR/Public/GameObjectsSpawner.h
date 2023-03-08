@@ -7,6 +7,7 @@
 #include "SpawnedEnemy.h"
 #include "PoissonSampler.h"
 #include "TableObstacle.h"
+#include "StepObstacle.h"
 #include "GameObjectsSpawner.generated.h"
 
 class ACustomGameState;
@@ -25,6 +26,8 @@ public:
 	void EnemiesSpawner();
 	void EnemiesSpawnerManager();
 	void SpawnVirtualObstacles();
+	void SpawnTables();
+	void SpawnSteps();
 
 protected:
 	// Called when the game starts or when spawned
@@ -43,8 +46,7 @@ public:
 		TArray<ASpawnedEnemy*> Enemies;
 
 	TArray<ATableObstacle*> Tables;
-
-
+	TArray<AStepObstacle*> Steps;
 
 	int EnemiesToSpawn = 0;
 	float EnemySpawnTimer = 0;

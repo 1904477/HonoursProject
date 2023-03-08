@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CustomObstacle.h"
+#include "CustomGameMode.h"
 #include "StepObstacle.generated.h"
 
 /**
@@ -25,4 +26,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	ACustomGameMode* CustomGameMode;
+
 };
