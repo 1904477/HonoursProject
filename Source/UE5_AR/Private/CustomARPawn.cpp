@@ -5,6 +5,7 @@
 #include "Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "ARBlueprintLibrary.h"
+#include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 
 
@@ -18,6 +19,12 @@ ACustomARPawn::ACustomARPawn()
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetupAttachment(SceneComponent);
+
+	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
+	CapsuleComponent->SetupAttachment(SceneComponent);
+
+	CapsuleComponent->InitCapsuleSize(30,90);
+	CapsuleComponent->SetCollisionProfileName("OverlapAll");
 }
 
 // Called when the game starts or when spawned
@@ -26,8 +33,6 @@ void ACustomARPawn::BeginPlay()
 	Super::BeginPlay();
 	auto Temp = GetWorld()->GetAuthGameMode();
 	ACustomGameMode* GM = Cast<ACustomGameMode>(Temp);
-
-	//auto Temp = UGameplayStatics::GetActorOfClass(GetWorld(), AGameManager::StaticClass());
 	GameManager = GM->GameManager;
 }
 

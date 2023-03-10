@@ -9,6 +9,7 @@ ACustomGameState::ACustomGameState()
 	HasGameStarted = false;
 	IsEnvironmentScanned = false;
 	AreARPlanesDisplayed = true;
+	Health = 100;
 	SessionModeSelected = VirtualObstacles;
 }
 
@@ -46,6 +47,16 @@ bool ACustomGameState::GetIsIsGunCollected()
 void ACustomGameState::SetIsIsGunCollected(bool b)
 {
 	IsGunCollected = b;
+}
+
+void ACustomGameState::SetHealth(bool b)
+{
+	Health = b;
+}
+
+int ACustomGameState::GetHealth()
+{
+	return Health;
 }
 
 bool ACustomGameState::GetAreARPlanesDisplayed()

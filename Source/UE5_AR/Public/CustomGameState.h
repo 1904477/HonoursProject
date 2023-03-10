@@ -40,7 +40,10 @@ public:
 	bool GetIsIsGunCollected();
 	UFUNCTION(Category = "GunCollected", BlueprintCallable)
 	void SetIsIsGunCollected(bool b);
-
+	UFUNCTION(Category = "Health", BlueprintCallable)
+	void SetHealth(bool b);
+	UFUNCTION(Category = "Health", BlueprintCallable)
+	int GetHealth();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SessionMode")
 		TEnumAsByte<SessionMode> SessionModeSelected;
 
@@ -49,6 +52,6 @@ private:
 		bool IsEnvironmentScanned;
 		bool AreARPlanesDisplayed;
 		bool IsGunCollected;
-
+		int Health;
 
 };

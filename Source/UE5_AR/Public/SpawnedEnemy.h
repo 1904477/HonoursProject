@@ -36,6 +36,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
 	void EnemySuspicious();
 
 	void EnemyStatusManager();
@@ -46,8 +47,6 @@ public:
 
 	void ClosestObstacleChecker();
 
-	AGameManager* GameManager;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyStatus")
 	TEnumAsByte<Status> EnemyStatus;
 
@@ -55,6 +54,7 @@ public:
 	float WanderRadius;
 	float SpawnRadius = 500;
 	float SuspiciousTimer = 0;
+	float AttackCooldown = 0;
 	float StateSwitchTimer = 0;
 	float SuspiciousDistance = 0;
 	float AttackDistance = 0;

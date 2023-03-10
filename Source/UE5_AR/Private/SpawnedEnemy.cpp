@@ -11,6 +11,7 @@
 #include "ARBlueprintLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ASpawnedEnemy::ASpawnedEnemy()
 {
@@ -19,28 +20,26 @@ ASpawnedEnemy::ASpawnedEnemy()
 void ASpawnedEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	SetActorScale3D(FVector(0.6, 0.6, 0.6));			//Scale Enemy
 
 	auto Temp = GetWorld()->GetAuthGameMode();		//Get gamemode and pawn
-	GM = Cast<ACustomGameMode>(Temp);
 	auto PTemp = GetWorld()->GetFirstPlayerController()->GetPawn();		
+	GM = Cast<ACustomGameMode>(Temp);
 	Player = Cast<ACustomARPawn>(PTemp);
 
-	GameManager = GM->GameManager;
 
 	GetMesh()->BodyInstance.bLockYRotation = true;		//Lock rotation so that characters do not rotate in other directions
 	GetMesh()->BodyInstance.bLockXRotation = true;
-	SetActorScale3D(FVector(0.6, 0.6, 0.6));			//Scale Enemy
 
 	EnemyStatus = Idle;		//Starting status is idle.
 	WanderRadius = 500.0f;		//Radius for wander area.
 	StateSwitchTimer = 2.5f;	//How long before the enemy switches state.
+	AttackCooldown = 4.0f;		//Cooldown for attack
 	BoxColor = FColor::White;	
 
 	AIController = Cast<AAIController>(GetController());
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
-
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("enemy spawned"));
-
+	
 }
 
 void ASpawnedEnemy::Tick(float DeltaTime)
@@ -60,7 +59,7 @@ void ASpawnedEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void ASpawnedEnemy::EnemySuspicious()
 {
 	SuspiciousTimer += GetWorld()->GetDeltaSeconds();	//Keep track of how long enemy has been suspicious.
-	if (SuspiciousTimer > 5.0f && (Player->camLocation - GetActorLocation()).Length() > GameManager->EnemySuspiciousDistance) {		//Enemy is suspicious for 4 seconds
+	if (SuspiciousTimer > 5.0f && (Player->camLocation - GetActorLocation()).Length() > GM->GameManager->EnemySuspiciousDistance) {		//Enemy is suspicious for 4 seconds
 		SuspiciousTimer = 0;			//Reset timer.
 		EnemyStatus = Idle;		//After the enemy is suspicious, it becomes idle
 	}
@@ -118,7 +117,7 @@ void ASpawnedEnemy::EnemyStatusManager()
 				}
 				EnemyStatusTimer = 0;
 			}
-			if ((Player->camLocation - GetActorLocation()).Length() < GameManager->EnemySuspiciousDistance)		//If player is close, enemy becomes suspicious
+			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemySuspiciousDistance)		//If player is close, enemy becomes suspicious
 			{
 				EnemyStatus = Suspicious;
 				BoxColor = FColor::Orange;
@@ -129,7 +128,7 @@ void ASpawnedEnemy::EnemyStatusManager()
 		else if(EnemyStatus == Suspicious&&EnemyStatus!=Attacking)
 		{
 			EnemySuspicious();
-			if ((Player->camLocation - GetActorLocation()).Length() < GameManager->EnemyAttackDistance)		//If enemy is suspicious and player is close, enemy attacks.
+			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyAttackDistance)		//If enemy is suspicious and player is close, enemy attacks.
 			{
 				GetCharacterMovement()->MaxWalkSpeed = 60.0f;		//In attack state, enemy is faster
 				EnemyStatus = Attacking;

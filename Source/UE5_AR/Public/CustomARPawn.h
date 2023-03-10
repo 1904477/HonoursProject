@@ -7,6 +7,7 @@
 #include "GameManager.h"
 #include "CustomARPawn.generated.h"
 class UCameraComponent;
+class UCapsuleComponent;
 class ACustomGameMode;
 
 UCLASS()
@@ -37,6 +38,9 @@ public:
 	
 	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
 		UCameraComponent* CameraComponent;
+
+	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
+	UCapsuleComponent* CapsuleComponent;
 
 	//ACustomGameMode* GM;
 	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
