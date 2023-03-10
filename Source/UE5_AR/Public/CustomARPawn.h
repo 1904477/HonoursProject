@@ -5,6 +5,7 @@
 #include "GameFramework/Pawn.h"
 #include "CustomGameMode.h"
 #include "GameManager.h"
+
 #include "CustomARPawn.generated.h"
 class UCameraComponent;
 class UCapsuleComponent;
@@ -26,6 +27,7 @@ protected:
 	virtual void OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVector ScreenPos);
 	virtual void OnScreenRelease(const ETouchIndex::Type FingerIndex, const FVector ScreenPos);
 
+	bool WorldHitTest(FVector2D screenTouch, FHitResult fHit);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -47,4 +49,6 @@ public:
 	AGameManager* GameManager;
 	
 	FVector camLocation;
+
+	FHitResult fHitRes;
 };

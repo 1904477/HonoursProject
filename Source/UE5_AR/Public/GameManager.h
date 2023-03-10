@@ -30,6 +30,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Spawner")	//Function to spawn single enemy.
 		void SpawnGameObjectsSpawner();
 
+
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AGameObjectsSpawner> GameObjectsSpawnerToSpawn;
 
@@ -60,6 +61,7 @@ public:
  //*/
 
 	FTransform LineTraceResult(FVector ScreenPos);
+
 	UFUNCTION(BlueprintCallable, Category = "Spawn")
 	void flipPlaneVisibility();
 

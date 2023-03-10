@@ -65,6 +65,8 @@ FTransform AGameManager::LineTraceResult(FVector ScreenPos)		//Function to retur
 	}
 	return FTransform::Identity;
 }
+
+
 void AGameManager::flipPlaneVisibility()	//Function to flip the plane visibility, called in the widget blueprints.
 {
 	auto Temp = GetWorld()->GetGameState();

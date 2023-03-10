@@ -32,7 +32,6 @@ void AStepObstacle::BeginPlay()
 		FVector boxExtent;
 		GetActorBounds(false, origin, boxExtent);
 		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + BoxComponent->GetScaledBoxExtent().Z));
-
 	}
 }
 
@@ -40,6 +39,5 @@ void AStepObstacle::BeginPlay()
 void AStepObstacle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
