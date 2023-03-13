@@ -7,19 +7,43 @@ AGunPickup::AGunPickup()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	IsPicked = false;
 
-	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshObj(TEXT("StaticMesh'/Game/StarterContent/Props/SM_Statue.SM_Statue'"));
-	StaticMeshComponent->SetStaticMesh(MeshObj.Object);
+
+
+	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+	SetRootComponent(SkeletalMesh);
+
+	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("GunSceneComponent"));
+	SceneComponent->SetupAttachment(SkeletalMesh);
+
+	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
+	BoxComponent->SetupAttachment(SkeletalMesh);
+
+	BoxComponent->SetWorldScale3D(FVector(0.4, 1, 0.5));
+	BoxComponent->SetRelativeLocation(FVector(-40, 0, 30));
+	BoxComponent->SetCollisionProfileName("BlockAll");
 }
 
 void AGunPickup::BeginPlay()
 {
 	Super::BeginPlay();
+	auto Temp1 = GetWorld()->GetGameState();
+	GS = Cast<ACustomGameState>(Temp1);
+
+	FVector origin;
+	FVector boxExtent;
+	GetActorBounds(false, origin, boxExtent);
+	SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, BoxComponent->GetScaledBoxExtent().Z));
 }
 
 void AGunPickup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	//if (GS->GetIsIsGunCollected() == true&& isGunPicked == false)
+	//{
+	//	SetActorLocation(GetActorLocation());
+	//	
+	//	NewActor1->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
+	//	isGunPicked = true;
+	//}
 }

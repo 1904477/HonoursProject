@@ -7,6 +7,7 @@
 ACustomGameState::ACustomGameState()
 {
 	HasGameStarted = false;
+	IsGunCollected = false;
 	IsEnvironmentScanned = false;
 	AreARPlanesDisplayed = true;
 	Health = 100;

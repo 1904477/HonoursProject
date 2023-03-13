@@ -27,7 +27,7 @@ protected:
 	virtual void OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVector ScreenPos);
 	virtual void OnScreenRelease(const ETouchIndex::Type FingerIndex, const FVector ScreenPos);
 
-	bool WorldHitTest(FVector2D screenTouch, FHitResult fHit);
+	bool WorldHitTest( FHitResult& fHit);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -48,7 +48,10 @@ public:
 	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
 	AGameManager* GameManager;
 	
+	ACustomGameState* GS;
+
 	FVector camLocation;
 
-	FHitResult fHitRes;
+	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadOnly)
+	APlayerCameraManager* camManager;
 };

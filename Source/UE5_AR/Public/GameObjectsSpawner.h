@@ -8,6 +8,7 @@
 #include "PoissonSampler.h"
 #include "TableObstacle.h"
 #include "StepObstacle.h"
+#include "CustomPickup.h"
 #include "GameObjectsSpawner.generated.h"
 
 class ACustomGameState;
@@ -28,6 +29,7 @@ public:
 	void SpawnVirtualObstacles();
 	void SpawnTables();
 	void SpawnSteps();
+	void SpawnGun();
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,23 +39,22 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	float EnemiesSpawnTimer = 0;
-
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<APlaceableCharacter> PlacableToSpawn;
-
+		TSubclassOf<APlaceableCharacter> EnemyToSpawn;
+	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<ACustomPickup> GunToSpawn;
 	UPROPERTY(Category = "Enemies", EditAnywhere, BlueprintReadWrite)
 		TArray<ASpawnedEnemy*> Enemies;
 
 	TArray<ATableObstacle*> Tables;
 	TArray<AStepObstacle*> Steps;
 
-	int EnemiesToSpawn = 0;
-	float EnemySpawnTimer = 0;
-
 	ACustomGameState* GameState;
 	ACustomGameMode* CustomGameMode;
 	UPoissonSampler* PoissonSampler;
 
 	bool isComponentAdded = false;
+	int EnemiesToSpawn = 0;
+	float EnemySpawnTimer = 0;
+	float EnemiesSpawnTimer = 0;
 };

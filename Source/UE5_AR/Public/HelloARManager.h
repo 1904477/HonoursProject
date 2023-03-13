@@ -34,7 +34,8 @@ public:
 		USceneComponent* SceneComponent;
 
 	UPROPERTY(Category = "LowestPlane", EditAnywhere, BlueprintReadWrite)
-	AARPlaneActor* LowestPlaneActor;		//Reference to the lowest PlaneActor
+	AARPlaneActor* LowestPlaneActor;		//Reference to the lowest PlaneActor.
+	AARPlaneActor* FirstTable;		//Reference to the first table detected.
 
 protected:
 	
@@ -43,7 +44,7 @@ protected:
 	AARPlaneActor* SpawnPlaneActor();	//Function to spawn Plane Actor.	
 	FColor GetPlaneColor(int Index);		
 
-	void UpdatePlaneActors();		// Updates the plane actors on every frame as long as the AR Session is running
+	void UpdatePlaneActors();		// Updates the plane actors on every frame as long as the AR Session is running.
 	void ResetARCoreSession();		//Reset AR session.
 	void PlaneTagUpdate();		//Function to update planes tags.
 	void AssignTag(AARPlaneActor* CurrentPlane);		//Function to decide what tag is assigned to iterated plane.
@@ -52,20 +53,20 @@ protected:
 	AARPlaneActor* PlaneActor;		//SinglePlaneActor
 
 
-	ACustomGameMode* GM;		//Reference to CustomGameMode
-	ACustomGameState* GS;		//Reference to CustomGameMode
+	ACustomGameMode* GM;		//Reference to CustomGameMode.
+	ACustomGameState* GS;		//Reference to CustomGameState.
 
-	TMap<UARPlaneGeometry*, AARPlaneActor*> PlaneActors;			//Map of geometry planes
+	TMap<UARPlaneGeometry*, AARPlaneActor*> PlaneActors;			//Map of geometry planes.
 
-	//Index for plane colours adn array of colours
+	//Index for plane colours adn array of colours.
 	int PlaneIndex = 0;
 	TArray<FColor> PlaneColors;
-
-	float TableHeight;	//Height at which planes are identified as table
-	float WallSize;		//Size at which planes are identified as wall
-
+	
+	float TableHeight;	//Height at which planes are identified as table.
+	float WallSize;		//Size at which planes are identified as wall.
+	bool IsFirstTableDetected = false;
 public:
-	// Configuration file for AR Session
+	// Configuration file for AR Session.
 	UARSessionConfig* Config;
 
 };

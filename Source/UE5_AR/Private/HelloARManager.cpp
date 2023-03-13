@@ -193,6 +193,11 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			if (CurrentPActor->Tags[0] != "table")
 				CurrentPActor->Tags.Empty();
 
+		if (IsFirstTableDetected == false)
+		{
+			FirstTable = CurrentPActor;
+			IsFirstTableDetected = true;
+		}
 		CurrentPActor->Tags.Add("table");
 	}
 	 if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor&& boxExtent.Z<2)

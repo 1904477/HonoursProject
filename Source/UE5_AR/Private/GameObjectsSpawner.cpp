@@ -4,6 +4,9 @@
 #include "GameObjectsSpawner.h"
 #include "CustomGameMode.h"
 #include "CustomGameState.h"
+#include "HelloARManager.h"
+#include "ARPlaneActor.h"
+#include "GunPickup.h"
 #include "GameManager.h"
 // Sets default values
 AGameObjectsSpawner::AGameObjectsSpawner() 
@@ -31,7 +34,6 @@ void AGameObjectsSpawner::BeginPlay()
 	if (GameState->SessionModeSelected == VirtualObstacles)
 	{
 		SpawnVirtualObstacles();
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("virtual obstacles spawned"));
 
 	}
 }
@@ -43,6 +45,7 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 	if (GameState->GetHasGameStarted() == true)
 	{
 		EnemiesSpawnerManager();
+
 	}
 }
 
@@ -55,7 +58,7 @@ void AGameObjectsSpawner::EnemiesSpawner()
 
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
-	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(PlacableToSpawn, spawnPos, MyRot, SpawnInfo);
+	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(EnemyToSpawn, spawnPos, MyRot, SpawnInfo);
 
 	Enemies.Add(Enemy);
 }
@@ -152,4 +155,13 @@ void AGameObjectsSpawner::SpawnSteps()
 
 		Steps.Add(Step);
 	}
+}
+
+void AGameObjectsSpawner::SpawnGun()
+{
+	FVector tablePos = CustomGameMode->ARManager->FirstTable->GetActorLocation();
+	const FActorSpawnParameters SpawnInfo;
+	const FRotator MyRot(0, 0, 0);
+	AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(tablePos.X, tablePos.Y, tablePos.Z), MyRot, SpawnInfo);
+
 }

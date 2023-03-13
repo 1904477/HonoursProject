@@ -36,6 +36,9 @@ void ACustomARPawn::BeginPlay()
 	Super::BeginPlay();
 	auto Temp = GetWorld()->GetAuthGameMode();
 	ACustomGameMode* GM = Cast<ACustomGameMode>(Temp);
+
+	auto Temp1 = GetWorld()->GetGameState();
+	GS = Cast<ACustomGameState>(Temp1);
 	GameManager = GM->GameManager;
 }
 
@@ -44,7 +47,7 @@ void ACustomARPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	APlayerCameraManager* camManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
+	camManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 	camLocation = camManager->GetCameraLocation();
 
 }
@@ -64,14 +67,41 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 {
 	if (GameManager)
 	{
-		// Perform a hitTest, get the return values as hitTesTResult
-		if (!WorldHitTest(FVector2D(ScreenPos), fHitRes))
+		FHitResult HitResult;
+		if (GS->GetIsIsGunCollected() == false)
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Gun is not collected"));
+
+			// Perform a hitTest, get the return values as hitTesTResult
+			if (!WorldHitTest(HitResult))
+			{
+				return;
+			}
 			// Get object of actor hit.
-			UClass* hitActorClass = UGameplayStatics::GetObjectClass(fHitRes.GetActor());
+			UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
 			// if we've hit a target.
-			if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ACustomPickup::StaticClass()))
-				UKismetSystemLibrary::PrintString(this, "Cube clicked!", true, true, FLinearColor(0, 0.66, 1, 1), 2);
+			if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, AGunPickup::StaticClass()))
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Picked weapon"));
+				GS->SetIsIsGunCollected(true);
+			}
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Gun is collected"));
+			// Perform a hitTest, get the return values as hitTesTResult
+			if (!WorldHitTest(HitResult))
+			{
+				return;
+			}
+			// Get object of actor hit.
+			UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
+			// if we've hit a target.
+			if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
+			{
+				ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
+				GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("suii"));
+			}
 		}
 	}
 }
@@ -81,21 +111,17 @@ void ACustomARPawn::OnScreenRelease(const ETouchIndex::Type FingerIndex, const F
 
 }
 
-bool ACustomARPawn::WorldHitTest(FVector2D screenTouch, FHitResult fHit)
+bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
 {
 	// Get player controller
 	APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
 	// Perform deprojection taking 2d clicked area and generating reference in 3d world-space.
-	FVector worldPosition;
-	FVector worldDirection; // Unit Vector
-	bool deprojectionSuccess = UGameplayStatics::DeprojectScreenToWorld(playerController, screenTouch, /*out*/
-		worldPosition, /*out*/ worldDirection);
-
 	// construct trace vector (from point clicked to 1000.0 units beyond in same direction)
-	FVector traceEndVector = worldDirection * 1000.0;
-	traceEndVector = worldPosition + traceEndVector;
+	FVector traceEndVector = camManager->GetActorForwardVector() * 1000.0;
+	traceEndVector = camLocation + traceEndVector;
+	DrawDebugSphere(GetWorld(), traceEndVector, 80, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
 	// perform line trace (Raycast)
-	bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit, worldPosition, traceEndVector,
+	bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit, camLocation, traceEndVector,
 		ECollisionChannel::ECC_WorldDynamic);
 	// return if the operation was successful
 	return traceSuccess;

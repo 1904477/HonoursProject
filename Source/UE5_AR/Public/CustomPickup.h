@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
+
 #include "CustomPickup.generated.h"
 
 UCLASS()
@@ -25,8 +27,7 @@ public:
 
 
 	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
+		UBoxComponent* BoxComponent;
+	UPROPERTY(Category = "PickupSceneComponent", VisibleAnywhere, BlueprintReadWrite)
 		USceneComponent* SceneComponent;
-	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
-		UStaticMeshComponent* StaticMeshComponent;
-
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CustomPickup.h"
+#include "CustomGameState.h"
 #include "GunPickup.generated.h"
 
 /**
@@ -26,5 +27,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	bool IsPicked;
+	UPROPERTY(Category = "GunComponent", EditAnywhere, BlueprintReadWrite)
+		USkeletalMeshComponent* SkeletalMesh;
+
+	ACustomGameState* GS;
+	bool isGunPicked = false;
 };
