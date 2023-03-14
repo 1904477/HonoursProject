@@ -12,6 +12,8 @@ ACustomGameState::ACustomGameState()
 	AreARPlanesDisplayed = true;
 	Health = 100;
 	SessionModeSelected = VirtualObstacles;
+	ReloadNumber = 4;
+	AmmoNumber = 10;
 }
 
 
@@ -58,6 +60,26 @@ void ACustomGameState::SetHealth(bool b)
 int ACustomGameState::GetHealth()
 {
 	return Health;
+}
+
+void ACustomGameState::SetAmmo(int b)
+{
+	AmmoNumber = b;
+}
+
+int ACustomGameState::GetAmmo()
+{
+	return AmmoNumber;
+}
+
+void ACustomGameState::SetAmmoReload(int b)
+{
+	ReloadNumber = b;
+}
+
+int ACustomGameState::GetAmmoReload()
+{
+	return ReloadNumber;
 }
 
 bool ACustomGameState::GetAreARPlanesDisplayed()

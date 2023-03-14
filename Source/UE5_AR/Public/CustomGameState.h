@@ -44,6 +44,16 @@ public:
 	void SetHealth(bool b);
 	UFUNCTION(Category = "Health", BlueprintCallable)
 	int GetHealth();
+	UFUNCTION(Category = "Ammo", BlueprintCallable)
+	void SetAmmo(int b);
+	UFUNCTION(Category = "Ammo", BlueprintCallable)
+	int GetAmmo();
+	UFUNCTION(Category = "Ammo", BlueprintCallable)
+	void SetAmmoReload(int b);
+	UFUNCTION(Category = "Ammo", BlueprintCallable)
+	int GetAmmoReload();
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SessionMode")
 		TEnumAsByte<SessionMode> SessionModeSelected;
 
@@ -53,5 +63,6 @@ private:
 		bool AreARPlanesDisplayed;
 		bool IsGunCollected;
 		int Health;
-
+		int AmmoNumber;
+		int ReloadNumber;
 };

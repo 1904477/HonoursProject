@@ -25,7 +25,6 @@ AGunPickup::AGunPickup()
 
 	DrawDebugSphere(GetWorld(), GetActorLocation(), 15, 1,FColor::Emerald, false, 10.0f, 0, 2);
 
-
 }
 
 void AGunPickup::BeginPlay()
