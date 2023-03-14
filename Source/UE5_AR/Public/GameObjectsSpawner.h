@@ -54,7 +54,8 @@ public:
 	UPoissonSampler* PoissonSampler;
 
 	bool isComponentAdded = false;
-	int EnemiesToSpawn = 0;
+	bool isGunSpawned = false;
+	int   EnemiesToSpawn = 0;
 	float EnemySpawnTimer = 0;
 	float EnemiesSpawnTimer = 0;
 };

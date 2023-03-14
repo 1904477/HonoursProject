@@ -48,6 +48,8 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 	EnemyStatusManager();
 	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(10, 10, 30), BoxColor, false, 0.0f, 0, 1.17);
 
+	if (Health <= 0)
+		Destroy();
 }
 
 // Called to bind functionality to input

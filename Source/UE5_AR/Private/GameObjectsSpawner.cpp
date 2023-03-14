@@ -34,7 +34,11 @@ void AGameObjectsSpawner::BeginPlay()
 	if (GameState->SessionModeSelected == VirtualObstacles)
 	{
 		SpawnVirtualObstacles();
-
+	}
+	if (!isGunSpawned)
+	{
+		SpawnGun();
+		isGunSpawned = true;
 	}
 }
 
@@ -45,7 +49,6 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 	if (GameState->GetHasGameStarted() == true)
 	{
 		EnemiesSpawnerManager();
-
 	}
 }
 
@@ -163,5 +166,6 @@ void AGameObjectsSpawner::SpawnGun()
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
 	AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(tablePos.X, tablePos.Y, tablePos.Z), MyRot, SpawnInfo);
+	//AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(5,5,5), MyRot, SpawnInfo);
 
 }

@@ -22,6 +22,10 @@ AGunPickup::AGunPickup()
 	BoxComponent->SetWorldScale3D(FVector(0.4, 1, 0.5));
 	BoxComponent->SetRelativeLocation(FVector(-40, 0, 30));
 	BoxComponent->SetCollisionProfileName("BlockAll");
+
+	DrawDebugSphere(GetWorld(), GetActorLocation(), 80, 1,FColor::Emerald, false, 10.0f, 0, 2);
+
+
 }
 
 void AGunPickup::BeginPlay()
@@ -33,17 +37,14 @@ void AGunPickup::BeginPlay()
 	FVector origin;
 	FVector boxExtent;
 	GetActorBounds(false, origin, boxExtent);
-	SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, BoxComponent->GetScaledBoxExtent().Z));
+	SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y,GetActorLocation().Z+ BoxComponent->GetScaledBoxExtent().Z));
+
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, TEXT("GUN SPAWNED"));
+
 }
 
 void AGunPickup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//if (GS->GetIsIsGunCollected() == true&& isGunPicked == false)
-	//{
-	//	SetActorLocation(GetActorLocation());
-	//	
-	//	NewActor1->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
-	//	isGunPicked = true;
-	//}
+
 }

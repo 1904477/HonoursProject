@@ -58,7 +58,7 @@ public:
 	float StateSwitchTimer = 0;
 	float SuspiciousDistance = 0;
 	float AttackDistance = 0;
-
+	float Health = 100;
 	FColor BoxColor;
 
 protected:

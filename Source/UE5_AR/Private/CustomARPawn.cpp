@@ -88,7 +88,6 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Gun is collected"));
 			// Perform a hitTest, get the return values as hitTesTResult
 			if (!WorldHitTest(HitResult))
 			{
@@ -100,7 +99,8 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 			if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
 			{
 				ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
-				GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("suii"));
+				HitEnemy->Health -= 20;
+
 			}
 		}
 	}
@@ -119,7 +119,6 @@ bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
 	// construct trace vector (from point clicked to 1000.0 units beyond in same direction)
 	FVector traceEndVector = camManager->GetActorForwardVector() * 1000.0;
 	traceEndVector = camLocation + traceEndVector;
-	DrawDebugSphere(GetWorld(), traceEndVector, 80, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
 	// perform line trace (Raycast)
 	bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit, camLocation, traceEndVector,
 		ECollisionChannel::ECC_WorldDynamic);
