@@ -61,7 +61,7 @@ void AGameObjectsSpawner::EnemiesSpawner()
 
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
-	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(EnemyToSpawn, spawnPos, MyRot, SpawnInfo);
+	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(EnemyToSpawn, FVector(spawnPos.X, spawnPos.Y, spawnPos.Z+5), MyRot, SpawnInfo);
 
 	Enemies.Add(Enemy);
 }
@@ -162,10 +162,18 @@ void AGameObjectsSpawner::SpawnSteps()
 
 void AGameObjectsSpawner::SpawnGun()
 {
-	FVector tablePos = CustomGameMode->ARManager->FirstTable->GetActorLocation();
-	const FActorSpawnParameters SpawnInfo;
-	const FRotator MyRot(0, 0, 0);
-	AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(tablePos.X, tablePos.Y, tablePos.Z), MyRot, SpawnInfo);
-	//AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(5,5,5), MyRot, SpawnInfo);
-
+	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
+	{
+		FVector tablePos = CustomGameMode->ARManager->FirstTable->GetActorLocation();
+		const FActorSpawnParameters SpawnInfo;
+		const FRotator MyRot(0, 0, 0);
+		AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(tablePos.X, tablePos.Y, tablePos.Z), MyRot, SpawnInfo);
+		//AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(5,5,5), MyRot, SpawnInfo);
+	}
+	else
+	{
+		const FActorSpawnParameters SpawnInfo;
+		const FRotator MyRot(0, 0, 0);
+		AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(5,5,5), MyRot, SpawnInfo);
+	}
 }

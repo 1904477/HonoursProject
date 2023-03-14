@@ -23,7 +23,7 @@ AGunPickup::AGunPickup()
 	BoxComponent->SetRelativeLocation(FVector(-40, 0, 30));
 	BoxComponent->SetCollisionProfileName("BlockAll");
 
-	DrawDebugSphere(GetWorld(), GetActorLocation(), 80, 1,FColor::Emerald, false, 10.0f, 0, 2);
+	DrawDebugSphere(GetWorld(), GetActorLocation(), 15, 1,FColor::Emerald, false, 10.0f, 0, 2);
 
 
 }
@@ -46,5 +46,4 @@ void AGunPickup::BeginPlay()
 void AGunPickup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }

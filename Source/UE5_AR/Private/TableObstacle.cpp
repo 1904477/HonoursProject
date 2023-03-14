@@ -10,7 +10,7 @@ ATableObstacle::ATableObstacle()
 {
 	Tags.Add("Table");
 	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshObj(TEXT("StaticMesh'/Game/StarterContent/Props/SM_Shelf.SM_Shelf'"));
-	SetActorScale3D(FVector(1.2, 1.2, 1.2));
+	SetActorScale3D(FVector(2, 1, 2));
 	StaticMeshComponent->SetStaticMesh(MeshObj.Object);
 	BoxComponent->SetWorldScale3D(FVector(1.0f, 3.2f, 0.4f));
 	BoxComponent->SetRelativeLocation(FVector(0, 0, -10));
@@ -31,7 +31,6 @@ void ATableObstacle::BeginPlay()
 		FVector boxExtent;
 		GetActorBounds(false, origin, boxExtent);
 		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + BoxComponent->GetScaledBoxExtent().Z));
-	
 	}
 	else
 	{
@@ -46,6 +45,5 @@ void ATableObstacle::BeginPlay()
 void ATableObstacle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
