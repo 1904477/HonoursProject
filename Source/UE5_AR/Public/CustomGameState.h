@@ -41,7 +41,7 @@ public:
 	UFUNCTION(Category = "GunCollected", BlueprintCallable)
 	void SetIsIsGunCollected(bool b);
 	UFUNCTION(Category = "Health", BlueprintCallable)
-	void SetHealth(bool b);
+	void SetHealth(int b);
 	UFUNCTION(Category = "Health", BlueprintCallable)
 	int GetHealth();
 	UFUNCTION(Category = "Ammo", BlueprintCallable)

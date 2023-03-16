@@ -84,7 +84,7 @@ void ASpawnedEnemy::EnemyWander()
 
 }
 
-void ASpawnedEnemy::EnemyAttacking()
+void ASpawnedEnemy::EnemyCharging()
 {
 	AIController->MoveToLocation(Player->camLocation, -1, true, true);
 }
@@ -98,7 +98,7 @@ void ASpawnedEnemy::EnemyStatusManager()
 {
 	if (AIController)
 	{
-		if(EnemyStatus !=Suspicious&&EnemyStatus!=Attacking)
+		if(EnemyStatus !=Suspicious&&EnemyStatus!= Charging)
 		{
 			EnemyStatusTimer += GetWorld()->GetDeltaSeconds();
 			int randomChoice = FMath::RandRange(1, 2);		//Random choice in Enemy Finite State Machine
@@ -127,19 +127,19 @@ void ASpawnedEnemy::EnemyStatusManager()
 				GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
 			}
 		}
-		else if(EnemyStatus == Suspicious&&EnemyStatus!=Attacking)
+		else if(EnemyStatus == Suspicious&&EnemyStatus!= Charging)
 		{
 			EnemySuspicious();
-			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyAttackDistance)		//If enemy is suspicious and player is close, enemy attacks.
+			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyChargeDistance)		//If enemy is suspicious and player is close, enemy attacks.
 			{
 				GetCharacterMovement()->MaxWalkSpeed = 60.0f;		//In attack state, enemy is faster
-				EnemyStatus = Attacking;
+				EnemyStatus = Charging;
 				BoxColor = FColor::Red;
 			}
 		}
-		else if (EnemyStatus == Attacking)
+		else if (EnemyStatus == Charging)
 		{
-			EnemyAttacking();
+			EnemyCharging();
 		}
 	}
 }

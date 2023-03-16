@@ -17,6 +17,7 @@ enum Status
 	Idle     UMETA(DisplayName = "Idle"),
 	Wandering      UMETA(DisplayName = "Wandering"),
 	Suspicious   UMETA(DisplayName = "Suspicious"),
+	Charging   UMETA(DisplayName = "Charging"),
 	Attacking   UMETA(DisplayName = "Attacking"),
 };
 UCLASS()
@@ -43,7 +44,7 @@ public:
 
 	void EnemyWander();
 
-	void EnemyAttacking();
+	void EnemyCharging();
 
 	void ClosestObstacleChecker();
 
@@ -57,7 +58,7 @@ public:
 	float AttackCooldown = 0;
 	float StateSwitchTimer = 0;
 	float SuspiciousDistance = 0;
-	float AttackDistance = 0;
+	float ChargeDistance = 0;
 	float Health = 100;
 	FColor BoxColor;
 

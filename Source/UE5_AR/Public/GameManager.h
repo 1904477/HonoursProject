@@ -43,7 +43,7 @@ public:
 	UPROPERTY(Category = "EnemiesBehaviour", EditAnywhere, BlueprintReadWrite)
 		float EnemySuspiciousDistance;
 	UPROPERTY(Category = "EnemiesBehaviour", EditAnywhere, BlueprintReadWrite)
-		float EnemyAttackDistance;	
+		float EnemyChargeDistance;	
 
 	UPROPERTY(Category = "PoissonInfo", EditAnywhere, BlueprintReadWrite)
 		int MainPointsSpawnNum;

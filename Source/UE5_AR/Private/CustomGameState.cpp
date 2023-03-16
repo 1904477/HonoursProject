@@ -52,7 +52,7 @@ void ACustomGameState::SetIsIsGunCollected(bool b)
 	IsGunCollected = b;
 }
 
-void ACustomGameState::SetHealth(bool b)
+void ACustomGameState::SetHealth(int b)
 {
 	Health = b;
 }
