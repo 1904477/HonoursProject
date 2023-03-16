@@ -22,11 +22,8 @@ void ASpawnedEnemy::BeginPlay()
 	Super::BeginPlay();
 	SetActorScale3D(FVector(0.6, 0.6, 0.6));			//Scale Enemy
 
-	auto Temp = GetWorld()->GetAuthGameMode();		//Get gamemode and pawn
 	auto PTemp = GetWorld()->GetFirstPlayerController()->GetPawn();		
-	GM = Cast<ACustomGameMode>(Temp);
 	Player = Cast<ACustomARPawn>(PTemp);
-
 
 	GetMesh()->BodyInstance.bLockYRotation = true;		//Lock rotation so that characters do not rotate in other directions
 	GetMesh()->BodyInstance.bLockXRotation = true;
@@ -34,7 +31,6 @@ void ASpawnedEnemy::BeginPlay()
 	EnemyStatus = Idle;		//Starting status is idle.
 	WanderRadius = 500.0f;		//Radius for wander area.
 	StateSwitchTimer = 2.5f;	//How long before the enemy switches state.
-	AttackCooldown = 4.0f;		//Cooldown for attack
 	BoxColor = FColor::White;	
 
 	AIController = Cast<AAIController>(GetController());
@@ -49,7 +45,11 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(10, 10, 30), BoxColor, false, 0.0f, 0, 1.17);
 
 	if (Health <= 0)
+	{
 		Destroy();
+		int tmp = GS->GetScore();
+		GS->SetScore(tmp += 10);
+	}
 }
 
 // Called to bind functionality to input
@@ -98,7 +98,7 @@ void ASpawnedEnemy::EnemyStatusManager()
 {
 	if (AIController)
 	{
-		if(EnemyStatus !=Suspicious&&EnemyStatus!= Charging)
+		if(EnemyStatus !=Suspicious&&EnemyStatus!= Charging&&EnemyStatus!=Attacking)
 		{
 			EnemyStatusTimer += GetWorld()->GetDeltaSeconds();
 			int randomChoice = FMath::RandRange(1, 2);		//Random choice in Enemy Finite State Machine
@@ -127,7 +127,7 @@ void ASpawnedEnemy::EnemyStatusManager()
 				GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
 			}
 		}
-		else if(EnemyStatus == Suspicious&&EnemyStatus!= Charging)
+		else if(EnemyStatus == Suspicious&&EnemyStatus!= Charging&&EnemyStatus!=Attacking)
 		{
 			EnemySuspicious();
 			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyChargeDistance)		//If enemy is suspicious and player is close, enemy attacks.

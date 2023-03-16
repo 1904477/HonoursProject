@@ -6,6 +6,7 @@
 #include "PlaceableCharacter.h"
 #include "AIController.h"
 #include "NavigationSystem.h"
+#include "CustomGameState.h"
 #include "SpawnedEnemy.generated.h"
 class ACustomGameMode;
 class ACustomARPawn;
@@ -55,7 +56,6 @@ public:
 	float WanderRadius;
 	float SpawnRadius = 500;
 	float SuspiciousTimer = 0;
-	float AttackCooldown = 0;
 	float StateSwitchTimer = 0;
 	float SuspiciousDistance = 0;
 	float ChargeDistance = 0;

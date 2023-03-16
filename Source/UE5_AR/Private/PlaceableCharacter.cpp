@@ -27,6 +27,10 @@ void APlaceableCharacter::BeginPlay()
 	auto Temp = GetWorld()->GetAuthGameMode();
 	SetActorScale3D(FVector(0.15,0.15,0.15));
 	GM = Cast<ACustomGameMode>(Temp);
+
+	auto GSTemp = GetWorld()->GetGameState();
+	GS = Cast<ACustomGameState>(GSTemp);
+
 }
 
 // Called to bind functionality to input

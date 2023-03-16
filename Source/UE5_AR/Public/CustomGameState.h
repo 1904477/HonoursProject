@@ -52,7 +52,10 @@ public:
 	void SetAmmoReload(int b);
 	UFUNCTION(Category = "Ammo", BlueprintCallable)
 	int GetAmmoReload();
-
+	UFUNCTION(Category = "Score", BlueprintCallable)
+	void SetScore(int b);
+	UFUNCTION(Category = "Score", BlueprintCallable)
+	int GetScore();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SessionMode")
 		TEnumAsByte<SessionMode> SessionModeSelected;
@@ -65,4 +68,5 @@ private:
 		int Health;
 		int AmmoNumber;
 		int ReloadNumber;
+		int Score;
 };

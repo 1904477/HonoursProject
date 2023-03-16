@@ -82,6 +82,16 @@ int ACustomGameState::GetAmmoReload()
 	return ReloadNumber;
 }
 
+void ACustomGameState::SetScore(int b)
+{
+	Score = b;
+}
+
+int ACustomGameState::GetScore()
+{
+	return Score;
+}
+
 bool ACustomGameState::GetAreARPlanesDisplayed()
 {
 	return AreARPlanesDisplayed;

@@ -57,11 +57,11 @@ void AGameObjectsSpawner::EnemiesSpawner()
 	int randSpawnPoint= FMath::RandRange(0, PoissonSampler->SecondaryPoints.Num()-1);;
 
 	FVector spawnPos = PoissonSampler->SecondaryPoints[randSpawnPoint];
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, PoissonSampler->SecondaryPoints[randSpawnPoint].ToString());
 
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
-	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(EnemyToSpawn, FVector(spawnPos.X, spawnPos.Y, spawnPos.Z+5), MyRot, SpawnInfo);
+	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(EnemyToSpawn, FVector(spawnPos.X, spawnPos.Y, spawnPos.Z+25), MyRot, SpawnInfo);
+	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, Enemy->GetActorLocation().ToString());
 
 	Enemies.Add(Enemy);
 }

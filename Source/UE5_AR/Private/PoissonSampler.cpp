@@ -33,11 +33,10 @@ void UPoissonSampler::BeginPlay()
 
 
     for (int i = 0; i < MainPoints.Num(); i++)      //Draw debug spheres to know where main points are.
-        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 3),80, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
+        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, 3), 80, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
+
     for (int i = 0; i < SecondaryPoints.Num(); i++)     //Draw debug spheres to know where secondary points are.
-    {
-        DrawDebugSphere(GetWorld(),SecondaryPoints[i], 80, 1, FColor::Cyan, false, 10.0f, 0, 2);
-    }
+        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, 3), 80, 1, FColor::Cyan, false, 10.0f, 0, 2);
 }
 
 // Called every frame
@@ -122,7 +121,7 @@ bool UPoissonSampler::inNeighbourhood(FVector point, float mindist, float distTo
     for (auto& It : MainPoints)
     {
         //Check if point is too close to other main points or if point is too close to player location.
-        if ((point- It).Length() <mindist && (It-Player->camLocation).Length() <  distToPlayer)
+        if ((point- It).Length() <mindist || (point-Player->camLocation).Length() <  distToPlayer)
             return true;
     }
     return false;

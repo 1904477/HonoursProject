@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "CustomGameMode.h"
+#include "CustomGameState.h"
 #include "PlaceableCharacter.generated.h"
 class UARPin;
 
@@ -38,6 +39,7 @@ public:
 	//	UPROPERTY(Category = "PlaceableActorMaterial", EditAnywhere, BlueprintReadWrite)
 
 	ACustomGameMode* GM;
+	ACustomGameState* GS;
 
 
 	UPROPERTY(Category = "CharacterMovement", EditAnywhere, BlueprintReadWrite)
