@@ -67,7 +67,7 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 {
 	if (GameManager)
 	{
-		if (GS->GetHasGameStarted())
+		if (GS->GetIsEnvironmentScanned())
 		{
 			FHitResult HitResult;
 			if (GS->GetIsIsGunCollected() == false)
@@ -86,7 +86,10 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat((Gun->GetActorLocation() - GetActorLocation()).Length()));
 
 					if ((Gun->GetActorLocation() - GetActorLocation()).Length() < 200)
+					{
 						GS->SetIsIsGunCollected(true);
+						Gun->BoxComponent->SetCollisionProfileName("NoCollision");
+					}
 				}
 			}
 			else
@@ -98,8 +101,10 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 				}
 				// Get object of actor hit.
 				UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
+				GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, HitResult.GetComponent()->GetName());
+
 				// if we've hit a target.
-				if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
+				if ((UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass())&&GS->GetAmmo()>0))
 				{
 					ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
 					HitEnemy->Health -= 20;
@@ -121,7 +126,7 @@ bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
 	APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
 	// Perform deprojection taking 2d clicked area and generating reference in 3d world-space.
 	// construct trace vector (from point clicked to 1000.0 units beyond in same direction)
-	FVector traceEndVector = camManager->GetActorForwardVector() * 1000.0;
+	FVector traceEndVector = camManager->GetActorForwardVector() * 2000.0f;
 	traceEndVector = camLocation + traceEndVector;
 	// perform line trace (Raycast)
 	bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit, camLocation, traceEndVector,

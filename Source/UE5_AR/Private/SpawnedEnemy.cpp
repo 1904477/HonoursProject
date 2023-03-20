@@ -20,7 +20,8 @@ ASpawnedEnemy::ASpawnedEnemy()
 void ASpawnedEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	SetActorScale3D(FVector(0.6, 0.6, 0.6));			//Scale Enemy
+	
+	//SetActorScale3D(FVector(0.6, 0.6, 0.6));			//Scale Enemy
 
 	auto PTemp = GetWorld()->GetFirstPlayerController()->GetPawn();		
 	Player = Cast<ACustomARPawn>(PTemp);
@@ -44,7 +45,7 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	EnemyStatusManager();
 	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(10, 10, 30), BoxColor, false, 0.0f, 0, 1.17);
-	DrawDebugString(GetWorld(), FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 10), FString::SanitizeFloat(Health), NULL, FColor::Cyan, 0.1, false, 3);
+	DrawDebugString(GetWorld(), FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 10), FString::SanitizeFloat(Health), NULL, FColor::Cyan, 0.01, false, 3);
 
 	if (Health <= 0)
 	{
