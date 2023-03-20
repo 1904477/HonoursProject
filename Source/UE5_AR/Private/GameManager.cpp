@@ -18,7 +18,6 @@ AGameManager::AGameManager()
 void AGameManager::BeginPlay()
 {
 	Super::BeginPlay();
-	EnemiesToSpawn = 5;
 	auto GS = GetWorld()->GetGameState();
 	GameState = Cast<ACustomGameState>(GS);
 }

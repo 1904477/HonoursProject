@@ -81,18 +81,19 @@ void UPoissonSampler::SecondaryPointsGeneration(float minDistSecPoints, int seco
         int pointCount = FMath::RandRange(1, secondary_points);     //Generate a random range of secondary spawning points.
         for (int j = 0; j < pointCount; j++)      //For each secondary point.
         {
-            bool isClose = false;       //Track if the point generated is close enough to other points, false by default.
             FNavLocation RandomSpawnPosNavLoc;
             FVector SpawnPos;
-            while (isClose == false)        //Generate the secondary point until the generated point is close enough to the main point.
+            IsSecondaryPointClose = false;
+            while (IsSecondaryPointClose == false)        //Generate the secondary point until the generated point is close enough to the main point.
             {
+                IsSecondaryPointClose = false;
                 if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLoc)) //Get random position in navmesh
                 {
                     // if we were successfull in finding a new location...
                     SpawnPos = RandomSpawnPosNavLoc.Location;		//Save random position in navmesh in FVector
                 }
-                if ((RandomSpawnPosNavLoc.Location- MainPoints[i]).Length() < minDistSecPoints)  //If the secondary point is close enough to the main point.
-                    isClose = true;
+                if ((RandomSpawnPosNavLoc.Location - MainPoints[i]).Length() < minDistSecPoints)  //If the secondary point is close enough to the main point.
+                    IsSecondaryPointClose = true;
             }
             SecondaryPoints.Push(RandomSpawnPosNavLoc);      //Push secondary point into secondary points array.
         }
@@ -103,7 +104,7 @@ TArray<FVector> UPoissonSampler::GeneratePoisson(float minDistMainPoints,float m
 {
     NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());        //Get navmesh from the world.
     MainPoints.Push(MainPointsGeneration(minDistMainPoints, new_points_count, distToPlayer, "first"));      //Generate first main point
-
+    
     for (int i = 0; i < new_points_count; i++)      //From first point, generate other N points.
     {
         MainPoints.Push(MainPointsGeneration(minDistMainPoints, new_points_count, distToPlayer, "main"));       //Push randomly generated point into array of main points.

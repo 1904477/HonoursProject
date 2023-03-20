@@ -67,40 +67,44 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 {
 	if (GameManager)
 	{
-		FHitResult HitResult;
-		if (GS->GetIsIsGunCollected() == false)
+		if (GS->GetHasGameStarted())
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Gun is not collected"));
+			FHitResult HitResult;
+			if (GS->GetIsIsGunCollected() == false)
+			{
+				// Perform a hitTest, get the return values as hitTesTResult
+				if (!WorldHitTest(HitResult))
+				{
+					return;
+				}
+				// Get object of actor hit.
+				UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
+				// if we've hit a target.
+				if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, AGunPickup::StaticClass()))
+				{
+					AGunPickup* Gun = Cast<AGunPickup>(HitResult.GetActor());
+					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat((Gun->GetActorLocation() - GetActorLocation()).Length()));
 
-			// Perform a hitTest, get the return values as hitTesTResult
-			if (!WorldHitTest(HitResult))
-			{
-				return;
+					if ((Gun->GetActorLocation() - GetActorLocation()).Length() < 200)
+						GS->SetIsIsGunCollected(true);
+				}
 			}
-			// Get object of actor hit.
-			UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
-			// if we've hit a target.
-			if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, AGunPickup::StaticClass()))
+			else
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Picked weapon"));
-				GS->SetIsIsGunCollected(true);
-			}
-		}
-		else
-		{
-			// Perform a hitTest, get the return values as hitTesTResult
-			if (!WorldHitTest(HitResult))
-			{
-				return;
-			}
-			// Get object of actor hit.
-			UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
-			// if we've hit a target.
-			if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
-			{
-				ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
-				HitEnemy->Health -= 20;
+				// Perform a hitTest, get the return values as hitTesTResult
+				if (!WorldHitTest(HitResult))
+				{
+					return;
+				}
+				// Get object of actor hit.
+				UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
+				// if we've hit a target.
+				if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
+				{
+					ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
+					HitEnemy->Health -= 20;
 
+				}
 			}
 		}
 	}

@@ -35,7 +35,8 @@ void ASpawnedEnemy::BeginPlay()
 
 	AIController = Cast<AAIController>(GetController());
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
-	
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, TEXT("Enemy Spawned"));
+
 }
 
 void ASpawnedEnemy::Tick(float DeltaTime)
@@ -43,6 +44,7 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	EnemyStatusManager();
 	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(10, 10, 30), BoxColor, false, 0.0f, 0, 1.17);
+	DrawDebugString(GetWorld(), FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 10), FString::SanitizeFloat(Health), NULL, FColor::Cyan, 0.1, false, 3);
 
 	if (Health <= 0)
 	{

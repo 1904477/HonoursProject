@@ -43,4 +43,6 @@ protected:
 	UNavigationSystemV1* NavigationArea;	//Navigation area, necessary for distributing the points in the navmesh.
 	ACustomARPawn* Player;					//Player reference to generate main points.
 	ACustomGameMode* CustomGameMode;			//Gamemode to obtain AR manager and lowest plane position.
+
+	bool IsSecondaryPointClose;       
 };
