@@ -10,6 +10,7 @@
 class UCameraComponent;
 class UCapsuleComponent;
 class ACustomGameMode;
+class AGunPickup;
 
 UCLASS()
 class UE5_AR_API ACustomARPawn : public APawn
@@ -50,7 +51,10 @@ public:
 	
 	ACustomGameState* GS;
 
+	AGunPickup* Gun;
+
 	FVector camLocation;
+
 
 	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadOnly)
 	APlayerCameraManager* camManager;

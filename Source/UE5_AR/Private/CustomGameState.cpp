@@ -92,6 +92,16 @@ int ACustomGameState::GetScore()
 	return Score;
 }
 
+bool ACustomGameState::GetIsIsIsOneEnemyAlive()
+{
+	return IsOneEnemyAlive;
+}
+
+void ACustomGameState::SetIsIsIsOneEnemyAlive(bool b)
+{
+	IsOneEnemyAlive = b;
+}
+
 bool ACustomGameState::GetAreARPlanesDisplayed()
 {
 	return AreARPlanesDisplayed;

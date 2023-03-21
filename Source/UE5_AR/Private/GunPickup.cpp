@@ -35,7 +35,6 @@ void AGunPickup::BeginPlay()
 	FVector boxExtent;
 	GetActorBounds(false, origin, boxExtent);
 	SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y,GetActorLocation().Z+ BoxComponent->GetScaledBoxExtent().Z));
-
 }
 
 void AGunPickup::Tick(float DeltaTime)
