@@ -42,6 +42,7 @@ void ACustomGameMode::StartPlayEvent_Implementation()
 void ACustomGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	
 }
 
 

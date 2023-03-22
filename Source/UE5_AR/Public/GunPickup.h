@@ -30,6 +30,12 @@ public:
 	UPROPERTY(Category = "GunComponent", EditAnywhere, BlueprintReadWrite)
 		USkeletalMeshComponent* SkeletalMesh;
 
+
+	UPROPERTY(Category = "GunAnimation", VisibleAnywhere, BlueprintReadWrite)
+		bool inShootingAnimation = false;
+
 	ACustomGameState* GS;
 	bool isGunPicked = false;
+
+
 };

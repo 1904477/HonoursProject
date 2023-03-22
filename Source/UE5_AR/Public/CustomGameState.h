@@ -56,9 +56,13 @@ public:
 	void SetScore(int b);
 	UFUNCTION(Category = "Score", BlueprintCallable)
 	int GetScore();
+	UFUNCTION(Category = "EnemyAlive", BlueprintCallable)
+	bool GetIsIsIsOneEnemyAlive();
+	UFUNCTION(Category = "GunCollected", BlueprintCallable)
+	void SetIsIsIsOneEnemyAlive(bool b);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SessionMode")
-		TEnumAsByte<SessionMode> SessionModeSelected;
+	TEnumAsByte<SessionMode> SessionModeSelected;
 
 private:
 		bool HasGameStarted;
@@ -69,4 +73,5 @@ private:
 		int AmmoNumber;
 		int ReloadNumber;
 		int Score;
+		bool IsOneEnemyAlive;
 };

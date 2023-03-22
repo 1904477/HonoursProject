@@ -49,14 +49,12 @@ void ACustomARPawn::Tick(float DeltaTime)
 
 	camManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 	camLocation = camManager->GetCameraLocation();
-
 }
 
 // Called to bind functionality to input
 void ACustomARPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 	//Bind various player inputs to functions
 	// There are a few types - BindTouch, BindAxis, and BindEvent.  
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ACustomARPawn::OnScreenTouch);
@@ -67,40 +65,51 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 {
 	if (GameManager)
 	{
-		FHitResult HitResult;
-		if (GS->GetIsIsGunCollected() == false)
+		if (GS->GetIsEnvironmentScanned())
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Gun is not collected"));
+			FHitResult HitResult;
+			if (GS->GetIsIsGunCollected() == false)
+			{
+				// Perform a hitTest, get the return values as hitTesTResult
+				if (!WorldHitTest(HitResult))
+				{
+					return;
+				}
+				// Get object of actor hit.
+				UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
+				// if we've hit a target.
+				if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, AGunPickup::StaticClass()))
+				{
+					Gun = Cast<AGunPickup>(HitResult.GetActor());
+					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat((Gun->GetActorLocation() - GetActorLocation()).Length()));
 
-			// Perform a hitTest, get the return values as hitTesTResult
-			if (!WorldHitTest(HitResult))
-			{
-				return;
+					if ((Gun->GetActorLocation() - GetActorLocation()).Length() < 200)
+					{
+						GS->SetIsIsGunCollected(true);
+						Gun->BoxComponent->SetCollisionProfileName("NoCollision");
+					}
+				}
 			}
-			// Get object of actor hit.
-			UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
-			// if we've hit a target.
-			if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, AGunPickup::StaticClass()))
+			else
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Picked weapon"));
-				GS->SetIsIsGunCollected(true);
-			}
-		}
-		else
-		{
-			// Perform a hitTest, get the return values as hitTesTResult
-			if (!WorldHitTest(HitResult))
-			{
-				return;
-			}
-			// Get object of actor hit.
-			UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
-			// if we've hit a target.
-			if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
-			{
-				ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
-				HitEnemy->Health -= 20;
+				if (Gun->inShootingAnimation)
+				{
+					// Perform a hitTest, get the return values as hitTesTResult
+					if (!WorldHitTest(HitResult))
+					{
+						return;
+					}
+					// Get object of actor hit.
+					UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
+					GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, HitResult.GetComponent()->GetName());
 
+					// if we've hit a target.
+					if ((UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()) && GS->GetAmmo() > 0))
+					{
+						ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
+						HitEnemy->Health -= 20;
+					}
+				}
 			}
 		}
 	}
@@ -108,7 +117,6 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 
 void ACustomARPawn::OnScreenRelease(const ETouchIndex::Type FingerIndex, const FVector ScreenPos)
 {
-
 }
 
 bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
@@ -117,7 +125,7 @@ bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
 	APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
 	// Perform deprojection taking 2d clicked area and generating reference in 3d world-space.
 	// construct trace vector (from point clicked to 1000.0 units beyond in same direction)
-	FVector traceEndVector = camManager->GetActorForwardVector() * 1000.0;
+	FVector traceEndVector = camManager->GetActorForwardVector() * 2000.0f;
 	traceEndVector = camLocation + traceEndVector;
 	// perform line trace (Raycast)
 	bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit, camLocation, traceEndVector,

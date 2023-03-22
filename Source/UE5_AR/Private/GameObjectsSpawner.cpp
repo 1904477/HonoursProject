@@ -50,6 +50,15 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 	{
 		EnemiesSpawnerManager();
 	}
+
+	if (Enemies.Num() > 0)
+	{
+		GameState->SetIsIsIsOneEnemyAlive(true);
+	}
+	else
+	{
+		GameState->SetIsIsIsOneEnemyAlive(false);
+	}
 }
 
 void AGameObjectsSpawner::EnemiesSpawner()
@@ -60,21 +69,25 @@ void AGameObjectsSpawner::EnemiesSpawner()
 
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
-	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(EnemyToSpawn, FVector(spawnPos.X, spawnPos.Y, spawnPos.Z+25), MyRot, SpawnInfo);
-	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, Enemy->GetActorLocation().ToString());
-
+	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(EnemyToSpawn, FVector(spawnPos.X, spawnPos.Y, spawnPos.Z+50), MyRot, SpawnInfo);
+	if(Enemy)
 	Enemies.Add(Enemy);
 }
 
 void AGameObjectsSpawner::EnemiesSpawnerManager()
 {
-	if (EnemySpawnTimer > CustomGameMode->GameManager->EnemiesSpawnTimer && Enemies.Num() <= CustomGameMode->GameManager->EnemiesToSpawn && GameState->GetHasGameStarted()==true)
+	if (CustomGameMode->GameManager->EnemiesToSpawn > Enemies.Num())
 	{
-		EnemiesSpawner();
-		EnemySpawnTimer = 0;
+		if (EnemySpawnTimer > CustomGameMode->GameManager->EnemiesSpawnTimer && GameState->GetHasGameStarted() == true)
+		{
+			EnemiesSpawner();
+			EnemySpawnTimer = 0;
+		}
+		else if (EnemySpawnTimer <= 3 && GameState->GetHasGameStarted() == true)		//If spawntimer is less than three and the game has started
+			EnemySpawnTimer += GetWorld()->GetDeltaSeconds();		//Update enemy spawn timer.
 	}
-	else if(EnemySpawnTimer <=3 && GameState->GetHasGameStarted() == true)		//If spawntimer is less than three and the game has started
-	EnemySpawnTimer += GetWorld()->GetDeltaSeconds();		//Update enemy spawn timer.
+
+
 }
 
 void AGameObjectsSpawner::SpawnVirtualObstacles()

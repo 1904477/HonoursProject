@@ -25,7 +25,6 @@ void APlaceableCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	auto Temp = GetWorld()->GetAuthGameMode();
-	SetActorScale3D(FVector(0.15,0.15,0.15));
 	GM = Cast<ACustomGameMode>(Temp);
 
 	auto GSTemp = GetWorld()->GetGameState();

@@ -35,9 +35,6 @@ void AGunPickup::BeginPlay()
 	FVector boxExtent;
 	GetActorBounds(false, origin, boxExtent);
 	SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y,GetActorLocation().Z+ BoxComponent->GetScaledBoxExtent().Z));
-
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, TEXT("GUN SPAWNED"));
-
 }
 
 void AGunPickup::Tick(float DeltaTime)
