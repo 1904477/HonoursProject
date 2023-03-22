@@ -127,7 +127,7 @@ void ASpawnedEnemy::EnemyStatusManager()
 				GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
 			}
 		}
-		else if(EnemyStatus == Suspicious&&EnemyStatus!= Charging&&EnemyStatus!=Attacking)
+		else if(EnemyStatus == Suspicious)
 		{
 			EnemySuspicious();
 			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyChargeDistance)		//If enemy is suspicious and player is close, enemy attacks.
