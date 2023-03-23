@@ -51,11 +51,25 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 	if (GameState->GetHasGameStarted() == true)
 		EnemiesSpawnerManager();
 	if (Enemies.Num() > 0)
+	{
 		GameState->SetIsIsIsOneEnemyAlive(true);
+		TArray<AActor*> asActs;
+		float dist_ = 0.0f;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnedEnemy::StaticClass(), asActs);
+		UGameplayStatics::FindNearestActor(Player->GetActorLocation(), asActs, dist_);
+		
+		if (dist_ < CustomGameMode->GameManager->IsEnemyTooCloseDistance)
+		{
+			GameState->SetIsEnemyTooClose(true);
+		}
+		else
+		{
+			GameState->SetIsEnemyTooClose(false);
+		}
+	}
 	else
 		GameState->SetIsIsIsOneEnemyAlive(false);
 
-	//GET CLOSEST ACTOR OF ENEMY ARRAY TO PLAYER AND SET VARIABLE FOR SKULL IMAGE TWITCH.
 }
 
 void AGameObjectsSpawner::EnemiesSpawner()

@@ -36,15 +36,14 @@ public:
 
 	UPROPERTY(Category = "NumberOfEnemiesSpawned", EditAnywhere, BlueprintReadWrite)
 		int EnemiesToSpawn;
-
 	UPROPERTY(Category = "EnemiesSpawnTimer", EditAnywhere, BlueprintReadWrite)
 		float EnemiesSpawnTimer;
-	
 	UPROPERTY(Category = "EnemiesBehaviour", EditAnywhere, BlueprintReadWrite)
 		float EnemySuspiciousDistance;
 	UPROPERTY(Category = "EnemiesBehaviour", EditAnywhere, BlueprintReadWrite)
 		float EnemyChargeDistance;	
-
+	UPROPERTY(Category = "UI", EditAnywhere, BlueprintReadWrite)
+		float IsEnemyTooCloseDistance;
 	UPROPERTY(Category = "PoissonInfo", EditAnywhere, BlueprintReadWrite)
 		int MainPointsSpawnNum;
 	UPROPERTY(Category = "PoissonInfo", EditAnywhere, BlueprintReadWrite)

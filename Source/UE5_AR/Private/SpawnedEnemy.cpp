@@ -50,6 +50,7 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 		int tmp = GS->GetScore();
 		GS->SetScore(tmp += 10);
 	}
+ 
 }
 
 // Called to bind functionality to input
@@ -61,6 +62,8 @@ void ASpawnedEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void ASpawnedEnemy::EnemySuspicious()
 {
 	SuspiciousTimer += GetWorld()->GetDeltaSeconds();	//Keep track of how long enemy has been suspicious.
+	GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
+
 	if (SuspiciousTimer > 5.0f && (Player->camLocation - GetActorLocation()).Length() > GM->GameManager->EnemySuspiciousDistance) {		//Enemy is suspicious for 4 seconds
 		SuspiciousTimer = 0;			//Reset timer.
 		EnemyStatus = Idle;		//After the enemy is suspicious, it becomes idle
@@ -72,6 +75,7 @@ void ASpawnedEnemy::EnemySuspicious()
 void ASpawnedEnemy::EnemyWander()
 {
 	FNavLocation endPosi = FNavLocation(GetActorLocation());
+	GetCharacterMovement()->MaxWalkSpeed = 40.0f; // replace 300 with your desired speed()
 
 	if (!NavigationArea)
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("bad pointer"));
@@ -86,6 +90,7 @@ void ASpawnedEnemy::EnemyWander()
 
 void ASpawnedEnemy::EnemyCharging()
 {
+	GetCharacterMovement()->MaxWalkSpeed = 90.0f;		//In attack state, enemy is faster
 	AIController->MoveToLocation(Player->camLocation, -1, true, true);
 }
 
@@ -111,7 +116,6 @@ void ASpawnedEnemy::EnemyStatusManager()
 					break;
 				case 2:
 					EnemyStatus = Wandering;
-					GetCharacterMovement()->MaxWalkSpeed = 40.f; 
 					EnemyWander();
 					break;
 				}
@@ -121,7 +125,6 @@ void ASpawnedEnemy::EnemyStatusManager()
 			{
 				EnemyStatus = Suspicious;
 				EnemyStatusTimer = 0.0f;
-				GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
 			}
 		}
 		else if(EnemyStatus == Suspicious)
@@ -129,7 +132,6 @@ void ASpawnedEnemy::EnemyStatusManager()
 			EnemySuspicious();
 			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyChargeDistance)		//If enemy is suspicious and player is close, enemy attacks.
 			{
-				GetCharacterMovement()->MaxWalkSpeed = 80.0f;		//In attack state, enemy is faster
 				EnemyStatus = Charging;
 			}
 		}

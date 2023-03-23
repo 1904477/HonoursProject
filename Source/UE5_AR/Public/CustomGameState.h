@@ -58,9 +58,13 @@ public:
 	int GetScore();
 	UFUNCTION(Category = "EnemyAlive", BlueprintCallable)
 	bool GetIsIsIsOneEnemyAlive();
-	UFUNCTION(Category = "GunCollected", BlueprintCallable)
+	UFUNCTION(Category = "EnemyAlive", BlueprintCallable)
 	void SetIsIsIsOneEnemyAlive(bool b);
 
+	UFUNCTION(Category = "EnemyClose", BlueprintCallable)
+	bool GetIsEnemyTooClose();
+	UFUNCTION(Category = "EnemyClose", BlueprintCallable)
+	void SetIsEnemyTooClose(bool b);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SessionMode")
 	TEnumAsByte<SessionMode> SessionModeSelected;
 
@@ -74,4 +78,5 @@ private:
 		int ReloadNumber;
 		int Score;
 		bool IsOneEnemyAlive;
+		bool IsEnemyTooClose;
 };

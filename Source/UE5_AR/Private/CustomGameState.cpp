@@ -14,8 +14,8 @@ ACustomGameState::ACustomGameState()
 	SessionModeSelected = VirtualObstacles;
 	ReloadNumber = 4;
 	AmmoNumber = 10;
+	IsEnemyTooClose = false;
 }
-
 
 void ACustomGameState::SetAreARPlanesDisplayed(bool value)
 {
@@ -105,4 +105,14 @@ void ACustomGameState::SetIsIsIsOneEnemyAlive(bool b)
 bool ACustomGameState::GetAreARPlanesDisplayed()
 {
 	return AreARPlanesDisplayed;
+}
+
+void ACustomGameState::SetIsEnemyTooClose(bool b)
+{
+	IsEnemyTooClose = b;
+}
+
+bool ACustomGameState::GetIsEnemyTooClose()
+{
+	return IsEnemyTooClose;
 }
