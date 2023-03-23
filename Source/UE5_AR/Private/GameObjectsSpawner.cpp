@@ -7,6 +7,7 @@
 #include "HelloARManager.h"
 #include "ARPlaneActor.h"
 #include "GunPickup.h"
+#include "CustomARPawn.h"
 #include "GameManager.h"
 // Sets default values
 AGameObjectsSpawner::AGameObjectsSpawner() 
@@ -24,7 +25,8 @@ void AGameObjectsSpawner::BeginPlay()
 	GameState = Cast<ACustomGameState>(GS);
 	auto GM = GetWorld()->GetAuthGameMode();
 	CustomGameMode = Cast<ACustomGameMode>(GM);
-
+	auto P = GetWorld()->GetFirstPlayerController()->GetPawn();
+	Player = Cast<ACustomARPawn>(P);
 	FTransform tr;		//identity for Poisson component position
 	tr.SetIdentity();
 
@@ -47,18 +49,13 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (GameState->GetHasGameStarted() == true)
-	{
 		EnemiesSpawnerManager();
-	}
-
 	if (Enemies.Num() > 0)
-	{
 		GameState->SetIsIsIsOneEnemyAlive(true);
-	}
 	else
-	{
 		GameState->SetIsIsIsOneEnemyAlive(false);
-	}
+
+	//GET CLOSEST ACTOR OF ENEMY ARRAY TO PLAYER AND SET VARIABLE FOR SKULL IMAGE TWITCH.
 }
 
 void AGameObjectsSpawner::EnemiesSpawner()
@@ -70,13 +67,16 @@ void AGameObjectsSpawner::EnemiesSpawner()
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
 	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(EnemyToSpawn, FVector(spawnPos.X, spawnPos.Y, spawnPos.Z+50), MyRot, SpawnInfo);
-	if(Enemy)
-	Enemies.Add(Enemy);
+	if (Enemy)
+	{
+		Enemies.Add(Enemy);
+		CustomGameMode->GameManager->EnemiesToSpawn--;
+	}
 }
 
 void AGameObjectsSpawner::EnemiesSpawnerManager()
 {
-	if (CustomGameMode->GameManager->EnemiesToSpawn > Enemies.Num())
+	if (CustomGameMode->GameManager->EnemiesToSpawn !=0)
 	{
 		if (EnemySpawnTimer > CustomGameMode->GameManager->EnemiesSpawnTimer && GameState->GetHasGameStarted() == true)
 		{

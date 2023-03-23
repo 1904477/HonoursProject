@@ -36,17 +36,17 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "SceneComponent", VisibleAnywhere, BlueprintReadWrite)
 		USceneComponent* SceneComponent;
 	
-	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "CameraComponent", VisibleAnywhere, BlueprintReadWrite)
 		UCameraComponent* CameraComponent;
 
-	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "CapsuleComponent", VisibleAnywhere, BlueprintReadWrite)
 	UCapsuleComponent* CapsuleComponent;
 
 	//ACustomGameMode* GM;
-	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = "GameManager", VisibleAnywhere, BlueprintReadWrite)
 	AGameManager* GameManager;
 	
 	ACustomGameState* GS;
@@ -55,7 +55,9 @@ public:
 
 	FVector camLocation;
 
+	UPROPERTY(Category = "DistanceToEnemy", VisibleAnywhere, BlueprintReadWrite)
+		FVector DistanceToClosestEnemy;
 
-	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = "CameraManager", VisibleAnywhere, BlueprintReadOnly)
 	APlayerCameraManager* camManager;
 };

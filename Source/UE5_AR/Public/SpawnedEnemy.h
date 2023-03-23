@@ -60,7 +60,6 @@ public:
 	float SuspiciousDistance = 0;
 	float ChargeDistance = 0;
 	float Health = 100;
-	FColor BoxColor;
 
 protected:
 	AAIController* AIController;

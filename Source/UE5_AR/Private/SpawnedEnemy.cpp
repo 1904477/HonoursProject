@@ -32,19 +32,16 @@ void ASpawnedEnemy::BeginPlay()
 	EnemyStatus = Idle;		//Starting status is idle.
 	WanderRadius = 500.0f;		//Radius for wander area.
 	StateSwitchTimer = 2.5f;	//How long before the enemy switches state.
-	BoxColor = FColor::White;	
 
 	AIController = Cast<AAIController>(GetController());
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
 	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, TEXT("Enemy Spawned"));
-
 }
 
 void ASpawnedEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	EnemyStatusManager();
-	DrawDebugBox(GetWorld(), this->GetRootComponent()->GetComponentLocation(), FVector(10, 10, 30), BoxColor, false, 0.0f, 0, 1.17);
 	DrawDebugString(GetWorld(), FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 10), FString::SanitizeFloat(Health), NULL, FColor::Cyan, 0.01, false, 3);
 
 	if (Health <= 0)
@@ -110,13 +107,11 @@ void ASpawnedEnemy::EnemyStatusManager()
 				switch (randomChoice)
 				{
 				case 1: EnemyStatus = Idle;
-					GetCharacterMovement()->MaxWalkSpeed = 0.0f; 
-					BoxColor = FColor::White;
+					GetCharacterMovement()->MaxWalkSpeed = 0.1f; 
 					break;
 				case 2:
 					EnemyStatus = Wandering;
 					GetCharacterMovement()->MaxWalkSpeed = 40.f; 
-					BoxColor = FColor::Blue;
 					EnemyWander();
 					break;
 				}
@@ -125,7 +120,6 @@ void ASpawnedEnemy::EnemyStatusManager()
 			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemySuspiciousDistance)		//If player is close, enemy becomes suspicious
 			{
 				EnemyStatus = Suspicious;
-				BoxColor = FColor::Orange;
 				EnemyStatusTimer = 0.0f;
 				GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
 			}
@@ -135,9 +129,8 @@ void ASpawnedEnemy::EnemyStatusManager()
 			EnemySuspicious();
 			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyChargeDistance)		//If enemy is suspicious and player is close, enemy attacks.
 			{
-				GetCharacterMovement()->MaxWalkSpeed = 60.0f;		//In attack state, enemy is faster
+				GetCharacterMovement()->MaxWalkSpeed = 80.0f;		//In attack state, enemy is faster
 				EnemyStatus = Charging;
-				BoxColor = FColor::Red;
 			}
 		}
 		else if (EnemyStatus == Charging)

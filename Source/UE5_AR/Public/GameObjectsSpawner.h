@@ -14,6 +14,7 @@
 class ACustomGameState;
 class ACustomGameMode;
 class AGameManager;
+class ACustomARPawn;
 
 UCLASS()
 class UE5_AR_API AGameObjectsSpawner : public AActor
@@ -52,10 +53,10 @@ public:
 	ACustomGameState* GameState;
 	ACustomGameMode* CustomGameMode;
 	UPoissonSampler* PoissonSampler;
-
+	ACustomARPawn* Player;
 	bool isComponentAdded = false;
 	bool isGunSpawned = false;
-	int   EnemiesToSpawn = 0;
+	int	  EnemiesSpawned;
 	float EnemySpawnTimer = 0;
 	float EnemiesSpawnTimer = 0;
 };
