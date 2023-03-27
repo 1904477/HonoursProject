@@ -60,12 +60,23 @@ public:
 	bool GetIsIsIsOneEnemyAlive();
 	UFUNCTION(Category = "EnemyAlive", BlueprintCallable)
 	void SetIsIsIsOneEnemyAlive(bool b);
-
 	UFUNCTION(Category = "EnemyClose", BlueprintCallable)
 	bool GetIsEnemyTooClose();
 	UFUNCTION(Category = "EnemyClose", BlueprintCallable)
 	void SetIsEnemyTooClose(bool b);
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SessionMode")
+	UFUNCTION(Category = "HatchOpen", BlueprintCallable)
+		bool GetIsHatchOpen();
+	UFUNCTION(Category = "HatchOpen", BlueprintCallable)
+		void SetIsHatchOpen(bool b);
+
+	UFUNCTION(Category = "HatchOpenTimer", BlueprintCallable)
+		void SetHatchOpenTimer(float b,float t);
+	UFUNCTION(Category = "HatchOpenTimer", BlueprintCallable)
+		float GetHatchOpenTimerMin();
+	UFUNCTION(Category = "HatchOpenTimer", BlueprintCallable)
+		float GetHatchOpenTimerSec();
+
+	UPROPERTY(Category = "SessionModeSelected", EditAnywhere, BlueprintReadWrite)
 	TEnumAsByte<SessionMode> SessionModeSelected;
 
 private:
@@ -73,10 +84,13 @@ private:
 		bool IsEnvironmentScanned;
 		bool AreARPlanesDisplayed;
 		bool IsGunCollected;
+		bool IsOneEnemyAlive;
+		bool IsEnemyTooClose;
+		bool IsHatchOpen;
 		int Health;
 		int AmmoNumber;
 		int ReloadNumber;
 		int Score;
-		bool IsOneEnemyAlive;
-		bool IsEnemyTooClose;
+		float HatchOpenTimerMin;
+		float HatchOpenTimerSec;
 };

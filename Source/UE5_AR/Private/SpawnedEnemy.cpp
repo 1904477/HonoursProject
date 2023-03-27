@@ -35,7 +35,6 @@ void ASpawnedEnemy::BeginPlay()
 
 	AIController = Cast<AAIController>(GetController());
 	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(AIController);
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, TEXT("Enemy Spawned"));
 }
 
 void ASpawnedEnemy::Tick(float DeltaTime)

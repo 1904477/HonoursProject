@@ -11,6 +11,8 @@ ACustomGameState::ACustomGameState()
 	IsEnvironmentScanned = false;
 	AreARPlanesDisplayed = true;
 	Health = 100;
+	HatchOpenTimerSec = 5;
+	HatchOpenTimerMin = 0;
 	SessionModeSelected = VirtualObstacles;
 	ReloadNumber = 4;
 	AmmoNumber = 10;
@@ -110,6 +112,32 @@ bool ACustomGameState::GetAreARPlanesDisplayed()
 void ACustomGameState::SetIsEnemyTooClose(bool b)
 {
 	IsEnemyTooClose = b;
+}
+
+bool ACustomGameState::GetIsHatchOpen()
+{
+	return IsHatchOpen;
+}
+
+void ACustomGameState::SetIsHatchOpen(bool b)
+{
+	IsHatchOpen = b;
+}
+
+void ACustomGameState::SetHatchOpenTimer(float b, float t)
+{
+	HatchOpenTimerMin = b;
+	HatchOpenTimerSec = t;
+}
+
+float ACustomGameState::GetHatchOpenTimerMin()
+{
+	return HatchOpenTimerMin;
+}
+
+float ACustomGameState::GetHatchOpenTimerSec()
+{
+	return HatchOpenTimerSec;
 }
 
 bool ACustomGameState::GetIsEnemyTooClose()

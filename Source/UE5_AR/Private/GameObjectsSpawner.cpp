@@ -42,6 +42,12 @@ void AGameObjectsSpawner::BeginPlay()
 		SpawnGun();
 		isGunSpawned = true;
 	}
+	if (!isHatchSpawned)	
+	{
+		SpawnHatch();
+		isHatchSpawned = true;
+
+	}
 }
 
 // Called every frame
@@ -203,4 +209,34 @@ void AGameObjectsSpawner::SpawnGun()
 		const FRotator MyRot(0, 0, 0);
 		AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(5,5,5), MyRot, SpawnInfo);
 	}
+}
+
+void AGameObjectsSpawner::SpawnHatch()
+{
+	NavigationArea = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());        //Get navmesh from the world.
+	FNavLocation RandomSpawnPosNavLoc;
+	FVector SpawnPos;
+	const FActorSpawnParameters SpawnInfo;
+	const FRotator MyRot(0, 0, 0);
+	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
+	{
+	
+		if (NavigationArea)
+		{
+			while (isHatchOnGround == false)
+			{
+				if (PoissonSampler->NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLoc)) //Get random position in navmesh
+				{
+					// if we were successfull in finding a new location...
+					SpawnPos = RandomSpawnPosNavLoc.Location;		//Save random position in navmesh in FVector
+				}
+				if (SpawnPos.Z < CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 10)
+					isHatchOnGround = true;
+			}
+			Hatch = GetWorld()->SpawnActor<AHatch>(HatchToSpawn, SpawnPos, MyRot, SpawnInfo);
+
+		}
+	}
+	else
+	Hatch = GetWorld()->SpawnActor<AHatch>(HatchToSpawn, SpawnPos, MyRot, SpawnInfo);
 }

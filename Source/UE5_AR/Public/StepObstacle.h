@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CustomObstacle.h"
+#include "CustomObject.h"
 #include "CustomGameMode.h"
 #include "StepObstacle.generated.h"
 
@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class UE5_AR_API AStepObstacle : public ACustomObstacle
+class UE5_AR_API AStepObstacle : public ACustomObject
 {
 	GENERATED_BODY()
 

@@ -8,7 +8,9 @@
 #include "PoissonSampler.h"
 #include "TableObstacle.h"
 #include "StepObstacle.h"
+#include "Hatch.h"
 #include "CustomPickup.h"
+#include "NavigationSystem.h"
 #include "GameObjectsSpawner.generated.h"
 
 class ACustomGameState;
@@ -31,6 +33,7 @@ public:
 	void SpawnTables();
 	void SpawnSteps();
 	void SpawnGun();
+	void SpawnHatch();
 
 protected:
 	// Called when the game starts or when spawned
@@ -46,7 +49,8 @@ public:
 		TSubclassOf<ACustomPickup> GunToSpawn;
 	UPROPERTY(Category = "Enemies", EditAnywhere, BlueprintReadWrite)
 		TArray<ASpawnedEnemy*> Enemies;
-
+	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AHatch> HatchToSpawn;
 	TArray<ATableObstacle*> Tables;
 	TArray<AStepObstacle*> Steps;
 
@@ -54,8 +58,14 @@ public:
 	ACustomGameMode* CustomGameMode;
 	UPoissonSampler* PoissonSampler;
 	ACustomARPawn* Player;
+	AHatch* Hatch;
+	UNavigationSystemV1* NavigationArea;	//Navigation area, necessary for distributing the points in the navmesh.
+
+
 	bool isComponentAdded = false;
 	bool isGunSpawned = false;
+	bool isHatchOnGround = false;
+	bool isHatchSpawned = false;
 	int	  EnemiesSpawned;
 	float EnemySpawnTimer = 0;
 	float EnemiesSpawnTimer = 0;
