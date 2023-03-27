@@ -52,7 +52,6 @@ void AHatch::TimerManager()
 {
 	if (GS->GetHatchOpenTimerMin() > 0 || GS->GetHatchOpenTimerSec() > 0)
 	{
-
 		if (GS->GetHatchOpenTimerSec() <= 0)
 		{
 			GS->SetHatchOpenTimer(GS->GetHatchOpenTimerMin() - 1, 60);

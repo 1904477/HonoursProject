@@ -39,6 +39,7 @@ public:
 	TArray<FVector>MainPoints;		//Vector of main points.
 	TArray<FVector>SecondaryPoints;	//Vector of secondary points.
 	UNavigationSystemV1* NavigationArea;	//Navigation area, necessary for distributing the points in the navmesh.
+	UNavigationSystemV1* NavigationAreaSec;	//Navigation area, necessary for distributing the points in the navmesh.
 
 protected:
 	ACustomARPawn* Player;					//Player reference to generate main points.
