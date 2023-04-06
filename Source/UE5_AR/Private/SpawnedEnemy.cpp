@@ -29,7 +29,7 @@ void ASpawnedEnemy::BeginPlay()
 	GetMesh()->BodyInstance.bLockYRotation = true;		//Lock rotation so that characters do not rotate in other directions
 	GetMesh()->BodyInstance.bLockXRotation = true;
 
-	EnemyStatus = Idle;		//Starting status is idle.
+	EnemyStatus = Spawning;		//Starting status is idle.
 	WanderRadius = 500.0f;		//Radius for wander area.
 	StateSwitchTimer = 2.5f;	//How long before the enemy switches state.
 
@@ -102,41 +102,44 @@ void ASpawnedEnemy::EnemyStatusManager()
 {
 	if (AIController)
 	{
-		if(EnemyStatus !=Suspicious&&EnemyStatus!= Charging&&EnemyStatus!=Attacking)
+		if (EnemyStatus != Spawning)
 		{
-			EnemyStatusTimer += GetWorld()->GetDeltaSeconds();
-			int randomChoice = FMath::RandRange(1, 2);		//Random choice in Enemy Finite State Machine
-			if (EnemyStatusTimer > StateSwitchTimer)		//Enemies change state every x seconds (unless suspicious, then timer is longer)
+			if (EnemyStatus != Suspicious && EnemyStatus != Charging && EnemyStatus != Attacking)
 			{
-				switch (randomChoice)
+				EnemyStatusTimer += GetWorld()->GetDeltaSeconds();
+				int randomChoice = FMath::RandRange(1, 2);		//Random choice in Enemy Finite State Machine
+				if (EnemyStatusTimer > StateSwitchTimer)		//Enemies change state every x seconds (unless suspicious, then timer is longer)
 				{
-				case 1: EnemyStatus = Idle;
-					GetCharacterMovement()->MaxWalkSpeed = 0.1f; 
-					break;
-				case 2:
-					EnemyStatus = Wandering;
-					EnemyWander();
-					break;
+					switch (randomChoice)
+					{
+					case 1: EnemyStatus = Idle;
+						GetCharacterMovement()->MaxWalkSpeed = 0.1f;
+						break;
+					case 2:
+						EnemyStatus = Wandering;
+						EnemyWander();
+						break;
+					}
+					EnemyStatusTimer = 0;
 				}
-				EnemyStatusTimer = 0;
+				if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemySuspiciousDistance)		//If player is close, enemy becomes suspicious
+				{
+					EnemyStatus = Suspicious;
+					EnemyStatusTimer = 0.0f;
+				}
 			}
-			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemySuspiciousDistance)		//If player is close, enemy becomes suspicious
+			else if (EnemyStatus == Suspicious)
 			{
-				EnemyStatus = Suspicious;
-				EnemyStatusTimer = 0.0f;
+				EnemySuspicious();
+				if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyChargeDistance)		//If enemy is suspicious and player is close, enemy attacks.
+				{
+					EnemyStatus = Charging;
+				}
 			}
-		}
-		else if(EnemyStatus == Suspicious)
-		{
-			EnemySuspicious();
-			if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyChargeDistance)		//If enemy is suspicious and player is close, enemy attacks.
+			else if (EnemyStatus == Charging)
 			{
-				EnemyStatus = Charging;
+				EnemyCharging();
 			}
-		}
-		else if (EnemyStatus == Charging)
-		{
-			EnemyCharging();
 		}
 	}
 }

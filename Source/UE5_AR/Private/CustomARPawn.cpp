@@ -49,6 +49,8 @@ void ACustomARPawn::Tick(float DeltaTime)
 
 	camManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
 	camLocation = camManager->GetCameraLocation();
+	if (GS->GetHealth() <= 0)
+		GS->SetDidPlayerLose(true);
 }
 
 // Called to bind functionality to input

@@ -24,6 +24,9 @@ public:
 	ACustomGameState();
 	~ACustomGameState() = default;
 
+	UFUNCTION(Category = "GameReset", BlueprintCallable)
+		void ResetVariables();
+
 	UFUNCTION(Category = "ARPlanesRender", BlueprintCallable)
 	void SetAreARPlanesDisplayed(bool value);
 	UFUNCTION(Category = "ARPlanesRender", BlueprintCallable)
@@ -76,6 +79,14 @@ public:
 	UFUNCTION(Category = "HatchOpenTimer", BlueprintCallable)
 		float GetHatchOpenTimerSec();
 
+	UFUNCTION(Category = "PlayerWin", BlueprintCallable)
+		bool GetDidPlayerWin();
+	UFUNCTION(Category = "PlayerWin", BlueprintCallable)
+		void SetDidPlayerWin(bool b);
+	UFUNCTION(Category = "PlayerLose", BlueprintCallable)
+		bool GetDidPlayerLose();
+	UFUNCTION(Category = "PlayerLose", BlueprintCallable)
+		void SetDidPlayerLose(bool b);
 	UPROPERTY(Category = "SessionModeSelected", EditAnywhere, BlueprintReadWrite)
 	TEnumAsByte<SessionMode> SessionModeSelected;
 
@@ -86,6 +97,8 @@ private:
 		bool IsGunCollected;
 		bool IsOneEnemyAlive;
 		bool IsEnemyTooClose;
+		bool DidPlayerWin;
+		bool DidPlayerLose;
 		bool IsHatchOpen;
 		int Health;
 		int AmmoNumber;

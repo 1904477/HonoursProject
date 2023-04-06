@@ -41,9 +41,10 @@ void AHatch::Tick(float DeltaTime)
 	{
 		float rotSpeed = 10;
 		StaticMeshComponent->SetRelativeRotation(FRotator(0,0,0));
-		if ((Player->camLocation - GetActorLocation()).Length() < 30)
+		if ((Player->camLocation - GetActorLocation()).Length() < 100)
 		{
-			//ADD WINNING SYSTEM
+			GS->SetDidPlayerWin(true);
+
 		}
 	}
 }

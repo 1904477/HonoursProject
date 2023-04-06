@@ -235,3 +235,33 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 	}
 }
 
+
+void AHelloARManager::DestroyAllPlanes()
+{
+	auto Geometries = UARBlueprintLibrary::GetAllGeometriesByClass<UARPlaneGeometry>();
+	auto planes = UARBlueprintLibrary::GetAllGeometriesByClass<AARPlaneActor>();
+
+	while (planes.Num() > 0) {
+		planes[0]->Destroy();
+		planes.RemoveAt(0);
+	}
+
+	while (Geometries.Num() > 0) {
+		Geometries[0]->ConditionalBeginDestroy();
+		Geometries.RemoveAt(0);
+	}
+	ResetARCoreSession();
+	//while (stillDestroying) {
+	//	stillDestroying = false;
+	//
+	//	for (const TPair<UARPlaneGeometry*, AARPlaneActor*>& pair_ : PlaneActors)
+	//	{
+	//		pair_.Value->Destroy();
+	//		UARPlaneGeometry* ref_ = pair_.Key;
+	//		PlaneActors.Remove(ref_);
+	//		ref_->ConditionalBeginDestroy();
+	//		stillDestroying = true;
+	//		break;
+	//	}
+	//}
+}

@@ -20,6 +20,7 @@ enum Status
 	Suspicious   UMETA(DisplayName = "Suspicious"),
 	Charging   UMETA(DisplayName = "Charging"),
 	Attacking   UMETA(DisplayName = "Attacking"),
+	Spawning   UMETA(DisplayName = "Spawning"),
 };
 UCLASS()
 class UE5_AR_API ASpawnedEnemy : public APlaceableCharacter

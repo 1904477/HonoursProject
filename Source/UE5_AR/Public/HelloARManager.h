@@ -37,6 +37,8 @@ public:
 	AARPlaneActor* LowestPlaneActor;		//Reference to the lowest PlaneActor.
 	AARPlaneActor* FirstTable;		//Reference to the first table detected.
 
+	UFUNCTION(BlueprintCallable)
+	void DestroyAllPlanes();
 protected:
 	
 
