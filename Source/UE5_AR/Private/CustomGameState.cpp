@@ -13,7 +13,6 @@ ACustomGameState::ACustomGameState()
 	Health = 100;
 	HatchOpenTimerSec = 5;
 	HatchOpenTimerMin = 0;
-	SessionModeSelected = VirtualObstacles;
 	ReloadNumber = 4;
 	AmmoNumber = 10;
 	IsEnemyTooClose = false;
@@ -28,7 +27,6 @@ void ACustomGameState::ResetVariables()
 	Health = 100;
 	HatchOpenTimerSec = 5;
 	HatchOpenTimerMin = 0;
-	SessionModeSelected = VirtualObstacles;
 	ReloadNumber = 4;
 	AmmoNumber = 10;
 	IsEnemyTooClose = false;

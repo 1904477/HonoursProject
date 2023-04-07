@@ -44,7 +44,6 @@ protected:
 
 
 	AARPlaneActor* SpawnPlaneActor();	//Function to spawn Plane Actor.	
-	FColor GetPlaneColor(int Index);		
 
 	void UpdatePlaneActors();		// Updates the plane actors on every frame as long as the AR Session is running.
 	void ResetARCoreSession();		//Reset AR session.
@@ -62,7 +61,6 @@ protected:
 
 	//Index for plane colours adn array of colours.
 	int PlaneIndex = 0;
-	TArray<FColor> PlaneColors;
 	
 	float TableHeight;	//Height at which planes are identified as table.
 	float WallSize;		//Size at which planes are identified as wall.

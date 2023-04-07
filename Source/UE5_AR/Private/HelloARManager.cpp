@@ -27,17 +27,6 @@ AHelloARManager::AHelloARManager()
 	Config->bUseSceneDepthForOcclusion = true;
 	Config->SetSessionTrackingFeatureToEnable(EARSessionTrackingFeature::SceneDepth);
 	//Populate the plane colours array
-	PlaneColors.Add(FColor::Blue);
-	PlaneColors.Add(FColor::Red);
-	PlaneColors.Add(FColor::Green);
-	PlaneColors.Add(FColor::Cyan);
-	PlaneColors.Add(FColor::Magenta);
-	PlaneColors.Add(FColor::Emerald);
-	PlaneColors.Add(FColor::Orange);
-	PlaneColors.Add(FColor::Purple);
-	PlaneColors.Add(FColor::Turquoise);
-	PlaneColors.Add(FColor::White);
-	PlaneColors.Add(FColor::Yellow);
 	TableHeight = 60;
 	WallSize = 2;
 }
@@ -104,7 +93,6 @@ void AHelloARManager::UpdatePlaneActors()
 					if (!It->GetSubsumedBy()->IsValidLowLevel())
 					{
 						PlaneActor = SpawnPlaneActor();
-						PlaneActor->SetColor(GetPlaneColor(PlaneIndex));
 						PlaneActor->ARCorePlaneObject = It;
 
 						PlaneActors.Add(It, PlaneActor);
@@ -139,12 +127,6 @@ AARPlaneActor* AHelloARManager::SpawnPlaneActor()
 	const FVector MyLoc(0, 0, 0);
 	AARPlaneActor* CustomPlane = GetWorld()->SpawnActor<AARPlaneActor>(MyLoc, MyRot, SpawnInfo);
 	return CustomPlane;
-}
-
-//Gets the colour to set the plane to when its spawned
-FColor AHelloARManager::GetPlaneColor(int Index)
-{
-	return PlaneColors[Index % PlaneColors.Num()];
 }
 
 void AHelloARManager::ResetARCoreSession()

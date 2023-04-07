@@ -33,7 +33,7 @@ void AGameObjectsSpawner::BeginPlay()
 	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));		//Add poisson sampler as component.
 	PoissonSampler->RegisterComponent();
 
-	if (GameState->SessionModeSelected == VirtualObstacles)
+	if (GetWorld()->GetMapName()=="VirtualObstaclesLevel")
 	{
 		SpawnVirtualObstacles();
 	}
@@ -44,7 +44,7 @@ void AGameObjectsSpawner::BeginPlay()
 	}
 	if (!isHatchSpawned)	
 	{
-		SpawnHatch();
+		//SpawnHatch();
 		isHatchSpawned = true;
 
 	}
@@ -230,10 +230,13 @@ void AGameObjectsSpawner::SpawnHatch()
 					// if we were successfull in finding a new location...
 					SpawnPos = RandomSpawnPosNavLoc.Location;		//Save random position in navmesh in FVector
 				}
-				if (SpawnPos.Z < CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 10)
+				if (SpawnPos.Z < CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 45)
+				{
+					Hatch = GetWorld()->SpawnActor<AHatch>(HatchToSpawn, SpawnPos, MyRot, SpawnInfo);
 					isHatchOnGround = true;
+				}
 			}
-			Hatch = GetWorld()->SpawnActor<AHatch>(HatchToSpawn, SpawnPos, MyRot, SpawnInfo);
+			
 
 		}
 	}

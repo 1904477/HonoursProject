@@ -63,19 +63,19 @@ FVector UPoissonSampler::MainPointsGeneration(float minDistMainPoints, int new_p
 
         isMainPointHigh = true;
         isMainPointClose = true;
-        if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 10000, RandomSpawnPosNavLoc))     //Get random position in navmesh
+        if (NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLoc))     //Get random position in navmesh
             SpawnPos = RandomSpawnPosNavLoc.Location;		//Save first random position in navmesh in FVector.
         if (pointType == "first")       //If first point is being generated
         {
            if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
            {
-               if (RandomSpawnPosNavLoc.Location.Z - CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z < 1)  //If the secondary point is close enough to the main point.
+               if (RandomSpawnPosNavLoc.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 250))  //If the secondary point is close enough to the main point.
                    isMainPointHigh = false;
            }
-           if (RandomSpawnPosNavLoc.Location.Z < 10)  //If the secondary point is close enough to the main point.
-           {
-               isMainPointHigh = false;
-           }
+           //if (RandomSpawnPosNavLoc.Location.Z < 10)  //If the secondary point is close enough to the main point.
+           //{
+           //    isMainPointHigh = false;
+           //}
             if ((RandomSpawnPosNavLoc.Location - Player->camLocation).Length() > distToPlayer)       //Make sure the first point is far enough from the player.
                 isMainPointClose = false;
         }
@@ -87,9 +87,9 @@ FVector UPoissonSampler::MainPointsGeneration(float minDistMainPoints, int new_p
                 isMainPointClose = false;
            if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
            {
-               if (RandomSpawnPosNavLoc.Location.Z - CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z < 10)  //If the secondary point is close enough to the main point.
+               if (RandomSpawnPosNavLoc.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 50))  //If the secondary point is close enough to the main point.
                {
-                   isMainPointHigh = true;
+                   isMainPointHigh = false;
                }
            }
            else
@@ -121,15 +121,15 @@ void UPoissonSampler::SecondaryPointsGeneration(float minDistSecPoints, int seco
             IsSecondaryPointHigh = true;
             while (IsSecondaryPointHigh==true ||RandomSpawnPosNavLocSec.Location == MainPoints[i]|| (RandomSpawnPosNavLocSec.Location - MainPoints[i]).Length()>minDistSecPoints)        //Generate the secondary point until the generated point is close enough to the main point.
             {
-                if (NavigationAreaSec->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 10000, RandomSpawnPosNavLocSec)) //Get random position in navmesh
+                if (NavigationAreaSec->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLocSec)) //Get random position in navmesh
                 {
                     // if we were successfull in finding a new location...
                     SpawnPos = RandomSpawnPosNavLocSec.Location;		//Save random position in navmesh in FVector
                 }
                 if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
                 {
-                    if ((RandomSpawnPosNavLocSec.Location - CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z).Length() < 10)  //If the secondary point is close enough to the main point.
-                        IsSecondaryPointHigh = true;
+                    if (RandomSpawnPosNavLocSec.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 50))  //If the secondary point is close enough to the main point.
+                        IsSecondaryPointHigh = false;
                 }
                 else
                 {

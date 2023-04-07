@@ -10,12 +10,6 @@
  * 
  */
 
-UENUM()
-enum SessionMode
-{
-	VirtualObstacles     UMETA(DisplayName = "VirtualObstacles"),
-	RealObstacles      UMETA(DisplayName = "RealObstacles"),
-};
 UCLASS()
 class UE5_AR_API ACustomGameState : public AGameStateBase
 {
@@ -87,8 +81,6 @@ public:
 		bool GetDidPlayerLose();
 	UFUNCTION(Category = "PlayerLose", BlueprintCallable)
 		void SetDidPlayerLose(bool b);
-	UPROPERTY(Category = "SessionModeSelected", EditAnywhere, BlueprintReadWrite)
-	TEnumAsByte<SessionMode> SessionModeSelected;
 
 private:
 		bool HasGameStarted;

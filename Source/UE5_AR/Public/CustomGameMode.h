@@ -20,9 +20,6 @@ class UE5_AR_API ACustomGameMode : public AGameModeBase
 	GENERATED_BODY()
 private:
 
-	FTimerHandle Ticker;
-
-
 public:
 	ACustomGameMode();
 	virtual ~ACustomGameMode() = default;
