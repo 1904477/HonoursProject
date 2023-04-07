@@ -27,7 +27,7 @@ AHelloARManager::AHelloARManager()
 	Config->bUseSceneDepthForOcclusion = true;
 	Config->SetSessionTrackingFeatureToEnable(EARSessionTrackingFeature::SceneDepth);
 	//Populate the plane colours array
-	TableHeight = 60;
+	TableHeight = 50;
 	WallSize = 10;
 }
 

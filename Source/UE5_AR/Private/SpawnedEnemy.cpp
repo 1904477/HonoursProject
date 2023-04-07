@@ -41,7 +41,7 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	EnemyStatusManager();
-	DrawDebugString(GetWorld(), FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 10), FString::SanitizeFloat(Health), NULL, FColor::Cyan, 0.01, false, 3);
+	//DrawDebugString(GetWorld(), FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 10), FString::SanitizeFloat(Health), NULL, FColor::Cyan, 0.01, false, 3);
 
 	if (Health <= 0)
 	{

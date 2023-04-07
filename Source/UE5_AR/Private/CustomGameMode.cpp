@@ -42,16 +42,22 @@ void ACustomGameMode::StartPlayEvent_Implementation()
 void ACustomGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
+	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
+	{
+		if (isARSessionStarted == false)
+		{
+			UARBlueprintLibrary::StartARSession(Config);
+			isARSessionStarted = true;
+		}
+	}
 }
 
 
 void ACustomGameMode::SpawnInitialActors()
 {
 	// Spawn an instance of the HelloARManager class
-	UARSessionConfig* Config = NewObject<UARSessionConfig>();
+	Config = NewObject<UARSessionConfig>();
 	ARManager = GetWorld()->SpawnActor<AHelloARManager>();
 	GameManager = GetWorld()->SpawnActor<AGameManager>(SpawnedGameManager);
 
-	UARBlueprintLibrary::StartARSession(Config);
 }

@@ -8,6 +8,7 @@
 #include "PoissonSampler.h"
 #include "TableObstacle.h"
 #include "StepObstacle.h"
+#include "GraveObject.h"
 #include "Hatch.h"
 #include "CustomPickup.h"
 #include "NavigationSystem.h"
@@ -32,6 +33,7 @@ public:
 	void SpawnVirtualObstacles();
 	void SpawnTables();
 	void SpawnSteps();
+	void SpawnGraves();
 	void SpawnGun();
 	void SpawnHatch();
 
@@ -53,6 +55,7 @@ public:
 		TSubclassOf<AHatch> HatchToSpawn;
 	TArray<ATableObstacle*> Tables;
 	TArray<AStepObstacle*> Steps;
+	TArray<AGraveObject*> Graves;
 
 	ACustomGameState* GameState;
 	ACustomGameMode* CustomGameMode;

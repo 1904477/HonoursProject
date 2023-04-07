@@ -5,6 +5,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Engine/EngineTypes.h"
+#include "ARBlueprintLibrary.h"
 #include "CustomGameMode.generated.h"
 
 //Forward Declarations
@@ -49,4 +50,9 @@ public:
 
 	UPROPERTY(Category = "AR Manager", EditAnywhere, BlueprintReadWrite)
 	AHelloARManager* ARManager;
+
+	UARSessionConfig* Config;
+
+	UPROPERTY(Category = "Game Manager", EditAnywhere, BlueprintReadWrite)
+	bool isARSessionStarted = false;
 };

@@ -72,10 +72,11 @@ FVector UPoissonSampler::MainPointsGeneration(float minDistMainPoints, int new_p
                if (RandomSpawnPosNavLoc.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 250))  //If the secondary point is close enough to the main point.
                    isMainPointHigh = false;
            }
-           //if (RandomSpawnPosNavLoc.Location.Z < 10)  //If the secondary point is close enough to the main point.
-           //{
-           //    isMainPointHigh = false;
-           //}
+           else 
+           {
+               if(RandomSpawnPosNavLoc.Location.Z < 10)  //If the secondary point is close enough to the main point.)
+               isMainPointHigh = false;
+           }
             if ((RandomSpawnPosNavLoc.Location - Player->camLocation).Length() > distToPlayer)       //Make sure the first point is far enough from the player.
                 isMainPointClose = false;
         }

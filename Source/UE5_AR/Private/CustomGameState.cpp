@@ -30,6 +30,7 @@ void ACustomGameState::ResetVariables()
 	ReloadNumber = 4;
 	AmmoNumber = 10;
 	IsEnemyTooClose = false;
+	
 }
 
 void ACustomGameState::SetAreARPlanesDisplayed(bool value)

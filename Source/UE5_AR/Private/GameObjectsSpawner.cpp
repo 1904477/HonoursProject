@@ -5,6 +5,7 @@
 #include "CustomGameMode.h"
 #include "CustomGameState.h"
 #include "HelloARManager.h"
+#include "GraveObject.h"
 #include "ARPlaneActor.h"
 #include "GunPickup.h"
 #include "CustomARPawn.h"
@@ -32,7 +33,7 @@ void AGameObjectsSpawner::BeginPlay()
 
 	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));		//Add poisson sampler as component.
 	PoissonSampler->RegisterComponent();
-
+	SpawnGraves();
 	if (GetWorld()->GetMapName()=="VirtualObstaclesLevel")
 	{
 		SpawnVirtualObstacles();
@@ -44,7 +45,7 @@ void AGameObjectsSpawner::BeginPlay()
 	}
 	if (!isHatchSpawned)	
 	{
-		//SpawnHatch();
+		SpawnHatch();
 		isHatchSpawned = true;
 
 	}
@@ -190,6 +191,19 @@ void AGameObjectsSpawner::SpawnSteps()
 		AStepObstacle* Step = GetWorld()->SpawnActor<AStepObstacle>(spawnPos, MyRot, SpawnInfo);
 
 		Steps.Add(Step);
+	}
+}
+
+void AGameObjectsSpawner::SpawnGraves()
+{
+	for (int i = 0; i < PoissonSampler->MainPoints.Num(); i++)
+	{
+		const FActorSpawnParameters SpawnInfo;
+		FVector spawnPos = PoissonSampler->MainPoints[i];
+		FRotator MyRot;
+		AGraveObject* Grave = GetWorld()->SpawnActor<AGraveObject>(spawnPos, MyRot, SpawnInfo);
+
+		Graves.Add(Grave);
 	}
 }
 
