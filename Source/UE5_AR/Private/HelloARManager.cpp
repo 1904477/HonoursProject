@@ -28,7 +28,7 @@ AHelloARManager::AHelloARManager()
 	Config->SetSessionTrackingFeatureToEnable(EARSessionTrackingFeature::SceneDepth);
 	//Populate the plane colours array
 	TableHeight = 60;
-	WallSize = 2;
+	WallSize = 10;
 }
 
 // Called when the game starts or when spawned
@@ -169,7 +169,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 	{
 		DrawDebugString(GetWorld(), origin, "Plane" + CurrentPActor->Tags[0].ToString(), CurrentPActor, FColor::Cyan, 1.0f, false, 2);
 	}
-	if ((CurrentPActor->GetActorLocation().Z > LowestPlaneActor->GetActorLocation().Z + TableHeight) && boxExtent.Z<WallSize && CurrentPActor != LowestPlaneActor&& boxExtent.Z < 2)
+	if ((CurrentPActor->GetActorLocation().Z >= LowestPlaneActor->GetActorLocation().Z + TableHeight) && boxExtent.Z<WallSize && CurrentPActor != LowestPlaneActor&& boxExtent.Z < 2)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if (CurrentPActor->Tags[0] != "table")
