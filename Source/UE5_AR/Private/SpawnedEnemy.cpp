@@ -50,6 +50,24 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 		GS->SetScore(tmp += 10);
 	}
 	FallDetection();
+	switch (EnemyStatus)
+	{
+	case 0: 
+		GetCharacterMovement()->MaxWalkSpeed = 0.1; // replace 300 with your desired speed()
+		break;
+	case 1:
+		GetCharacterMovement()->MaxWalkSpeed = 40.0f; // replace 300 with your desired speed()
+		break;
+	case 2:
+		GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
+		break;
+	case 3:
+		GetCharacterMovement()->MaxWalkSpeed = 70.0f; // replace 300 with your desired speed()
+		break;
+	case 4:
+		GetCharacterMovement()->MaxWalkSpeed = 0.1; // replace 300 with your desired speed()
+		break;
+	}
 }
 
 // Called to bind functionality to input
@@ -61,7 +79,6 @@ void ASpawnedEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void ASpawnedEnemy::EnemySuspicious()
 {
 	SuspiciousTimer += GetWorld()->GetDeltaSeconds();	//Keep track of how long enemy has been suspicious.
-	GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
 
 	if (SuspiciousTimer > 5.0f && (Player->camLocation - GetActorLocation()).Length() > GM->GameManager->EnemySuspiciousDistance) {		//Enemy is suspicious for 4 seconds
 		SuspiciousTimer = 0;			//Reset timer.
@@ -131,8 +148,7 @@ void ASpawnedEnemy::EnemyStatusManager()
 					switch (randomChoice)
 					{
 					case 1: EnemyStatus = Idle;
-						GetCharacterMovement()->MaxWalkSpeed = 0.1f;
-						break;
+=						break;
 					case 2:
 						EnemyStatus = Wandering;
 						EnemyWander();
