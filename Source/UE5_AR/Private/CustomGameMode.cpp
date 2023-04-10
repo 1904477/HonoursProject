@@ -44,10 +44,13 @@ void ACustomGameMode::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
 	{
-		if (isARSessionStarted == false)
+		if (GetWorld()->GetMapName() == "VirtualObstaclesLevel" || GetWorld()->GetMapName() == "RealWorldObstaclesLevel")
 		{
-			UARBlueprintLibrary::StartARSession(Config);
-			isARSessionStarted = true;
+			if (isARSessionStarted == false)
+			{
+				UARBlueprintLibrary::StartARSession(Config);
+				isARSessionStarted = true;
+			}
 		}
 	}
 }

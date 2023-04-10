@@ -37,10 +37,10 @@ void UPoissonSampler::BeginPlay()
                     CustomGameMode->GameManager->MinDistToPlayer
                     );
     for (int i = 0; i < MainPoints.Num(); i++)      //Draw debug spheres to know where main points are.
-        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, MainPoints[i].Z), 150, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
+        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, MainPoints[i].Z), 40, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
 
     for (int i = 0; i < SecondaryPoints.Num(); i++)     //Draw debug spheres to know where secondary points are.
-        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, SecondaryPoints[i].Z), 150, 1, FColor::Cyan, false, 10.0f, 0, 2);
+        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, SecondaryPoints[i].Z), 40, 1, FColor::Cyan, false, 10.0f, 0, 2);
 }
 
 // Called every frame
@@ -69,7 +69,7 @@ FVector UPoissonSampler::MainPointsGeneration(float minDistMainPoints, int new_p
         {
            if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
            {
-               if (RandomSpawnPosNavLoc.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 250))  //If the secondary point is close enough to the main point.
+               if (RandomSpawnPosNavLoc.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 15))  //If the secondary point is close enough to the main point.
                    isMainPointHigh = false;
            }
            else 
@@ -88,7 +88,7 @@ FVector UPoissonSampler::MainPointsGeneration(float minDistMainPoints, int new_p
                 isMainPointClose = false;
            if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
            {
-               if (RandomSpawnPosNavLoc.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 50))  //If the secondary point is close enough to the main point.
+               if (RandomSpawnPosNavLoc.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 15))  //If the secondary point is close enough to the main point.
                {
                    isMainPointHigh = false;
                }
@@ -129,7 +129,7 @@ void UPoissonSampler::SecondaryPointsGeneration(float minDistSecPoints, int seco
                 }
                 if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
                 {
-                    if (RandomSpawnPosNavLocSec.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 50))  //If the secondary point is close enough to the main point.
+                    if (RandomSpawnPosNavLocSec.Location.Z < (CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + 15))  //If the secondary point is close enough to the main point.
                         IsSecondaryPointHigh = false;
                 }
                 else

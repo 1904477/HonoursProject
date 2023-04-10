@@ -233,17 +233,5 @@ void AHelloARManager::DestroyAllPlanes()
 		Geometries.RemoveAt(0);
 	}
 	ResetARCoreSession();
-	//while (stillDestroying) {
-	//	stillDestroying = false;
-	//
-	//	for (const TPair<UARPlaneGeometry*, AARPlaneActor*>& pair_ : PlaneActors)
-	//	{
-	//		pair_.Value->Destroy();
-	//		UARPlaneGeometry* ref_ = pair_.Key;
-	//		PlaneActors.Remove(ref_);
-	//		ref_->ConditionalBeginDestroy();
-	//		stillDestroying = true;
-	//		break;
-	//	}
-	//}
+
 }

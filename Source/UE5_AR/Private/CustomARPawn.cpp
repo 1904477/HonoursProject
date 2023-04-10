@@ -24,7 +24,7 @@ ACustomARPawn::ACustomARPawn()
 	CameraComponent->SetupAttachment(SceneComponent);
 
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
-	CapsuleComponent->SetupAttachment(SceneComponent);
+	CapsuleComponent->SetupAttachment(CameraComponent);
 
 	CapsuleComponent->InitCapsuleSize(30,90);
 	CapsuleComponent->SetCollisionProfileName("OverlapAll");
