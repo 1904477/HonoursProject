@@ -65,7 +65,7 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 		GetCharacterMovement()->MaxWalkSpeed = 70.0f; // replace 300 with your desired speed()
 		break;
 	case 4:
-		GetCharacterMovement()->MaxWalkSpeed = 0.1; // replace 300 with your desired speed()
+		GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
 		break;
 	}
 }
@@ -148,7 +148,7 @@ void ASpawnedEnemy::EnemyStatusManager()
 					switch (randomChoice)
 					{
 					case 1: EnemyStatus = Idle;
-=						break;
+						break;
 					case 2:
 						EnemyStatus = Wandering;
 						EnemyWander();
