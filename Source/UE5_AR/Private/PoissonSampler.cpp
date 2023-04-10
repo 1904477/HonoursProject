@@ -103,7 +103,7 @@ FVector UPoissonSampler::MainPointsGeneration(float minDistMainPoints, int new_p
 
         }
     }
-    GEngine->AddOnScreenDebugMessage(-1, 500.0f, FColor::Emerald, RandomSpawnPosNavLoc.Location.ToString());
+    //GEngine->AddOnScreenDebugMessage(-1, 500.0f, FColor::Emerald, RandomSpawnPosNavLoc.Location.ToString());
 
     return RandomSpawnPosNavLoc.Location;
 }
@@ -140,7 +140,7 @@ void UPoissonSampler::SecondaryPointsGeneration(float minDistSecPoints, int seco
             }
 
             SecondaryPoints.Push(RandomSpawnPosNavLocSec.Location);      //Push secondary point into secondary points array.
-            GEngine->AddOnScreenDebugMessage(-1, 500.0f, FColor::Blue, RandomSpawnPosNavLocSec.Location.ToString());
+            //GEngine->AddOnScreenDebugMessage(-1, 500.0f, FColor::Blue, RandomSpawnPosNavLocSec.Location.ToString());
 
         }
     }
