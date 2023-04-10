@@ -34,10 +34,10 @@ void AGameObjectsSpawner::BeginPlay()
 	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));		//Add poisson sampler as component.
 	PoissonSampler->RegisterComponent();
 	SpawnGraves();
-	if (GetWorld()->GetMapName()=="VirtualObstaclesLevel")
-	{
+	//if (GetWorld()->GetMapName()=="VirtualObstaclesLevel"|| GetWorld()->GetMapName() == "TestingLevel")
+	//{
 		SpawnVirtualObstacles();
-	}
+	//}
 	if (!isGunSpawned)
 	{
 		SpawnGun();

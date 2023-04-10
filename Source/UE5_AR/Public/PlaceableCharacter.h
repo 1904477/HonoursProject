@@ -33,10 +33,6 @@ public:
 
 	UPROPERTY(Category = "myCategory", VisibleAnywhere, BlueprintReadWrite)
 		USceneComponent* SceneComponent;
-	
-	//UMaterialInstance* PlaceableMaterial;
-
-	//	UPROPERTY(Category = "PlaceableActorMaterial", EditAnywhere, BlueprintReadWrite)
 
 	ACustomGameMode* GM;
 	ACustomGameState* GS;

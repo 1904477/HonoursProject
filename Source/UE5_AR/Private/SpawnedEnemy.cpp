@@ -49,7 +49,7 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 		int tmp = GS->GetScore();
 		GS->SetScore(tmp += 10);
 	}
- 
+	FallDetection();
 }
 
 // Called to bind functionality to input
@@ -96,6 +96,24 @@ void ASpawnedEnemy::EnemyCharging()
 void ASpawnedEnemy::ClosestObstacleChecker()
 {
 
+}
+
+void ASpawnedEnemy::FallDetection()
+{
+	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
+	{
+		if (abs(GetActorLocation().Z - GM->ARManager->LowestPlaneActor->GetActorLocation().Z) > 20)
+		{
+			SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, GM->ARManager->LowestPlaneActor->GetActorLocation().Z + GetCapsuleComponent()->GetLocalBounds().BoxExtent.Z));
+		}
+	}
+	else
+	{
+		if (GetActorLocation().Z < 100)
+		{
+			SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 0 + GetCapsuleComponent()->GetLocalBounds().BoxExtent.Z));
+		}
+	}
 }
 
 void ASpawnedEnemy::EnemyStatusManager()

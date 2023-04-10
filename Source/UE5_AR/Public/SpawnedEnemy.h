@@ -50,6 +50,8 @@ public:
 
 	void ClosestObstacleChecker();
 
+	void FallDetection();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyStatus")
 	TEnumAsByte<Status> EnemyStatus;
 
