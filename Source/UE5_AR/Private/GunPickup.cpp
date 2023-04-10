@@ -20,7 +20,6 @@ AGunPickup::AGunPickup()
 	BoxComponent->SetupAttachment(SkeletalMesh);
 
 	BoxComponent->SetWorldScale3D(FVector(0.4, 1, 0.5));
-	BoxComponent->SetRelativeLocation(FVector(-40, 0, 30));
 	BoxComponent->SetCollisionProfileName("BlockAll");
 
 }

@@ -30,7 +30,7 @@ void ATableObstacle::BeginPlay()
 		FVector origin;
 		FVector boxExtent;
 		GetActorBounds(false, origin, boxExtent);
-		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + BoxComponent->GetScaledBoxExtent().Z));
+		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, CustomGameMode->ARManager->LowestPlaneActor->GetActorLocation().Z + (BoxComponent->GetScaledBoxExtent().Z*2)));
 	}
 	else
 	{
