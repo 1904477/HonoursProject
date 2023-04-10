@@ -140,7 +140,6 @@ void UPoissonSampler::SecondaryPointsGeneration(float minDistSecPoints, int seco
             }
 
             SecondaryPoints.Push(RandomSpawnPosNavLocSec.Location);      //Push secondary point into secondary points array.
-            //GEngine->AddOnScreenDebugMessage(-1, 500.0f, FColor::Blue, RandomSpawnPosNavLocSec.Location.ToString());
 
         }
     }

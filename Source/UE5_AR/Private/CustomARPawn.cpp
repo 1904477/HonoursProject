@@ -51,6 +51,8 @@ void ACustomARPawn::Tick(float DeltaTime)
 	camLocation = camManager->GetCameraLocation();
 	if (GS->GetHealth() <= 0)
 		GS->SetDidPlayerLose(true);
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, CapsuleComponent->GetComponentLocation().ToString());
+
 }
 
 // Called to bind functionality to input
