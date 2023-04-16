@@ -5,6 +5,7 @@
 #include "CustomGameMode.h"
 #include "CustomGameState.h"
 #include "HelloARManager.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "GraveObject.h"
 #include "ARPlaneActor.h"
 #include "GunPickup.h"
@@ -36,7 +37,7 @@ void AGameObjectsSpawner::BeginPlay()
 	PoissonSampler->RegisterComponent();
 	SpawnGraves();
 
-	if (GetWorld()->GetMapName()=="VirtualObstaclesLevel"|| GetWorld()->GetMapName() == "TestingLevel")
+	if (GetWorld()->GetMapName()=="VirtualObstaclesLevel"|| UGameplayStatics::GetPlatformName()=="Windows")
 	{
 		SpawnVirtualObstacles();
 	}
