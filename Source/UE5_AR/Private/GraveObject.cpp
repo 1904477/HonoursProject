@@ -8,11 +8,13 @@
 
 AGraveObject::AGraveObject()
 {
-	Tags.Add("Step");
+	Tags.Add("Grave");
 	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshObj(TEXT("	StaticMesh'/Game/Assets/Sepultura_Sepultura.Sepultura_Sepultura'"));
 	StaticMeshComponent->SetStaticMesh(MeshObj.Object);
 
 	StaticMeshComponent->SetWorldScale3D(FVector(0.2, 0.2, 0.2));
+	BoxComponent->SetCollisionProfileName("NoCollision");
+	StaticMeshComponent->SetCollisionProfileName("NoCollision");
 }
 
 void AGraveObject::BeginPlay()

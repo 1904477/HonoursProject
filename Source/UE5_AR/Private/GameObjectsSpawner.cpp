@@ -28,12 +28,14 @@ void AGameObjectsSpawner::BeginPlay()
 	CustomGameMode = Cast<ACustomGameMode>(GM);
 	auto P = GetWorld()->GetFirstPlayerController()->GetPawn();
 	Player = Cast<ACustomARPawn>(P);
+
 	FTransform tr;		//identity for Poisson component position
 	tr.SetIdentity();
 
 	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));		//Add poisson sampler as component.
 	PoissonSampler->RegisterComponent();
 	SpawnGraves();
+
 	if (GetWorld()->GetMapName()=="VirtualObstaclesLevel"|| GetWorld()->GetMapName() == "TestingLevel")
 	{
 		SpawnVirtualObstacles();
@@ -211,17 +213,28 @@ void AGameObjectsSpawner::SpawnGun()
 {
 	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
 	{
-		FVector tablePos = CustomGameMode->ARManager->FirstTable->GetActorLocation();
-		const FActorSpawnParameters SpawnInfo;
-		const FRotator MyRot(0, 0, 0);
-		AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(tablePos.X, tablePos.Y, tablePos.Z), MyRot, SpawnInfo);
-		//AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(5,5,5), MyRot, SpawnInfo);
+		if (GetWorld()->GetMapName() == "VirtualObstaclesLevel")
+		{
+			FVector tablePos = Tables[0]->GetActorLocation();
+			const FActorSpawnParameters SpawnInfo;
+			const FRotator MyRot(0, 0, 0);
+			AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(tablePos.X, tablePos.Y, tablePos.Z), MyRot, SpawnInfo);
+		}
+		else
+		{
+			FVector tablePos = CustomGameMode->ARManager->FirstTable->GetActorLocation();
+			const FActorSpawnParameters SpawnInfo;
+			const FRotator MyRot(0, 0, 0);
+			AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(tablePos.X, tablePos.Y, tablePos.Z), MyRot, SpawnInfo);
+			//AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(5,5,5), MyRot, SpawnInfo);
+		}
 	}
 	else
 	{
+		FVector tablePos = Tables[0]->GetActorLocation();
 		const FActorSpawnParameters SpawnInfo;
 		const FRotator MyRot(0, 0, 0);
-		AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(5,5,5), MyRot, SpawnInfo);
+		AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(tablePos.X, tablePos.Y, tablePos.Z), MyRot, SpawnInfo);
 	}
 }
 
