@@ -51,7 +51,7 @@ void ACustomARPawn::Tick(float DeltaTime)
 	camLocation = camManager->GetCameraLocation();
 	if (GS->GetHealth() <= 0)
 		GS->SetDidPlayerLose(true);
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, CapsuleComponent->GetComponentLocation().ToString());
+	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, CapsuleComponent->GetComponentLocation().ToString());
 
 }
 
@@ -85,7 +85,7 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 				if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, AGunPickup::StaticClass()))
 				{
 					Gun = Cast<AGunPickup>(HitResult.GetActor());
-					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat((Gun->GetActorLocation() - GetActorLocation()).Length()));
+					//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat((Gun->GetActorLocation() - GetActorLocation()).Length()));
 
 					if ((Gun->GetActorLocation() - camLocation).Length() < 200)
 					{
@@ -105,7 +105,7 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 					}
 					// Get object of actor hit.
 					UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
-					GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, HitResult.GetComponent()->GetName());
+					//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, HitResult.GetComponent()->GetName());
 
 					// if we've hit a target.
 					if ((UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()) && GS->GetAmmo() > 0))
