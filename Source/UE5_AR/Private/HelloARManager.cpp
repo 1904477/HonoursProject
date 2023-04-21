@@ -177,7 +177,6 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			if (CurrentPActor->Tags[0] != "table")
 			{
 				CurrentPActor->Tags.Empty();
-				tables--;
 			}
 
 		if (IsFirstTableDetected == false)
@@ -188,7 +187,6 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 
 		}
 		CurrentPActor->Tags.Add("table");
-		tables++;
 	}
 	 if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor&& boxExtent.Z<2)
 	{
@@ -196,10 +194,8 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			if (CurrentPActor->Tags[0] != "step")
 			{
 				CurrentPActor->Tags.Empty();
-				gymSteps --;
 			}
 		CurrentPActor->Tags.Add("step");
-		gymSteps++;
 	}
 	 if (boxExtent.Z>= WallSize && CurrentPActor != LowestPlaneActor)
 	{
@@ -207,11 +203,9 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			if (CurrentPActor->Tags[0] != "wall")
 			{
 				CurrentPActor->Tags.Empty();
-				walls--;
 
 			}
 		CurrentPActor->Tags.Add("wall");
-		walls++;
 	}
 	 if (LowestPlaneActor->GetActorLocation().Z > CurrentPActor->GetActorLocation().Z)
 	{
