@@ -80,7 +80,7 @@ void ASpawnedEnemy::EnemySuspicious()
 {
 	SuspiciousTimer += GetWorld()->GetDeltaSeconds();	//Keep track of how long enemy has been suspicious.
 
-	if (SuspiciousTimer > 5.0f && (Player->camLocation - GetActorLocation()).Length() > GM->GameManager->EnemySuspiciousDistance) {		//Enemy is suspicious for 4 seconds
+	if (SuspiciousTimer > 7.0f && (Player->camLocation - GetActorLocation()).Length() > GM->GameManager->EnemySuspiciousDistance) {		//Enemy is suspicious for 4 seconds
 		SuspiciousTimer = 0;			//Reset timer.
 		EnemyStatus = Idle;		//After the enemy is suspicious, it becomes idle
 	}
