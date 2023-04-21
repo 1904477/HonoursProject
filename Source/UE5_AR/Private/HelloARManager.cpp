@@ -184,7 +184,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 		{
 			FirstTable = CurrentPActor;
 			IsFirstTableDetected = true;
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("First Table"));
+			//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("First Table"));
 
 		}
 		CurrentPActor->Tags.Add("table");

@@ -87,7 +87,7 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 					Gun = Cast<AGunPickup>(HitResult.GetActor());
 					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat((Gun->GetActorLocation() - GetActorLocation()).Length()));
 
-					if ((Gun->GetActorLocation() - GetActorLocation()).Length() < 200)
+					if ((Gun->GetActorLocation() - camLocation).Length() < 200)
 					{
 						GS->SetIsIsGunCollected(true);
 						Gun->BoxComponent->SetCollisionProfileName("NoCollision");
