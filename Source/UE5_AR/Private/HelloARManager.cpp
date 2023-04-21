@@ -177,7 +177,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			if (CurrentPActor->Tags[0] != "table")
 			{
 				CurrentPActor->Tags.Empty();
-				tables = 0;
+				tables--;
 			}
 
 		if (IsFirstTableDetected == false)
@@ -196,7 +196,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			if (CurrentPActor->Tags[0] != "step")
 			{
 				CurrentPActor->Tags.Empty();
-				gymSteps = 0;
+				gymSteps --;
 			}
 		CurrentPActor->Tags.Add("step");
 		gymSteps++;
@@ -207,7 +207,7 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			if (CurrentPActor->Tags[0] != "wall")
 			{
 				CurrentPActor->Tags.Empty();
-				walls=0;
+				walls--;
 
 			}
 		CurrentPActor->Tags.Add("wall");
