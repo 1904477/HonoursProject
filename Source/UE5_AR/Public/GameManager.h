@@ -67,6 +67,7 @@ public:
 
 
 	FTransform TraceResultTransform;
+
 	AGameObjectsSpawner* ObjectsSpawner;
 	ACustomGameState* GameState;
 

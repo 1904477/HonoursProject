@@ -12,6 +12,7 @@ class AARPlaneActor;
 class UARPlaneGeometry;
 class ACustomGameState;
 
+
 UCLASS()
 class UE5_AR_API AHelloARManager : public AActor
 {
@@ -35,14 +36,24 @@ public:
 
 	UPROPERTY(Category = "LowestPlane", EditAnywhere, BlueprintReadWrite)
 	AARPlaneActor* LowestPlaneActor;		//Reference to the lowest PlaneActor.
+
+
 	AARPlaneActor* FirstTable;		//Reference to the first table detected.
 
 	UFUNCTION(BlueprintCallable)
 	void DestroyAllPlanes();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Obstacles")
+		int tables;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Obstacles")
+		int gymSteps;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Obstacles")
+		int walls;
+
 protected:
 	
-
-
 	AARPlaneActor* SpawnPlaneActor();	//Function to spawn Plane Actor.	
 
 	void UpdatePlaneActors();		// Updates the plane actors on every frame as long as the AR Session is running.

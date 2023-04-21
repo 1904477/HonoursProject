@@ -50,8 +50,10 @@ void AHelloARManager::Tick(float DeltaTime)
 	{
 	case EARSessionStatus::Running:
 			UpdatePlaneActors();		//Update all plane actors
-			if(GS->GetIsEnvironmentScanned()==false)
+			if (GS->GetIsEnvironmentScanned() == false)
+			{
 				PlaneTagUpdate();
+			}
 		break;
 	case EARSessionStatus::FatalError:		//In case of fatal error in the AR sessions
 		ResetARCoreSession();		//Reset the session
@@ -173,7 +175,10 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if (CurrentPActor->Tags[0] != "table")
+			{
 				CurrentPActor->Tags.Empty();
+				tables = 0;
+			}
 
 		if (IsFirstTableDetected == false)
 		{
@@ -183,21 +188,30 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 
 		}
 		CurrentPActor->Tags.Add("table");
+		tables++;
 	}
 	 if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor&& boxExtent.Z<2)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if (CurrentPActor->Tags[0] != "step")
+			{
 				CurrentPActor->Tags.Empty();
-
+				gymSteps = 0;
+			}
 		CurrentPActor->Tags.Add("step");
+		gymSteps++;
 	}
 	 if (boxExtent.Z>= WallSize && CurrentPActor != LowestPlaneActor)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
-			if(CurrentPActor->Tags[0] != "wall")
-			CurrentPActor->Tags.Empty();
+			if (CurrentPActor->Tags[0] != "wall")
+			{
+				CurrentPActor->Tags.Empty();
+				walls=0;
+
+			}
 		CurrentPActor->Tags.Add("wall");
+		walls++;
 	}
 	 if (LowestPlaneActor->GetActorLocation().Z > CurrentPActor->GetActorLocation().Z)
 	{
