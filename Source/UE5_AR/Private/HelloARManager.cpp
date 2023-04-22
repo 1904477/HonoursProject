@@ -106,14 +106,13 @@ void AHelloARManager::UpdatePlaneActors()
 							LowestPlaneActor = PlaneActor;
 							PlaneActor->Tags.Add("floor");
 						}
-						else
-						{
-							if (LowestPlaneActor->GetActorLocation().Z > PlaneActor->GetActorLocation().Z)
+						else if (LowestPlaneActor->GetActorLocation().Z > PlaneActor->GetActorLocation().Z)
 							{
 								LowestPlaneActor = PlaneActor;
 								PlaneActor->Tags.Add("floor");
 							}
-						}
+								PlaneActor->Tags.Add("uncathegorised");
+
 					}
 					break;
 				}
@@ -171,11 +170,15 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 	{
 		DrawDebugString(GetWorld(), origin, "Plane" + CurrentPActor->Tags[0].ToString(), CurrentPActor, FColor::Cyan, 1.0f, false, 2);
 	}
-	if ((CurrentPActor->GetActorLocation().Z >= LowestPlaneActor->GetActorLocation().Z + TableHeight) && boxExtent.Z<WallSize && CurrentPActor != LowestPlaneActor&& boxExtent.Z < 2)
+if(CurrentPActor->Tags[0]!="table")
+{
+	if ((CurrentPActor->GetActorLocation().Z >= LowestPlaneActor->GetActorLocation().Z + TableHeight) && boxExtent.Z<WallSize && CurrentPActor != LowestPlaneActor)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if (CurrentPActor->Tags[0] != "table")
 			{
+				if(CurrentPActor->ActorHasTag("step"))
+					gymSteps--;
 				CurrentPActor->Tags.Empty();
 			}
 
@@ -187,32 +190,51 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 
 		}
 		CurrentPActor->Tags.Add("table");
+		tables++;
 	}
+}
+if(CurrentPActor->Tags[0]!="step")
+{
 	 if ((CurrentPActor->GetActorLocation().Z < LowestPlaneActor->GetActorLocation().Z + TableHeight) && CurrentPActor != LowestPlaneActor&& boxExtent.Z<2)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if (CurrentPActor->Tags[0] != "step")
 			{
+				if(CurrentPActor->ActorHasTag("table"))
+					tables--;
 				CurrentPActor->Tags.Empty();
 			}
 		CurrentPActor->Tags.Add("step");
+		gymSteps++;
+
 	}
+}
+if(CurrentPActor->Tags[0]!="wall")
+{
 	 if (boxExtent.Z>= WallSize && CurrentPActor != LowestPlaneActor)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 			if (CurrentPActor->Tags[0] != "wall")
 			{
+				if(CurrentPActor->ActorHasTag("table"))
+					tables--;
+				if(CurrentPActor->ActorHasTag("step"))
+					gymSteps--;
 				CurrentPActor->Tags.Empty();
-
 			}
 		CurrentPActor->Tags.Add("wall");
 	}
+}
 	 if (LowestPlaneActor->GetActorLocation().Z > CurrentPActor->GetActorLocation().Z)
 	{
 		if (!CurrentPActor->Tags.IsEmpty())
 		{
 			if (CurrentPActor->Tags[0] != "floor")
 			{
+				if(CurrentPActor->ActorHasTag("table"))
+					tables--;
+				if(CurrentPActor->ActorHasTag("step"))
+					gymSteps--;
 				CurrentPActor->Tags.Empty();
 				CurrentPActor->Tags.Add("floor");
 			}
