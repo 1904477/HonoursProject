@@ -110,8 +110,6 @@ void AGameObjectsSpawner::EnemiesSpawnerManager()
 		else if (EnemySpawnTimer <= 3 && GameState->GetHasGameStarted() == true)		//If spawntimer is less than three and the game has started
 			EnemySpawnTimer += GetWorld()->GetDeltaSeconds();		//Update enemy spawn timer.
 	}
-
-
 }
 
 void AGameObjectsSpawner::SpawnVirtualObstacles()

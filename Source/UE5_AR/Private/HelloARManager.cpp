@@ -214,12 +214,12 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			if (CurrentPActor->Tags[0] != "floor")
 			{
 				CurrentPActor->Tags.Empty();
-				CurrentPActor->Tags.Add("Floor");
+				CurrentPActor->Tags.Add("floor");
 			}
 		}
 		else
 		{
-			CurrentPActor->Tags.Add("Floor");
+			CurrentPActor->Tags.Add("floor");
 		}
 		LowestPlaneActor = CurrentPActor;
 	}

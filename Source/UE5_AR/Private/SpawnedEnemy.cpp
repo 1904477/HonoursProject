@@ -45,9 +45,9 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 
 	if (Health <= 0)
 	{
-		Destroy();
 		int tmp = GS->GetScore();
-		GS->SetScore(tmp += 10);
+		GS->SetScore(tmp += 25);
+		Destroy();
 	}
 	FallDetection();
 	switch (EnemyStatus)

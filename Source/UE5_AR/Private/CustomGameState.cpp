@@ -11,7 +11,7 @@ ACustomGameState::ACustomGameState()
 	IsEnvironmentScanned = false;
 	AreARPlanesDisplayed = true;
 	Health = 100;
-	HatchOpenTimerSec = 5;
+	HatchOpenTimerSec = 60;
 	HatchOpenTimerMin = 0;
 	ReloadNumber = 4;
 	AmmoNumber = 10;
