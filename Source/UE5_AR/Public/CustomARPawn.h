@@ -53,6 +53,7 @@ public:
 
 	AGunPickup* Gun;
 
+	UPROPERTY(Category = "camLocation", VisibleAnywhere, BlueprintReadWrite)
 	FVector camLocation;
 
 	UPROPERTY(Category = "DistanceToEnemy", VisibleAnywhere, BlueprintReadWrite)
