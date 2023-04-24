@@ -94,6 +94,7 @@ void AGameObjectsSpawner::EnemiesSpawner()
 	{
 		Enemies.Add(Enemy);
 		CustomGameMode->GameManager->EnemiesToSpawn--;
+		EnemySpawnTimer = 0;
 	}
 }
 
@@ -104,7 +105,6 @@ void AGameObjectsSpawner::EnemiesSpawnerManager()
 		if (EnemySpawnTimer > CustomGameMode->GameManager->EnemiesSpawnTimer && GameState->GetHasGameStarted() == true)
 		{
 			EnemiesSpawner();
-			EnemySpawnTimer = 0;
 		}
 		else if (EnemySpawnTimer <= EnemiesSpawnTimer && GameState->GetHasGameStarted() == true)		//If spawntimer is less than three and the game has started
 			EnemySpawnTimer += GetWorld()->GetDeltaSeconds();		//Update enemy spawn timer.
