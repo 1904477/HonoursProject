@@ -142,7 +142,7 @@ void AGameObjectsSpawner::SpawnTables()
 		}
 		const FActorSpawnParameters SpawnInfo;
 		const FRotator MyRot(0, tableAngle, 0);
-		ATableObstacle* Table = GetWorld()->SpawnActor<ATableObstacle>(spawnPos, MyRot, SpawnInfo);
+		ATableObstacle* Table = GetWorld()->SpawnActor<ATableObstacle>(TableObstacleToSpawn, spawnPos, MyRot, SpawnInfo);
 
 		Tables.Add(Table);
 	}
@@ -189,7 +189,7 @@ void AGameObjectsSpawner::SpawnSteps()
 		}
 		const FActorSpawnParameters SpawnInfo;
 		const FRotator MyRot(0, StepAngle, 0);
-		AStepObstacle* Step = GetWorld()->SpawnActor<AStepObstacle>(spawnPos, MyRot, SpawnInfo);
+		AStepObstacle* Step = GetWorld()->SpawnActor<AStepObstacle>(StepObstacleToSpawn, spawnPos, MyRot, SpawnInfo);
 
 		Steps.Add(Step);
 	}

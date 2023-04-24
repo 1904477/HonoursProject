@@ -53,6 +53,11 @@ public:
 		TArray<ASpawnedEnemy*> Enemies;
 	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
 		TSubclassOf<AHatch> HatchToSpawn;
+	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<ATableObstacle> TableObstacleToSpawn;
+	UPROPERTY(Category = "Placeable", EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AStepObstacle> StepObstacleToSpawn;
+
 	TArray<ATableObstacle*> Tables;
 	TArray<AStepObstacle*> Steps;
 	TArray<AGraveObject*> Graves;

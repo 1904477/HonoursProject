@@ -138,6 +138,16 @@ void ACustomGameState::SetIsHatchOpen(bool b)
 	IsHatchOpen = b;
 }
 
+void ACustomGameState::SetTableCollisions(int b)
+{
+	TableCollision = b;
+}
+
+int ACustomGameState::GetTableCollisions()
+{
+	return TableCollision;
+}
+
 void ACustomGameState::SetHatchOpenTimer(float b, float t)
 {
 	HatchOpenTimerMin = b;

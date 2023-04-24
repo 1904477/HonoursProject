@@ -66,6 +66,11 @@ public:
 	UFUNCTION(Category = "HatchOpen", BlueprintCallable)
 		void SetIsHatchOpen(bool b);
 
+	UFUNCTION(Category = "DataCollect", BlueprintCallable)
+		void SetTableCollisions(int b);
+	UFUNCTION(Category = "DataCollect", BlueprintCallable)
+		int GetTableCollisions();
+
 	UFUNCTION(Category = "HatchOpenTimer", BlueprintCallable)
 		void SetHatchOpenTimer(float b,float t);
 	UFUNCTION(Category = "HatchOpenTimer", BlueprintCallable)
@@ -96,6 +101,7 @@ private:
 		int AmmoNumber;
 		int ReloadNumber;
 		int Score;
+		int TableCollision;
 		float HatchOpenTimerMin;
 		float HatchOpenTimerSec;
 };
