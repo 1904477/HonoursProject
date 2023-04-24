@@ -79,7 +79,6 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 	}
 	else
 		GameState->SetIsIsIsOneEnemyAlive(false);
-
 }
 
 void AGameObjectsSpawner::EnemiesSpawner()
@@ -107,7 +106,7 @@ void AGameObjectsSpawner::EnemiesSpawnerManager()
 			EnemiesSpawner();
 			EnemySpawnTimer = 0;
 		}
-		else if (EnemySpawnTimer <= 3 && GameState->GetHasGameStarted() == true)		//If spawntimer is less than three and the game has started
+		else if (EnemySpawnTimer <= EnemiesSpawnTimer && GameState->GetHasGameStarted() == true)		//If spawntimer is less than three and the game has started
 			EnemySpawnTimer += GetWorld()->GetDeltaSeconds();		//Update enemy spawn timer.
 	}
 }
