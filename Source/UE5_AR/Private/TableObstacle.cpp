@@ -36,7 +36,7 @@ void ATableObstacle::BeginPlay()
 	{
 		FVector origin;
 		FVector boxExtent;
-		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, BoxComponent->GetScaledBoxExtent().Z * 2));
+		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, BoxComponent->GetScaledBoxExtent().Z*2));
 	}
 	Super::BeginPlay();
 }

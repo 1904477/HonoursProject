@@ -51,7 +51,7 @@ void AHatch::Tick(float DeltaTime)
 
 void AHatch::TimerManager()
 {
-	if (GS->GetHatchOpenTimerMin() > 0 || GS->GetHatchOpenTimerSec() > 0)
+	if ((GS->GetHatchOpenTimerMin() > 0 || GS->GetHatchOpenTimerSec() > 0)&&GS->GetHasGameStarted()==true)
 	{
 		if (GS->GetHatchOpenTimerSec() <= 0)
 		{
@@ -59,7 +59,7 @@ void AHatch::TimerManager()
 		}
 		GS->SetHatchOpenTimer(GS->GetHatchOpenTimerMin(), GS->GetHatchOpenTimerSec() - GetWorld()->GetDeltaSeconds());
 	}
-	else
+	else if(GS->GetHatchOpenTimerMin() <= 0 && GS->GetHatchOpenTimerSec() <= 0)
 	{
 		GS->SetIsHatchOpen(true);
 	}

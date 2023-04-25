@@ -3,8 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="abf7ab08-821b-4401-95f8-c732a7959f9b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../Content/Blueprints/BP_GameManager.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/Blueprints/BP_GameManager.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Source.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Source.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UE5_AR/Private/CustomGameState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/CustomGameState.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UE5_AR/Private/GameObjectsSpawner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/GameObjectsSpawner.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UE5_AR/Private/Hatch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/Hatch.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UE5_AR/Private/TableObstacle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/TableObstacle.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +47,7 @@
       <workItem from="1682085452869" duration="2292000" />
       <workItem from="1682153482160" duration="5729000" />
       <workItem from="1682343601404" duration="2314000" />
+      <workItem from="1682422201685" duration="4543000" />
     </task>
     <servers />
   </component>

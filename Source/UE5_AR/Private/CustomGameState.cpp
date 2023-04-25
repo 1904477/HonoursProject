@@ -13,6 +13,7 @@ ACustomGameState::ACustomGameState()
 	Health = 100;
 	HatchOpenTimerSec = 60;
 	HatchOpenTimerMin = 0;
+	TableCollision = 0;
 	ReloadNumber = 4;
 	AmmoNumber = 10;
 	IsEnemyTooClose = false;
@@ -30,7 +31,7 @@ void ACustomGameState::ResetVariables()
 	ReloadNumber = 4;
 	AmmoNumber = 10;
 	IsEnemyTooClose = false;
-	
+	TableCollision=0;
 }
 
 void ACustomGameState::SetAreARPlanesDisplayed(bool value)
