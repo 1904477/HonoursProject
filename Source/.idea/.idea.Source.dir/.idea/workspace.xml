@@ -2,11 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="abf7ab08-821b-4401-95f8-c732a7959f9b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Content/Blueprints/BP_GameManager.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/Blueprints/BP_GameManager.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Content/Blueprints/BP_CustomARPawn.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/Blueprints/BP_CustomARPawn.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Content/Blueprints/BP_TableObstacle.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/Blueprints/BP_TableObstacle.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Content/Maps/LoseLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/Maps/LoseLevel.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Content/Maps/MainMenuLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/Maps/MainMenuLevel.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Content/UI/GameUI/GameUI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/UI/GameUI/GameUI.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Content/UI/LoseLevelUI/LoseUI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/UI/LoseLevelUI/LoseUI.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Content/UI/MainMenuUI/MainMenuUI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/UI/MainMenuUI/MainMenuUI.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Content/UI/WinLevelUI/WinUI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/../Content/UI/WinLevelUI/WinUI.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Source.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Source.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UE5_AR/Private/CustomGameState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/CustomGameState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UE5_AR/Private/GameObjectsSpawner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/GameObjectsSpawner.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UE5_AR/Private/Hatch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/Hatch.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UE5_AR/Private/TableObstacle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/TableObstacle.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UE5_AR/Private/HelloARManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/HelloARManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UE5_AR/Public/CustomGameState.h" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Public/CustomGameState.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +55,7 @@
       <workItem from="1682153482160" duration="5729000" />
       <workItem from="1682343601404" duration="2314000" />
       <workItem from="1682422201685" duration="4543000" />
+      <workItem from="1682599222867" duration="3665000" />
     </task>
     <servers />
   </component>
@@ -57,5 +65,16 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/UE5_AR/Private/TableObstacle.cpp</url>
+          <line>14</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

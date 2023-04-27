@@ -186,8 +186,6 @@ if(CurrentPActor->Tags[0]!="table")
 		{
 			FirstTable = CurrentPActor;
 			IsFirstTableDetected = true;
-			//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("First Table"));
-
 		}
 		CurrentPActor->Tags.Add("table");
 		tables++;

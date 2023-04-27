@@ -87,6 +87,8 @@ public:
 	UFUNCTION(Category = "PlayerLose", BlueprintCallable)
 		void SetDidPlayerLose(bool b);
 
+
+	
 private:
 		bool HasGameStarted;
 		bool IsEnvironmentScanned;
