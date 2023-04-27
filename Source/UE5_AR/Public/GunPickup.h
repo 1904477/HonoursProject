@@ -35,6 +35,8 @@ public:
 		bool inShootingAnimation = false;
 
 	ACustomGameState* GS;
+
+	UPROPERTY(Category = "GunPicked", VisibleAnywhere, BlueprintReadWrite)
 	bool isGunPicked = false;
 
 
