@@ -119,8 +119,8 @@ void AGameObjectsSpawner::SpawnVirtualObstacles()
 
 void AGameObjectsSpawner::SpawnTables()
 {
-	int tableDistanceX = 220;
-	int tableDistanceY = 220;
+	int tableDistanceX = 190;
+	int tableDistanceY = 190;
 	int tableAngle = 90;
 	FVector spawnPos;
 	for (int i = 0; i < 4; i++)	//4 Tables

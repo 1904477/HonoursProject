@@ -56,13 +56,13 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 		GetCharacterMovement()->MaxWalkSpeed = 0.1; // replace 300 with your desired speed()
 		break;
 	case 1:
-		GetCharacterMovement()->MaxWalkSpeed = 40.0f; // replace 300 with your desired speed()
+		GetCharacterMovement()->MaxWalkSpeed = 30.0f; // replace 300 with your desired speed()
 		break;
 	case 2:
-		GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
+		GetCharacterMovement()->MaxWalkSpeed = 40.0f; // replace 300 with your desired speed()
 		break;
 	case 3:
-		GetCharacterMovement()->MaxWalkSpeed = 70.0f; // replace 300 with your desired speed()
+		GetCharacterMovement()->MaxWalkSpeed = 60.0f; // replace 300 with your desired speed()
 		break;
 	case 4:
 		GetCharacterMovement()->MaxWalkSpeed = 0.1f; // replace 300 with your desired speed()

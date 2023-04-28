@@ -36,11 +36,11 @@ void UPoissonSampler::BeginPlay()
                     CustomGameMode->GameManager->SecPointsSpawnNum,
                     CustomGameMode->GameManager->MinDistToPlayer
                     );
-    for (int i = 0; i < MainPoints.Num(); i++)      //Draw debug spheres to know where main points are.
-        DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, MainPoints[i].Z), 40, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
+    //for (int i = 0; i < MainPoints.Num(); i++)      //Draw debug spheres to know where main points are.
+    //    DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, MainPoints[i].Z), 40, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
 
-    for (int i = 0; i < SecondaryPoints.Num(); i++)     //Draw debug spheres to know where secondary points are.
-        DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, SecondaryPoints[i].Z), 40, 1, FColor::Cyan, false, 10.0f, 0, 2);
+    //for (int i = 0; i < SecondaryPoints.Num(); i++)     //Draw debug spheres to know where secondary points are.
+    //    DrawDebugSphere(GetWorld(), FVector(SecondaryPoints[i].X, SecondaryPoints[i].Y, SecondaryPoints[i].Z), 40, 1, FColor::Cyan, false, 10.0f, 0, 2);
 }
 
 // Called every frame

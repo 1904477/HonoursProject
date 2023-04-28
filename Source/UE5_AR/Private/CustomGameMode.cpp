@@ -19,6 +19,9 @@ ACustomGameMode::ACustomGameMode()
 	// Set the default pawn and gamestate to be our custom pawn and gamestate programatically
 	DefaultPawnClass = ACustomARPawn::StaticClass();
 	GameStateClass = ACustomGameState::StaticClass();
+
+	//ConstructorHelpers::FObjectFinder<UARSessionConfig> ConfigAsset(TEXT("ARSessionConfig'/Game/Blueprints/HelloARSessionConfig.HelloARSessionConfig'"));
+	//Config = ConfigAsset.Object;
 }
 
 
@@ -60,6 +63,8 @@ void ACustomGameMode::SpawnInitialActors()
 {
 	// Spawn an instance of the HelloARManager class
 	Config = NewObject<UARSessionConfig>();
+	Config->bUseSceneDepthForOcclusion = true;
+	Config->SetSessionTrackingFeatureToEnable(EARSessionTrackingFeature::SceneDepth);
 	ARManager = GetWorld()->SpawnActor<AHelloARManager>();
 	GameManager = GetWorld()->SpawnActor<AGameManager>(SpawnedGameManager);
 
