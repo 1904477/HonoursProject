@@ -126,17 +126,17 @@ void AGameObjectsSpawner::SpawnTables()
 	for (int i = 0; i < 4; i++)	//4 Tables
 	{
 		if (i == 0)
-			spawnPos = FVector(0, tableDistanceY, 0);
+			spawnPos = FVector(Player->GetActorLocation().X, Player->GetActorLocation().Y + tableDistanceY, 0);
 		else if (i == 1)
-			spawnPos = FVector(0, -tableDistanceY, 0);
+			spawnPos = FVector(Player->GetActorLocation().X, Player->GetActorLocation().Y - tableDistanceY, 0);
 		else if (i == 2)
 		{
-			spawnPos = FVector(tableDistanceX, 0, 0);
+			spawnPos = FVector(Player->GetActorLocation().X + tableDistanceX, Player->GetActorLocation().Y, 0);
 			tableAngle = 0;
 		}
 		else if (i == 3)
 		{
-			spawnPos = FVector(-tableDistanceX, 0, 0);
+			spawnPos = FVector(Player->GetActorLocation().X - tableDistanceX, Player->GetActorLocation().Y, 0);
 			tableAngle = 0;
 		}
 		const FActorSpawnParameters SpawnInfo;
