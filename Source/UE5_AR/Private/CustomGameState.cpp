@@ -28,7 +28,7 @@ void ACustomGameState::ResetVariables()
 	Health = 100;
 	HatchOpenTimerSec = 5;
 	HatchOpenTimerMin = 0;
-	ReloadNumber = 4;
+	ReloadNumber = 5;
 	AmmoNumber = 10;
 	IsEnemyTooClose = false;
 	TableCollision=0;

@@ -4,6 +4,7 @@
     <list default="true" id="abf7ab08-821b-4401-95f8-c732a7959f9b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Source.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Source.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UE5_AR/Private/GameObjectsSpawner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/GameObjectsSpawner.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UE5_AR/Private/SpawnedEnemy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/UE5_AR/Private/SpawnedEnemy.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +48,7 @@
       <workItem from="1682422201685" duration="4543000" />
       <workItem from="1682599222867" duration="4880000" />
       <workItem from="1682683556049" duration="7006000" />
-      <workItem from="1682757334820" duration="3722000" />
+      <workItem from="1682757334820" duration="9086000" />
     </task>
     <servers />
   </component>

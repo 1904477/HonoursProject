@@ -119,26 +119,17 @@ void AGameObjectsSpawner::SpawnVirtualObstacles()
 
 void AGameObjectsSpawner::SpawnTables()
 {
-	int tableDistanceX = 190;
-	int tableDistanceY = 190;
+	int tableDistanceX = 150;
+	int tableDistanceY = 150;
 	int tableAngle = 90;
 	FVector spawnPos;
-	for (int i = 0; i < 4; i++)	//4 Tables
+	for (int i = 0; i < 2; i++)	//4 Tables
 	{
 		if (i == 0)
 			spawnPos = FVector(Player->GetActorLocation().X, Player->GetActorLocation().Y + tableDistanceY, 0);
 		else if (i == 1)
 			spawnPos = FVector(Player->GetActorLocation().X, Player->GetActorLocation().Y - tableDistanceY, 0);
-		else if (i == 2)
-		{
-			spawnPos = FVector(Player->GetActorLocation().X + tableDistanceX, Player->GetActorLocation().Y, 0);
-			tableAngle = 0;
-		}
-		else if (i == 3)
-		{
-			spawnPos = FVector(Player->GetActorLocation().X - tableDistanceX, Player->GetActorLocation().Y, 0);
-			tableAngle = 0;
-		}
+
 		const FActorSpawnParameters SpawnInfo;
 		const FRotator MyRot(0, tableAngle, 0);
 		ATableObstacle* Table = GetWorld()->SpawnActor<ATableObstacle>(TableObstacleToSpawn, spawnPos, MyRot, SpawnInfo);

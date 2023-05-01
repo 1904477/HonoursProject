@@ -56,13 +56,13 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 		GetCharacterMovement()->MaxWalkSpeed = 0.1; // replace 300 with your desired speed()
 		break;
 	case 1:
-		GetCharacterMovement()->MaxWalkSpeed = 30.0f; // replace 300 with your desired speed()
+		GetCharacterMovement()->MaxWalkSpeed = 20.0f; // replace 300 with your desired speed()
 		break;
 	case 2:
-		GetCharacterMovement()->MaxWalkSpeed = 40.0f; // replace 300 with your desired speed()
+		GetCharacterMovement()->MaxWalkSpeed = 30.0f; // replace 300 with your desired speed()
 		break;
 	case 3:
-		GetCharacterMovement()->MaxWalkSpeed = 60.0f; // replace 300 with your desired speed()
+		GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
 		break;
 	case 4:
 		GetCharacterMovement()->MaxWalkSpeed = 0.1f; // replace 300 with your desired speed()
@@ -91,7 +91,6 @@ void ASpawnedEnemy::EnemySuspicious()
 void ASpawnedEnemy::EnemyWander()
 {
 	FNavLocation endPosi = FNavLocation(GetActorLocation());
-	GetCharacterMovement()->MaxWalkSpeed = 40.0f; // replace 300 with your desired speed()
 
 	if (!NavigationArea)
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("bad pointer"));
@@ -106,7 +105,6 @@ void ASpawnedEnemy::EnemyWander()
 
 void ASpawnedEnemy::EnemyCharging()
 {
-	GetCharacterMovement()->MaxWalkSpeed = 90.0f;		//In attack state, enemy is faster
 	AIController->MoveToLocation(Player->camLocation, -1, true, true);
 }
 
@@ -128,7 +126,7 @@ void ASpawnedEnemy::FallDetection()
 	{
 		if (GetActorLocation().Z < 100)
 		{
-			SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 0 + GetCapsuleComponent()->GetLocalBounds().BoxExtent.Z));
+			//SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 0 + GetCapsuleComponent()->GetLocalBounds().BoxExtent.Z));
 		}
 	}
 }
