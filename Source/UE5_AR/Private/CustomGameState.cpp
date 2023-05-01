@@ -14,7 +14,7 @@ ACustomGameState::ACustomGameState()
 	HatchOpenTimerSec = 30;
 	HatchOpenTimerMin = 1;
 	TableCollision = 0;
-	ReloadNumber = 4;
+	ReloadNumber = 5;
 	AmmoNumber = 10;
 	IsEnemyTooClose = false;
 }
