@@ -94,33 +94,34 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 					}
 				}
 			}
-			else
-			{
-				if (Gun->inShootingAnimation)
-				{
-					// Perform a hitTest, get the return values as hitTesTResult
-					if (!WorldHitTest(HitResult))
-					{
-						return;
-					}
-					// Get object of actor hit.
-					UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
-					//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, HitResult.GetComponent()->GetName());
-
-					// if we've hit a target.
-					if ((UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()) && GS->GetAmmo() > 0))
-					{
-						ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
-						HitEnemy->Health -= 20;
-					}
-				}
-			}
 		}
 	}
 }
 
 void ACustomARPawn::OnScreenRelease(const ETouchIndex::Type FingerIndex, const FVector ScreenPos)
 {
+}
+
+void ACustomARPawn::Shoot()
+{
+	FHitResult HitResult;
+	// Perform a hitTest, get the return values as hitTesTResult
+	if (!WorldHitTest(HitResult))
+	{
+		return;
+	}
+	// Get object of actor hit.
+	UClass* hitActorClass = UGameplayStatics::GetObjectClass(HitResult.GetActor());
+	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, HitResult.GetComponent()->GetName());
+
+	// if we've hit a target.
+	if ((UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()) && GS->GetAmmo() > 0))
+	{
+		ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
+		HitEnemy->Health -= 20;
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, CapsuleComponent->GetComponentLocation().ToString());
+
+	}
 }
 
 bool ACustomARPawn::WorldHitTest(FHitResult& fHit)

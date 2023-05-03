@@ -28,6 +28,9 @@ protected:
 	virtual void OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVector ScreenPos);
 	virtual void OnScreenRelease(const ETouchIndex::Type FingerIndex, const FVector ScreenPos);
 
+	UFUNCTION(Category = "Shooting", BlueprintCallable)
+	void Shoot(FHitResult& HitResult);
+
 	bool WorldHitTest( FHitResult& fHit);
 public:	
 	// Called every frame
