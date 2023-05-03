@@ -52,7 +52,6 @@ void ACustomARPawn::Tick(float DeltaTime)
 	if (GS->GetHealth() <= 0)
 		GS->SetDidPlayerLose(true);
 	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, CapsuleComponent->GetComponentLocation().ToString());
-
 }
 
 // Called to bind functionality to input
@@ -118,9 +117,8 @@ void ACustomARPawn::Shoot()
 	if ((UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()) && GS->GetAmmo() > 0))
 	{
 		ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
-		HitEnemy->Health -= 20;
+		HitEnemy->Health -= 50;
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, CapsuleComponent->GetComponentLocation().ToString());
-
 	}
 }
 
@@ -138,3 +136,4 @@ bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
 	// return if the operation was successful
 	return traceSuccess;
 }
+

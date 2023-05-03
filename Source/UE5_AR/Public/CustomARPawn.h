@@ -29,7 +29,7 @@ protected:
 	virtual void OnScreenRelease(const ETouchIndex::Type FingerIndex, const FVector ScreenPos);
 
 	UFUNCTION(Category = "Shooting", BlueprintCallable)
-	void Shoot(FHitResult& HitResult);
+	void Shoot();
 
 	bool WorldHitTest( FHitResult& fHit);
 public:	
