@@ -28,6 +28,8 @@ ACustomARPawn::ACustomARPawn()
 
 	CapsuleComponent->InitCapsuleSize(30,90);
 	CapsuleComponent->SetCollisionProfileName("OverlapAll");
+
+	ZombieHit = false;
 }
 
 // Called when the game starts or when spawned
@@ -114,11 +116,12 @@ void ACustomARPawn::Shoot()
 	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, HitResult.GetComponent()->GetName());
 
 	// if we've hit a target.
-	if ((UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()) && GS->GetAmmo() > 0))
+	if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
 	{
 		ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
 		HitEnemy->Health -= 50;
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, CapsuleComponent->GetComponentLocation().ToString());
+		
+		ZombieHit = true;
 	}
 }
 
@@ -129,11 +132,32 @@ bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
 	// Perform deprojection taking 2d clicked area and generating reference in 3d world-space.
 	// construct trace vector (from point clicked to 1000.0 units beyond in same direction)
 	FVector traceEndVector = camManager->GetActorForwardVector() * 2000.0f;
-	traceEndVector = camLocation + traceEndVector;
-	// perform line trace (Raycast)
-	bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit, camLocation, traceEndVector,
-		ECollisionChannel::ECC_WorldDynamic);
+	if(Gun)
+	{
+		traceEndVector = Gun->GetActorLocation() + traceEndVector;
+		// perform line trace (Raycast)
+		FCollisionQueryParams queryParams;
+		queryParams.AddIgnoredActor(this->GetOwner());
+		queryParams.AddIgnoredActor(Gun);
+
+		bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit, Gun->GetActorLocation(), traceEndVector,
+			ECollisionChannel::ECC_WorldDynamic, queryParams);
+		
+		return traceSuccess;
+
+	}
+	else
+	{
+		traceEndVector = camLocation + traceEndVector;
+		// perform line trace (Raycast)
+		FCollisionQueryParams queryParams;
+		queryParams.AddIgnoredActor(this->GetOwner());
+		bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit, camLocation, traceEndVector,
+			ECollisionChannel::ECC_WorldDynamic, queryParams);
+
+		return traceSuccess;
+
+	}
 	// return if the operation was successful
-	return traceSuccess;
 }
 

@@ -62,7 +62,9 @@ public:
 	float StateSwitchTimer = 0;
 	float SuspiciousDistance = 0;
 	float ChargeDistance = 0;
-	float Health = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyHealth")
+	int Health = 100;
 
 protected:
 	AAIController* AIController;

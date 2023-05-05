@@ -126,9 +126,9 @@ void AGameObjectsSpawner::SpawnTables()
 	for (int i = 0; i < 2; i++)	//4 Tables
 	{
 		if (i == 0)
-			spawnPos = FVector(Player->GetActorLocation().X, Player->GetActorLocation().Y + tableDistanceY, 0);
+			spawnPos = FVector(Player->camLocation.X, Player->camLocation.Y + tableDistanceY, 0);
 		else if (i == 1)
-			spawnPos = FVector(Player->GetActorLocation().X, Player->GetActorLocation().Y - tableDistanceY, 0);
+			spawnPos = FVector(Player->camLocation.X, Player->camLocation.Y - tableDistanceY, 0);
 
 		const FActorSpawnParameters SpawnInfo;
 		const FRotator MyRot(0, tableAngle, 0);
@@ -142,38 +142,34 @@ void AGameObjectsSpawner::SpawnSteps()
 {
 	int StepAngle = 90;
 	FVector spawnPos;
-	for (int i = 0; i < 6; i++)	//4 Tables
+	for (int i = 0; i < 5; i++)	//4 Tables
 	{
 		switch (i)
 		{
 		case 0:
-			spawnPos = FVector(-205, -440, 0);
+			spawnPos = FVector(Player->camLocation.X-205, Player->camLocation.Y-120, 0);
 			StepAngle = -45;
 			break;
 		case 1:
-			spawnPos = FVector(130, -450, 0);
+			spawnPos = FVector(Player->camLocation.X+ 130, Player->camLocation.Y-330, 0);
 			StepAngle = 60;
 			break;
 
 		case 2:
-			spawnPos = FVector(-490, 110, 0);
+			spawnPos = FVector(Player->camLocation.X-180,Player->camLocation.Y+ 270, 0);
 			StepAngle = 0;
 			break;
 
 		case 3:
-			spawnPos = FVector(460, -70, 0);
+			spawnPos = FVector(Player->camLocation.X+460, Player->camLocation.Y-70, 0);
 			StepAngle = -45;
 			break;
 
 		case 4:
-			spawnPos = FVector(290, 380, 0);
+			spawnPos = FVector(Player->camLocation.X+290, Player->camLocation.Y + 380, 0);
 			StepAngle = 45;
 			break;
-
-		case 5:
-			spawnPos = FVector(-200, 500, 0);
-			StepAngle = 80;
-			break;
+		
 		default:
 			break;
 		}
