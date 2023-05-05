@@ -155,7 +155,6 @@ void AHelloARManager::PlaneTagUpdate()
 			AARPlaneActor* CurrentPActor = *PlaneActors.Find(It);
 
 			AssignTag(CurrentPActor);
-			
 		}
 	}
 }
@@ -237,13 +236,6 @@ void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 			CurrentPActor->Tags.Add("floor");
 		}
 		LowestPlaneActor = CurrentPActor;
-	}
-	if(GS->GetIsEnvironmentScanned() == false && GetWorld()->GetMapName()!="VirtualObstaclesLevel")
-	{
-		if(CurrentPActor->Tags[0]!="floor" && CurrentPActor->Tags[0]!="wall")
-		{
-			DrawDebugSphere(GetWorld(), FVector(CurrentPActor->GetActorLocation().X, CurrentPActor->GetActorLocation().Y, CurrentPActor->GetActorLocation().Z+15), 40, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
-		}
 	}
 }
 
