@@ -10,16 +10,17 @@ AGunPickup::AGunPickup()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-
+	//Skeletal mesh for gun pickup, important to allow animations. Skeletal mesh is root.
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 	SetRootComponent(SkeletalMesh);
 
+	//Set scene component and attack to skeletal mesh.
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("GunSceneComponent"));
 	SceneComponent->SetupAttachment(SkeletalMesh);
 
+	//Set box component and attack to skeletal mesh.
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 	BoxComponent->SetupAttachment(SkeletalMesh);
-
 	BoxComponent->SetWorldScale3D(FVector(0.4, 1, 0.5));
 	BoxComponent->SetCollisionProfileName("BlockAll");
 

@@ -18,6 +18,8 @@ AGameManager::AGameManager()
 void AGameManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Get GameState.
 	auto GS = GetWorld()->GetGameState();
 	GameState = Cast<ACustomGameState>(GS);
 }
@@ -26,25 +28,26 @@ void AGameManager::BeginPlay()
 void AGameManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	//If environment is scanned but game is not started, spawn GameObjectsSpawner.
 	if (GameState->GetIsEnvironmentScanned() == true&& hasFinishedScanning == false && GameState->GetHasGameStarted()==false)
 	{
 		SpawnGameObjectsSpawner(); 
-		hasFinishedScanning = true;
+		hasFinishedScanning = true;		
 	}
 }
 
 void AGameManager::SpawnGameObjectsSpawner()
 {
+	//Function to spawn GameObjectsSpawner.
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
 	const FVector MyLoc(0, 0, 0);
 	ObjectsSpawner = GetWorld()->SpawnActor<AGameObjectsSpawner>(GameObjectsSpawnerToSpawn,MyLoc, MyRot, SpawnInfo);
-
 }
 
-FTransform AGameManager::LineTraceResult(FVector ScreenPos)		//Function to return touch position in real world
+FTransform AGameManager::LineTraceResult(FVector ScreenPos)		//Function to return touch position in real world.
 {
-	//IMPORTANT, Pin components are not used as the application will be available for both ARCore but specifically to ARKit. 
 	APlayerController* playerController = UGameplayStatics::GetPlayerController(this, 0);
 	FVector WorldPos;
 	FVector WorldDir;

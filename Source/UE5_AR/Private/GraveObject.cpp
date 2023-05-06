@@ -9,19 +9,21 @@
 AGraveObject::AGraveObject()
 {
 	Tags.Add("Grave");
+	//Set static mesh and load object from editor, static mesh does not have collision.
 	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshObj(TEXT("	StaticMesh'/Game/Assets/Sepultura_Sepultura.Sepultura_Sepultura'"));
 	StaticMeshComponent->SetStaticMesh(MeshObj.Object);
-
 	StaticMeshComponent->SetWorldScale3D(FVector(0.2, 0.2, 0.2));
-	BoxComponent->SetCollisionProfileName("NoCollision");
 	StaticMeshComponent->SetCollisionProfileName("NoCollision");
+
+	//Disable collision for graves.
+	BoxComponent->SetCollisionProfileName("NoCollision");
 }
 
 void AGraveObject::BeginPlay()
 {
 	auto GM = GetWorld()->GetAuthGameMode();
 	CustomGameMode = Cast<ACustomGameMode>(GM);
-
+	//If playing on mobile, spawn on ground.
 	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
 	{
 		FVector origin;

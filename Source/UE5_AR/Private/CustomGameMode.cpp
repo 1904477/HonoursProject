@@ -16,28 +16,26 @@ ACustomGameMode::ACustomGameMode()
 	// Add this line to your code if you wish to use the Tick() function
 	PrimaryActorTick.bCanEverTick = true;
 
+
 	// Set the default pawn and gamestate to be our custom pawn and gamestate programatically
 	DefaultPawnClass = ACustomARPawn::StaticClass();
 	GameStateClass = ACustomGameState::StaticClass();
-
-	//ConstructorHelpers::FObjectFinder<UARSessionConfig> ConfigAsset(TEXT("ARSessionConfig'/Game/Blueprints/HelloARSessionConfig.HelloARSessionConfig'"));
-	//Config = ConfigAsset.Object;
 }
 
 
 void ACustomGameMode::StartPlay() 
 {
+	//Spawn initial actors when game is launched.
 	SpawnInitialActors();
-	// This is called before BeginPlay
+	// This is called before BeginPlay.
 	StartPlayEvent();
-	// This function will transcend to call BeginPlay on all the actors 
+	// This function will transcend to call BeginPlay on all the actors .
 	Super::StartPlay();
 }
 
 // An implementation of the StartPlayEvent which can be triggered by calling StartPlayEvent() 
 void ACustomGameMode::StartPlayEvent_Implementation() 
 {
-	// Start a timer which will call the SpawnCube Function every 4 seconds
 }
 
 
@@ -45,10 +43,12 @@ void ACustomGameMode::StartPlayEvent_Implementation()
 void ACustomGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	//If the application is being run on IOs or Android and the player is in one of the game levels.
 	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
 	{
 		if (GetWorld()->GetMapName() == "VirtualObstaclesLevel" || GetWorld()->GetMapName() == "RealWorldObstaclesLevel")
 		{
+			//If the AR session is not started yet, start it and set it to started.
 			if (isARSessionStarted == false)
 			{
 				UARBlueprintLibrary::StartARSession(Config);
@@ -61,7 +61,7 @@ void ACustomGameMode::Tick(float DeltaSeconds)
 
 void ACustomGameMode::SpawnInitialActors()
 {
-	// Spawn an instance of the HelloARManager class
+	// Spawn AR config, ARManager and Gamemanager
 	Config = NewObject<UARSessionConfig>();
 	Config->bUseSceneDepthForOcclusion = true;
 	Config->SetSessionTrackingFeatureToEnable(EARSessionTrackingFeature::SceneDepth);

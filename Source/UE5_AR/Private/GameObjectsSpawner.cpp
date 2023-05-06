@@ -23,29 +23,38 @@ void AGameObjectsSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto GS = GetWorld()->GetGameState();		//Get gamestate and gamemode
+	//Get Gamestate.
+	auto GS = GetWorld()->GetGameState();		
 	GameState = Cast<ACustomGameState>(GS);
+	//Get Gamemode.
 	auto GM = GetWorld()->GetAuthGameMode();
 	CustomGameMode = Cast<ACustomGameMode>(GM);
+	//Get CustomARPawn.
 	auto P = GetWorld()->GetFirstPlayerController()->GetPawn();
 	Player = Cast<ACustomARPawn>(P);
 
 	FTransform tr;		//identity for Poisson component position
 	tr.SetIdentity();
 
-	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));		//Add poisson sampler as component.
+	//Add PoissonSampler as component.
+	PoissonSampler = Cast<UPoissonSampler>(this->AddComponentByClass(UPoissonSampler::StaticClass(), false, tr, true));		
 	PoissonSampler->RegisterComponent();
+
+	//SpawnGraves in secondary points.
 	SpawnGraves();
 
+	//Spawn virtual obstacles only when the level selected is the virtual one.
 	if (GetWorld()->GetMapName()=="VirtualObstaclesLevel"|| UGameplayStatics::GetPlatformName()=="Windows")
 	{
 		SpawnVirtualObstacles();
 	}
+	//Spawn gun.
 	if (!isGunSpawned)
 	{
 		SpawnGun();
 		isGunSpawned = true;
 	}
+	//Spawn Hatch.
 	if (!isHatchSpawned)	
 	{
 		SpawnHatch();
@@ -58,10 +67,15 @@ void AGameObjectsSpawner::BeginPlay()
 void AGameObjectsSpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	//If game has started, call EnemiesSpawnerManager.
 	if (GameState->GetHasGameStarted() == true)
 		EnemiesSpawnerManager();
+	
+	//If there is at least one enemy in the scene.
 	if (Enemies.Num() > 0)
 	{
+		//Get closest enemy for enemy-close icon.
 		GameState->SetIsIsIsOneEnemyAlive(true);
 		TArray<AActor*> asActs;
 		float dist_ = 0.0f;
@@ -83,12 +97,15 @@ void AGameObjectsSpawner::Tick(float DeltaTime)
 
 void AGameObjectsSpawner::EnemiesSpawner()
 {
+	//Get a random spawning point in the range from zero to the number of secondary points for zombie spawn.
 	int randSpawnPoint= FMath::RandRange(0, PoissonSampler->SecondaryPoints.Num()-1);;
 
+	//Set spawn pos to be at the secondary point indexed by the random value previously generated.
 	FVector spawnPos = PoissonSampler->SecondaryPoints[randSpawnPoint];
 
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
+	//Spawn enemy, add it to the enemy array, reset spawning timer and reduce remaining zombies to spawn.
 	ASpawnedEnemy* Enemy = GetWorld()->SpawnActor<ASpawnedEnemy>(EnemyToSpawn, FVector(spawnPos.X, spawnPos.Y, spawnPos.Z+50), MyRot, SpawnInfo);
 	if (Enemy)
 	{
@@ -100,8 +117,10 @@ void AGameObjectsSpawner::EnemiesSpawner()
 
 void AGameObjectsSpawner::EnemiesSpawnerManager()
 {
+	//If there are enemies to spawn.
 	if (CustomGameMode->GameManager->EnemiesToSpawn !=0)
 	{
+		//If game has started, spawn enemies.
 		if (EnemySpawnTimer > CustomGameMode->GameManager->EnemiesSpawnTimer && GameState->GetHasGameStarted() == true)
 		{
 			EnemiesSpawner();
@@ -119,11 +138,13 @@ void AGameObjectsSpawner::SpawnVirtualObstacles()
 
 void AGameObjectsSpawner::SpawnTables()
 {
+	//Function to spawn tables.
 	int tableDistanceX = 150;
 	int tableDistanceY = 150;
 	int tableAngle = 90;
 	FVector spawnPos;
-	for (int i = 0; i < 2; i++)	//4 Tables
+	//Spawn two tables.
+	for (int i = 0; i < 2; i++)	
 	{
 		if (i == 0)
 			spawnPos = FVector(Player->camLocation.X, Player->camLocation.Y + tableDistanceY, 0);
@@ -142,7 +163,8 @@ void AGameObjectsSpawner::SpawnSteps()
 {
 	int StepAngle = 90;
 	FVector spawnPos;
-	for (int i = 0; i < 5; i++)	//4 Tables
+	//Spawn five steps.
+	for (int i = 0; i < 5; i++)	
 	{
 		switch (i)
 		{
@@ -183,6 +205,7 @@ void AGameObjectsSpawner::SpawnSteps()
 
 void AGameObjectsSpawner::SpawnGraves()
 {
+	//Spawn graves in main points.
 	for (int i = 0; i < PoissonSampler->MainPoints.Num(); i++)
 	{
 		const FActorSpawnParameters SpawnInfo;
@@ -198,6 +221,7 @@ void AGameObjectsSpawner::SpawnGun()
 {
 	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
 	{
+		//Spawn gun on virtual table if level is virtual obstacles. 
 		if (GetWorld()->GetMapName() == "VirtualObstaclesLevel")
 		{
 			FVector tablePos = Tables[0]->GetActorLocation();
@@ -205,6 +229,7 @@ void AGameObjectsSpawner::SpawnGun()
 			const FRotator MyRot(0, 0, 0);
 			AGunPickup* Gun = GetWorld()->SpawnActor<AGunPickup>(GunToSpawn, FVector(tablePos.X, tablePos.Y, tablePos.Z), MyRot, SpawnInfo);
 		}
+		//Spawn gun on first real table if level is virtual obstacles. 
 		else
 		{
 			FVector tablePos = CustomGameMode->ARManager->FirstTable->GetActorLocation();
@@ -230,11 +255,12 @@ void AGameObjectsSpawner::SpawnHatch()
 	FVector SpawnPos;
 	const FActorSpawnParameters SpawnInfo;
 	const FRotator MyRot(0, 0, 0);
+	//Spawn navmesh in a random position of the floor.
 	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
 	{
-	
 		if (NavigationArea)
 		{
+			//While loop to make sure that the position on the navmesh is being generated until the position is on the floor, and not any higher.
 			while (isHatchOnGround == false)
 			{
 				if (PoissonSampler->NavigationArea->GetRandomPointInNavigableRadius(FVector(0, 0, 0), 2000, RandomSpawnPosNavLoc)) //Get random position in navmesh
@@ -248,8 +274,6 @@ void AGameObjectsSpawner::SpawnHatch()
 					isHatchOnGround = true;
 				}
 			}
-			
-
 		}
 	}
 	else

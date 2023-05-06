@@ -20,27 +20,34 @@ ACustomARPawn::ACustomARPawn()
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	SetRootComponent(SceneComponent);
 
+	//Camera component attached to scene component.
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetupAttachment(SceneComponent);
 
+	//Collision capsule attached to camera, important to detect collision as player moves in AR, otherwise capsule is static in starting position.
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
 	CapsuleComponent->SetupAttachment(CameraComponent);
 
+	//Collision capsule initialised.
 	CapsuleComponent->InitCapsuleSize(30,90);
 	CapsuleComponent->SetCollisionProfileName("OverlapAll");
 
-	ZombieHit = false;
 }
 
-// Called when the game starts or when spawned
+// Called when the game starts or when spawned.
 void ACustomARPawn::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Get Gamemode.
 	auto Temp = GetWorld()->GetAuthGameMode();
 	ACustomGameMode* GM = Cast<ACustomGameMode>(Temp);
 
+	//Get GameState.
 	auto Temp1 = GetWorld()->GetGameState();
 	GS = Cast<ACustomGameState>(Temp1);
+
+	//Set Gamemanager reference.
 	GameManager = GM->GameManager;
 }
 
@@ -49,11 +56,14 @@ void ACustomARPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//Set Camera manager.
 	camManager = GetWorld()->GetFirstPlayerController()->PlayerCameraManager;
+
+	//Set camera location.
 	camLocation = camManager->GetCameraLocation();
+
 	if (GS->GetHealth() <= 0)
 		GS->SetDidPlayerLose(true);
-	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Emerald, CapsuleComponent->GetComponentLocation().ToString());
 }
 
 // Called to bind functionality to input
@@ -68,14 +78,14 @@ void ACustomARPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVector ScreenPos)
 {
-	if (GameManager)
+	if (GameManager)	//If game manager exists.
 	{
 		if (GS->GetIsEnvironmentScanned())
 		{
 			FHitResult HitResult;
 			if (GS->GetIsIsGunCollected() == false)
 			{
-				// Perform a hitTest, get the return values as hitTesTResult
+				// Perform a hitTest, get the return values as hitTestResult.
 				if (!WorldHitTest(HitResult))
 				{
 					return;
@@ -86,12 +96,12 @@ void ACustomARPawn::OnScreenTouch(const ETouchIndex::Type FingerIndex, const FVe
 				if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, AGunPickup::StaticClass()))
 				{
 					Gun = Cast<AGunPickup>(HitResult.GetActor());
-					//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat((Gun->GetActorLocation() - GetActorLocation()).Length()));
 
-					if ((Gun->GetActorLocation() - camLocation).Length() < 200)
+					//If player is relatively close to the gun, the gun can be collected.
+					if ((Gun->GetActorLocation() - camLocation).Length() < 200)		
 					{
 						GS->SetIsIsGunCollected(true);
-						Gun->BoxComponent->SetCollisionProfileName("NoCollision");
+						Gun->BoxComponent->SetCollisionProfileName("NoCollision");		//Disable gun collision for shooting
 					}
 				}
 			}
@@ -119,9 +129,10 @@ void ACustomARPawn::Shoot()
 	if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
 	{
 		ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
-		HitEnemy->Health -= 50;
+
+		//Reduce enemy health.
+		HitEnemy->Health -= 50;		
 		
-		ZombieHit = true;
 	}
 }
 
@@ -132,6 +143,8 @@ bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
 	// Perform deprojection taking 2d clicked area and generating reference in 3d world-space.
 	// construct trace vector (from point clicked to 1000.0 units beyond in same direction)
 	FVector traceEndVector = camManager->GetActorForwardVector() * 2000.0f;
+
+	//If gun exists and is collected, linetrace from gun position for shooting, otherwise linetrace from camera location.
 	if(Gun)
 	{
 		traceEndVector = Gun->GetActorLocation() + traceEndVector;
@@ -156,8 +169,6 @@ bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
 			ECollisionChannel::ECC_WorldDynamic, queryParams);
 
 		return traceSuccess;
-
 	}
-	// return if the operation was successful
 }
 

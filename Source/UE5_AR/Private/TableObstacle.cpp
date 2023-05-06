@@ -9,9 +9,13 @@
 ATableObstacle::ATableObstacle()
 {
 	Tags.Add("Table");
+
+	//Load and set StaticMesh.
 	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshObj(TEXT("StaticMesh'/Game/StarterContent/Props/SM_Shelf.SM_Shelf'"));
-	SetActorScale3D(FVector(2, 1, 2));
 	StaticMeshComponent->SetStaticMesh(MeshObj.Object);
+	//Set Scale.
+	SetActorScale3D(FVector(2, 1, 2));
+	//Set BoxComponent.
 	BoxComponent->SetWorldScale3D(FVector(1.0f, 3.2f, 0.4f));
 	BoxComponent->SetRelativeLocation(FVector(0, 0, -10));
 	BoxComponent->SetCollisionProfileName("BlockAll");
@@ -25,6 +29,7 @@ void ATableObstacle::BeginPlay()
 	auto GM = GetWorld()->GetAuthGameMode();
 	CustomGameMode = Cast<ACustomGameMode>(GM);
 
+	//If platfomr is mobile, spawn on ground.
 	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
 	{
 		FVector origin;

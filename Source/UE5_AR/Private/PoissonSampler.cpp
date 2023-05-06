@@ -20,8 +20,10 @@ void UPoissonSampler::BeginPlay()
 {
     Super::BeginPlay();
 
-    auto GM = GetWorld()->GetAuthGameMode();        //Get gamemode
+    //Get Gamemode.
+    auto GM = GetWorld()->GetAuthGameMode();        
     CustomGameMode = Cast<ACustomGameMode>(GM);
+    //Get CustomARPawn.
     auto PTemp = GetWorld()->GetFirstPlayerController()->GetPawn();
     Player = Cast<ACustomARPawn>(PTemp);
 
@@ -36,6 +38,7 @@ void UPoissonSampler::BeginPlay()
                     CustomGameMode->GameManager->SecPointsSpawnNum,
                     CustomGameMode->GameManager->MinDistToPlayer
                     );
+
     //for (int i = 0; i < MainPoints.Num(); i++)      //Draw debug spheres to know where main points are.
     //    DrawDebugSphere(GetWorld(), FVector(MainPoints[i].X, MainPoints[i].Y, MainPoints[i].Z), 40, 1, FColor(181, 0, 0), false, 10.0f, 0, 2);
 

@@ -36,9 +36,11 @@ void AHelloARManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto Temp = GetWorld()->GetAuthGameMode();		//Get Game Mode
+	//Get Gamemode.
+	auto Temp = GetWorld()->GetAuthGameMode();		
 	GM = Cast<ACustomGameMode>(Temp);
-	auto Temp2 = GetWorld()->GetGameState();		//Get Game Mode
+	//Get Gamestate.
+	auto Temp2 = GetWorld()->GetGameState();	
 	GS = Cast<ACustomGameState>(Temp2);
 }
 
@@ -49,7 +51,8 @@ void AHelloARManager::Tick(float DeltaTime)
 	switch (UARBlueprintLibrary::GetARSessionStatus().Status)
 	{
 	case EARSessionStatus::Running:
-			UpdatePlaneActors();		//Update all plane actors
+			UpdatePlaneActors();		//Update all plane actors.
+			//Update plane tags as long as the user has not confirmed that the environment has been scanned.
 			if (GS->GetIsEnvironmentScanned() == false)
 			{
 				PlaneTagUpdate();
@@ -67,16 +70,16 @@ void AHelloARManager::Tick(float DeltaTime)
 //Updates the geometry actors in the world
 void AHelloARManager::UpdatePlaneActors()
 {
-	//Get all world geometries and store in an array
+	//Get all world geometries and store in an array.
 	auto Geometries = UARBlueprintLibrary::GetAllGeometriesByClass<UARPlaneGeometry>();
-	//Loop through all geometries
+	//Loop through all geometries.
 	for (auto& It : Geometries)
 	{
-			//Check if current plane exists 
+			//Check if current plane exists.
 			if (PlaneActors.Contains(It))
 			{
 				AARPlaneActor* CurrentPActor = *PlaneActors.Find(It);
-				//Check if plane is subsumed
+				//Check if plane is subsumed.
 				if (It->GetSubsumedBy()->IsValidLowLevel())
 				{
 					CurrentPActor->Destroy();
@@ -88,12 +91,13 @@ void AHelloARManager::UpdatePlaneActors()
 			}
 			else
 			{
-				//Get tracking state switch
+				//Get tracking state switch.
 				switch (It->GetTrackingState())
 				{
 				case EARTrackingState::Tracking:
 					if (!It->GetSubsumedBy()->IsValidLowLevel())
 					{
+						//Spawn and update poligon meshes.
 						PlaneActor = SpawnPlaneActor();
 						PlaneActor->ARCorePlaneObject = It;
 
@@ -101,17 +105,19 @@ void AHelloARManager::UpdatePlaneActors()
 						PlaneActor->UpdatePlanePolygonMesh();
 						PlaneIndex++;
 
-						if (!LowestPlaneActor)
+						if (!LowestPlaneActor)		//If lowest plane reference is not set, set it to first plane.
 						{
 							LowestPlaneActor = PlaneActor;
 							PlaneActor->Tags.Add("floor");
 						}
+
+						//If newly detected plane is lower than the LowestPlaneActor, update LowestPlaneActor to be the newly detected one.
 						else if (LowestPlaneActor->GetActorLocation().Z > PlaneActor->GetActorLocation().Z)
-							{
-								LowestPlaneActor = PlaneActor;
-								PlaneActor->Tags.Add("floor");
-							}
-								PlaneActor->Tags.Add("uncathegorised");
+						{
+							LowestPlaneActor = PlaneActor;
+							PlaneActor->Tags.Add("floor");
+						}
+							PlaneActor->Tags.Add("uncathegorised");
 
 					}
 					break;
@@ -120,7 +126,7 @@ void AHelloARManager::UpdatePlaneActors()
 	}
 }
 
-//Simple spawn function for the tracked AR planes
+//Simple spawn function for the tracked AR planes.
 AARPlaneActor* AHelloARManager::SpawnPlaneActor()
 {
 	const FActorSpawnParameters SpawnInfo;
@@ -144,12 +150,12 @@ void AHelloARManager::ResetARCoreSession()
 
 void AHelloARManager::PlaneTagUpdate()
 {
-	//Get all world geometries and store in an array
+	//Get all world geometries and store in an array.
 	auto Geometries = UARBlueprintLibrary::GetAllGeometriesByClass<UARPlaneGeometry>();
-	//Loop through all geometries
+	//Loop through all geometries.
 	for (auto& It : Geometries)
 	{
-		//Check if current plane exists 
+		//Check if current plane exists.
 		if (PlaneActors.Contains(It))
 		{
 			AARPlaneActor* CurrentPActor = *PlaneActors.Find(It);
@@ -159,11 +165,15 @@ void AHelloARManager::PlaneTagUpdate()
 	}
 }
 
+//Function to update tags.
 void AHelloARManager::AssignTag(AARPlaneActor* CurrentPActor)
 {
 	FVector origin;
 	FVector boxExtent;
 	CurrentPActor->GetActorBounds(false, origin, boxExtent);
+
+	//Classify surfaces based on different attributes of surfaces. If the plane has a tag, but a more appropriate tag should be set as the detection is dynamic, the tags of the actor are
+	//emptied, the appropriate tag is set and the number of the respective surfaces is updated.
 	if(CurrentPActor->Tags[0]!="table")
 	{
 		if ((CurrentPActor->GetActorLocation().Z >= LowestPlaneActor->GetActorLocation().Z + TableHeight) && boxExtent.Z<WallSize && CurrentPActor != LowestPlaneActor)

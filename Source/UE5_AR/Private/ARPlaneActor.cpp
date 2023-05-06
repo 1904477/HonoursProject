@@ -155,7 +155,7 @@ void AARPlaneActor::UpdatePlanePolygonMesh()
 		PolygonMeshIndices.Add(i + 2);
 	}
 
-	// No need to fill uv and tangent;
+	// No need to fill uv and tangent, last bool creates collision for navmesh and enemies;
 	PlanePolygonMeshComponent->CreateMeshSection_LinearColor(0, PolygonMeshVertices, PolygonMeshIndices, PolygonMeshNormals, PolygonMeshUVs, PolygonMeshVertexColors, TArray<FProcMeshTangent>(), true);
 	PlanePolygonMeshComponent->ContainsPhysicsTriMeshData(true);
 

@@ -20,13 +20,12 @@ ASpawnedEnemy::ASpawnedEnemy()
 void ASpawnedEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	//SetActorScale3D(FVector(0.6, 0.6, 0.6));			//Scale Enemy
-
+	//Get CustomARPawn.
 	auto PTemp = GetWorld()->GetFirstPlayerController()->GetPawn();		
 	Player = Cast<ACustomARPawn>(PTemp);
 
-	GetMesh()->BodyInstance.bLockYRotation = true;		//Lock rotation so that characters do not rotate in other directions
+	//Lock rotation so that characters do not rotate in other directions
+	GetMesh()->BodyInstance.bLockYRotation = true;		
 	GetMesh()->BodyInstance.bLockXRotation = true;
 
 	EnemyStatus = Spawning;		//Starting status is idle.
@@ -53,19 +52,19 @@ void ASpawnedEnemy::Tick(float DeltaTime)
 	switch (EnemyStatus)
 	{
 	case 0: 
-		GetCharacterMovement()->MaxWalkSpeed = 0.1; // replace 300 with your desired speed()
-		break;
-	case 1:
-		GetCharacterMovement()->MaxWalkSpeed = 20.0f; // replace 300 with your desired speed()
-		break;
-	case 2:
-		GetCharacterMovement()->MaxWalkSpeed = 30.0f; // replace 300 with your desired speed()
-		break;
-	case 3:
-		GetCharacterMovement()->MaxWalkSpeed = 50.0f; // replace 300 with your desired speed()
-		break;
-	case 4:
-		GetCharacterMovement()->MaxWalkSpeed = 0.1f; // replace 300 with your desired speed()
+		GetCharacterMovement()->MaxWalkSpeed = 0.1; ;
+		break;										
+	case 1:											
+		GetCharacterMovement()->MaxWalkSpeed = 20.0f;
+		break;										
+	case 2:											
+		GetCharacterMovement()->MaxWalkSpeed = 30.0f;
+		break;										
+	case 3:											
+		GetCharacterMovement()->MaxWalkSpeed = 50.0f;
+		break;										
+	case 4:											
+		GetCharacterMovement()->MaxWalkSpeed = 0.1f;
 		break;
 	}
 }
@@ -112,21 +111,14 @@ void ASpawnedEnemy::ClosestObstacleChecker()
 {
 
 }
-
+//Function to detect if Zombie is falling from the planes.
 void ASpawnedEnemy::FallDetection()
 {
 	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
 	{
-		if (abs(GetActorLocation().Z - GM->ARManager->LowestPlaneActor->GetActorLocation().Z) > 20)
+		if (abs(GetActorLocation().Z - GM->ARManager->LowestPlaneActor->GetActorLocation().Z) > 20)	//If Zombie is falling from the ground, spawn it back on top.
 		{
 			SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, GM->ARManager->LowestPlaneActor->GetActorLocation().Z + GetCapsuleComponent()->GetLocalBounds().BoxExtent.Z));
-		}
-	}
-	else
-	{
-		if (GetActorLocation().Z < 100)
-		{
-			//SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 0 + GetCapsuleComponent()->GetLocalBounds().BoxExtent.Z));
 		}
 	}
 }

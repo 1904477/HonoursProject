@@ -48,8 +48,7 @@ public:
 	UPROPERTY(Category = "CapsuleComponent", VisibleAnywhere, BlueprintReadWrite)
 	UCapsuleComponent* CapsuleComponent;
 
-	UPROPERTY(Category = "ZombieHit", VisibleAnywhere, BlueprintReadWrite)
-	bool ZombieHit;
+
 
 	FVector ZombieShotPos;
 	

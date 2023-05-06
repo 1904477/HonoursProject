@@ -3,7 +3,7 @@
 
 #include "CustomGameState.h"
 
-
+//Constructor
 ACustomGameState::ACustomGameState()
 {
 	HasGameStarted = false;
@@ -19,6 +19,7 @@ ACustomGameState::ACustomGameState()
 	IsEnemyTooClose = false;
 }
 
+//Function to reset all variables.
 void ACustomGameState::ResetVariables()
 {
 	HasGameStarted = false;
@@ -33,7 +34,7 @@ void ACustomGameState::ResetVariables()
 	IsEnemyTooClose = false;
 	TableCollision=0;
 }
-
+//Setters and Getters.
 void ACustomGameState::SetAreARPlanesDisplayed(bool value)
 {
 	AreARPlanesDisplayed = value;

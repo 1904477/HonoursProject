@@ -9,11 +9,13 @@
 AStepObstacle::AStepObstacle()
 {
 	Tags.Add("Step");
+	//Load and set StaticMesh.
 	const ConstructorHelpers::FObjectFinder<UStaticMesh> MeshObj(TEXT("	StaticMesh'/Game/StarterContent/Props/SM_Stairs.SM_Stairs'"));
 	StaticMeshComponent->SetStaticMesh(MeshObj.Object);
+	//Set Scale.
 	SetActorScale3D(FVector(0.4, 0.7,0.4));
 
-	StaticMeshComponent->SetStaticMesh(MeshObj.Object);
+	//Set BoxComponent.
 	BoxComponent->SetWorldScale3D(FVector(1.2f, 3.0f, 0.7f));
 	BoxComponent->SetRelativeLocation(FVector(-40, 0, 30));
 	BoxComponent->SetCollisionProfileName("BlockAll");
@@ -23,9 +25,11 @@ AStepObstacle::AStepObstacle()
 void AStepObstacle::BeginPlay()
 {
 	Super::BeginPlay();
+	//Get Gamemode.
 	auto GM = GetWorld()->GetAuthGameMode();
 	CustomGameMode = Cast<ACustomGameMode>(GM);
 
+	//If platfomr is mobile, spawn on ground.
 	if (UGameplayStatics::GetPlatformName() == "IOS" || UGameplayStatics::GetPlatformName() == "Android")
 	{
 		FVector origin;

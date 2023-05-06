@@ -12,11 +12,11 @@ APlaceableCharacter::APlaceableCharacter()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	//Set SceneComponent and set the mesh.
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	SceneComponent->SetupAttachment(this->GetMesh());
-	//SkeletalMeshComponent->SetupAttachment(SceneComponent);
 	
-	// Take material from editor
 }
 
 
@@ -24,9 +24,10 @@ APlaceableCharacter::APlaceableCharacter()
 void APlaceableCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	//Get Gamemode
 	auto Temp = GetWorld()->GetAuthGameMode();
 	GM = Cast<ACustomGameMode>(Temp);
-
+	//Get Gamestate
 	auto GSTemp = GetWorld()->GetGameState();
 	GS = Cast<ACustomGameState>(GSTemp);
 
