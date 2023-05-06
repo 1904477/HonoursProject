@@ -21,6 +21,7 @@ public:
 	UFUNCTION(Category = "GameReset", BlueprintCallable)
 		void ResetVariables();
 
+	//SETTERS AND GETTERS.
 	UFUNCTION(Category = "ARPlanesRender", BlueprintCallable)
 	void SetAreARPlanesDisplayed(bool value);
 	UFUNCTION(Category = "ARPlanesRender", BlueprintCallable)
@@ -90,6 +91,7 @@ public:
 
 	
 private:
+	//Private variables.
 		bool HasGameStarted;
 		bool IsEnvironmentScanned;
 		bool AreARPlanesDisplayed;

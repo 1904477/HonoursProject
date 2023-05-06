@@ -132,7 +132,7 @@ void ASpawnedEnemy::EnemyStatusManager()
 			if (EnemyStatus != Suspicious && EnemyStatus != Charging && EnemyStatus != Attacking)
 			{
 				EnemyStatusTimer += GetWorld()->GetDeltaSeconds();
-				int randomChoice = FMath::RandRange(1, 2);		//Random choice in Enemy Finite State Machine
+				int randomChoice = FMath::RandRange(1, 2);		//Random choice in Enemy Finite State Machine.
 				if (EnemyStatusTimer > StateSwitchTimer)		//Enemies change state every x seconds (unless suspicious, then timer is longer)
 				{
 					switch (randomChoice)
@@ -146,13 +146,13 @@ void ASpawnedEnemy::EnemyStatusManager()
 					}
 					EnemyStatusTimer = 0;
 				}
-				if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemySuspiciousDistance)		//If player is close, enemy becomes suspicious
+				if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemySuspiciousDistance)		//If player is close, enemy becomes suspicious.
 				{
 					EnemyStatus = Suspicious;
 					EnemyStatusTimer = 0.0f;
 				}
 			}
-			else if (EnemyStatus == Suspicious)
+			else if (EnemyStatus == Suspicious)		//Enemy suspicious.
 			{
 				EnemySuspicious();
 				if ((Player->camLocation - GetActorLocation()).Length() < GM->GameManager->EnemyChargeDistance)		//If enemy is suspicious and player is close, enemy attacks.

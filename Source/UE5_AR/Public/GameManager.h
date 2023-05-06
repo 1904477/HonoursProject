@@ -64,10 +64,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Spawn")
 	void flipPlaneVisibility();
 
-
-
 	FTransform TraceResultTransform;
-
 	AGameObjectsSpawner* ObjectsSpawner;
 	ACustomGameState* GameState;
 

@@ -48,9 +48,11 @@ public:
 	UPROPERTY(Category = "CapsuleComponent", VisibleAnywhere, BlueprintReadWrite)
 	UCapsuleComponent* CapsuleComponent;
 
+	UPROPERTY(Category = "ZombieHit", VisibleAnywhere, BlueprintReadWrite)
+		bool ZombieHit;
 
-
-	FVector ZombieShotPos;
+	UPROPERTY(Category = "ZombieDamage", VisibleAnywhere, BlueprintReadWrite)
+		int RandomDamage;
 	
 	//ACustomGameMode* GM;
 	UPROPERTY(Category = "GameManager", VisibleAnywhere, BlueprintReadWrite)

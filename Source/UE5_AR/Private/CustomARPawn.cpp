@@ -32,6 +32,7 @@ ACustomARPawn::ACustomARPawn()
 	CapsuleComponent->InitCapsuleSize(30,90);
 	CapsuleComponent->SetCollisionProfileName("OverlapAll");
 
+	ZombieHit = false;
 }
 
 // Called when the game starts or when spawned.
@@ -129,10 +130,9 @@ void ACustomARPawn::Shoot()
 	if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
 	{
 		ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
-
-		//Reduce enemy health.
-		HitEnemy->Health -= 50;		
-		
+		RandomDamage = FMath::RandRange(20, 30);
+		HitEnemy->Health -= RandomDamage;
+		ZombieHit = true;
 	}
 }
 
