@@ -130,7 +130,7 @@ void ACustomARPawn::Shoot()
 	if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
 	{
 		ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
-		RandomDamage = FMath::RandRange(40, 65);
+		RandomDamage = FMath::RandRange(30, 55);
 		HitEnemy->Health -= RandomDamage;
 		ZombieHit = true;
 	}
