@@ -130,7 +130,7 @@ void ACustomARPawn::Shoot()
 	if (UKismetMathLibrary::ClassIsChildOf(hitActorClass, ASpawnedEnemy::StaticClass()))
 	{
 		ASpawnedEnemy* HitEnemy = Cast<ASpawnedEnemy>(HitResult.GetActor());
-		RandomDamage = FMath::RandRange(20, 30);
+		RandomDamage = FMath::RandRange(40, 65);
 		HitEnemy->Health -= RandomDamage;
 		ZombieHit = true;
 	}
@@ -147,13 +147,13 @@ bool ACustomARPawn::WorldHitTest(FHitResult& fHit)
 	//If gun exists and is collected, linetrace from gun position for shooting, otherwise linetrace from camera location.
 	if(Gun)
 	{
-		traceEndVector = Gun->GetActorLocation() + traceEndVector;
+		traceEndVector = camLocation + traceEndVector;
 		// perform line trace (Raycast)
 		FCollisionQueryParams queryParams;
 		queryParams.AddIgnoredActor(this->GetOwner());
 		queryParams.AddIgnoredActor(Gun);
-
-		bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit, Gun->GetActorLocation(), traceEndVector,
+		Gun->BoxComponent->SetCollisionProfileName("NoCollision");
+		bool traceSuccess = GetWorld()->LineTraceSingleByChannel(fHit,camLocation, traceEndVector,
 			ECollisionChannel::ECC_WorldDynamic, queryParams);
 		
 		return traceSuccess;
